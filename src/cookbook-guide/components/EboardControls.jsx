@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { isEboardUser } from '../hooks/useAuth';
 import BookmarkIcon from './BookmarkIcon';
-import DeleteAccountModal from './DeleteAccountModal';
 
 export default function EboardControls({
   currentUser,
@@ -15,9 +14,8 @@ export default function EboardControls({
   myRecsLabel = '📍 Your Recommendations',
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
   const menuRef = useRef(null);
-  // Any logged-in account gets Account Settings, Saved, Delete account and Sign Out;
+  // Any logged-in account gets Account Settings (incl. Delete account), Saved and Sign Out;
   // editing tools are e-board only.
   const isEboard = isEboardUser(currentUser);
 
@@ -103,16 +101,6 @@ export default function EboardControls({
           className="gear-menu-item danger"
           onClick={() => {
             setMenuOpen(false);
-            setDeleteOpen(true);
-          }}
-        >
-          Delete account
-        </button>
-        <button
-          role="menuitem"
-          className="gear-menu-item danger"
-          onClick={() => {
-            setMenuOpen(false);
             onLogout();
           }}
         >
@@ -133,8 +121,6 @@ export default function EboardControls({
       >
         {addLabel}
       </button>
-
-      <DeleteAccountModal open={deleteOpen} onClose={() => setDeleteOpen(false)} isEboard={isEboard} />
     </>
   );
 }

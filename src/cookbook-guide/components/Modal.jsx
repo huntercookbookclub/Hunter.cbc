@@ -2,6 +2,9 @@ import { useEffect, useId, useRef, useState } from 'react';
 
 const EXIT_MS = 160; // matches the e-modal-out / e-backdrop-out animations
 
+// Open boxes, newest last, so Escape only closes the top one.
+const openStack = [];
+
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])';
 
@@ -35,20 +38,40 @@ export default function Modal({ open, onClose, title, width, children }) {
     if (!open) return;
     const previous = document.activeElement;
     const box = boxRef.current;
-    const first = box?.querySelector('.e-body input, .e-body textarea, .e-body select') || box;
+    // First visible field (skips hidden ones like the photo picker), else the box.
+    const fields = box ? [...box.querySelectorAll('.e-body input, .e-body textarea, .e-body select')] : [];
+    const first = fields.find((el) => el.type !== 'hidden' && el.getClientRects().length > 0) || box;
     first?.focus({ preventScroll: true });
     return () => previous?.focus?.({ preventScroll: true });
+  }, [open]);
+
+  // Escape closes the box wherever the cursor is (not only inside it), and
+  // only the top box when two are open. Captured on the way down so it doesn't
+  // also close the panel or menu behind the box.
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  });
+  useEffect(() => {
+    if (!open) return;
+    const id = {};
+    openStack.push(id);
+    const onKey = (e) => {
+      if (e.key !== 'Escape' || openStack[openStack.length - 1] !== id) return;
+      e.stopPropagation();
+      onCloseRef.current();
+    };
+    document.addEventListener('keydown', onKey, true);
+    return () => {
+      document.removeEventListener('keydown', onKey, true);
+      openStack.splice(openStack.indexOf(id), 1);
+    };
   }, [open]);
 
   // Render on the same pass `open` turns true, so focus can move in right away.
   if (!open && !mounted) return null;
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Escape') {
-      e.stopPropagation(); // don't also close the panel behind the box
-      onClose();
-      return;
-    }
     if (e.key !== 'Tab') return;
     // Keep Tab inside the box.
     const items = [...boxRef.current.querySelectorAll(FOCUSABLE)];

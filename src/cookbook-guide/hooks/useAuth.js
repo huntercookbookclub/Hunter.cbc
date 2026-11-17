@@ -99,12 +99,19 @@ export async function resetPasswordWithCode(email, code, newPassword) {
 }
 
 // ── Delete account (supabase/delete-account.sql) ──
-// Removes the profile picture, deletes the account on the server (saves and
-// likes go with it), then signs out. Returns an error message, or null.
-export async function deleteMyAccount() {
+// Confirms the password, removes the profile picture, deletes the account on
+// the server (which checks the password again; saves and likes go with it),
+// then signs out. Returns an error message, or null.
+export async function deleteMyAccount(password) {
+  if (!password) return 'Enter your password to confirm.';
   const { data } = await sbClient.auth.getUser();
   const userId = data?.user?.id;
+  const email = data?.user?.email;
   if (!userId) return 'You’re not logged in.';
+
+  // Check the password before touching anything (the server checks it again).
+  const { error: passwordError } = await sbClient.auth.signInWithPassword({ email, password });
+  if (passwordError) return 'That password isn’t right.';
 
   // Profile pictures live in avatars/<user id>/. Best effort: the account
   // deletion below is what matters.
@@ -113,8 +120,8 @@ export async function deleteMyAccount() {
     await sbClient.storage.from('avatars').remove(files.map((f) => `${userId}/${f.name}`));
   }
 
-  const { error } = await sbClient.rpc('delete_my_account');
-  if (error) return error.message;
+  const { error } = await sbClient.rpc('delete_my_account', { password });
+  if (error) return error.message === 'Incorrect password' ? 'That password isn’t right.' : error.message;
   await sbClient.auth.signOut();
   return null;
 }

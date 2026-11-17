@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Modal from './Modal';
 import { sbClient } from '../lib/supabaseClient';
-import { isEboardUser } from '../hooks/useAuth';
+import { deleteMyAccount, isEboardUser } from '../hooks/useAuth';
 import { useShowActivity } from '../hooks/useProfile';
 
 export default function AccountSettingsModal({ open, onClose, currentUser, onSaved }) {
@@ -19,6 +19,11 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
   const [displayName, setDisplayName] = useState('');
   const { showActivity, setShowActivity } = useShowActivity(currentUser);
   const [share, setShare] = useState(false);
+  // Delete account: hidden until asked for, then needs the current password.
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deletePassword, setDeletePassword] = useState('');
+  const [deleteError, setDeleteError] = useState('');
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -37,6 +42,27 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
   useEffect(() => {
     if (open) setShare(showActivity);
   }, [open, showActivity]);
+
+  useEffect(() => {
+    if (!open) {
+      setDeleteOpen(false);
+      setDeletePassword('');
+      setDeleteError('');
+    }
+  }, [open]);
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    setDeleting(true);
+    setDeleteError('');
+    const errMsg = await deleteMyAccount(deletePassword);
+    setDeleting(false);
+    if (errMsg) {
+      setDeleteError(errMsg);
+      return;
+    }
+    onClose(); // signed out now; the pages update on their own
+  };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -202,12 +228,53 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
       <label className="e-check">
         <input type="checkbox" checked={share} onChange={(e) => setShare(e.target.checked)} />
         <span>
-          <strong>Show my name and photo on places I like or save.</strong>{' '}
-          {share
-            ? 'Other visitors can see that you liked or saved a place.'
-            : 'Off: your likes and saves are private. Only you can see them.'}
+          <strong>Show my name and photo on places I like or save.</strong> Keep unticked to keep
+          likes and saves private.
         </span>
       </label>
+
+      <div className="e-section-label">Delete account</div>
+      {deleteOpen ? (
+        <form className="e-form delete-account" onSubmit={handleDelete}>
+          <p className="e-hint">
+            This permanently deletes your account, saved places, saved recipes and likes. It can’t be
+            undone.
+            {isEboard &&
+              ' Your Big Back Lookback photos are removed too; places and recipes you posted stay on the site under your name.'}
+          </p>
+          <input
+            type="password"
+            className="e-input"
+            placeholder="Your password, to confirm"
+            autoComplete="current-password"
+            value={deletePassword}
+            onChange={(e) => setDeletePassword(e.target.value)}
+            aria-invalid={!!deleteError}
+          />
+          <button type="submit" className="e-btn-danger" disabled={deleting || !deletePassword}>
+            {deleting ? 'Deleting…' : 'Delete my account'}
+          </button>
+          <button
+            type="button"
+            className="e-link"
+            onClick={() => {
+              setDeleteOpen(false);
+              setDeletePassword('');
+              setDeleteError('');
+            }}
+            disabled={deleting}
+          >
+            Cancel
+          </button>
+          <div className="e-error" role="alert">
+            {deleteError}
+          </div>
+        </form>
+      ) : (
+        <button type="button" className="e-link danger-link" onClick={() => setDeleteOpen(true)}>
+          Delete my account…
+        </button>
+      )}
 
       <div className="e-error">{error}</div>
       <button className="e-btn-primary" onClick={handleSave} disabled={saving}>

@@ -1212,6 +1212,13 @@
   font-weight: 600;
   color: oklch(22.84% 0.0384 282.93 / 0.6);
 }
+.cookbook-guide-app .e-link.danger-link { align-self: flex-start; color: oklch(52% 0.2 25); }
+.cookbook-guide-app .delete-account {
+  padding: 12px;
+  border: 1px solid oklch(52% 0.2 25 / 0.3);
+  border-radius: 10px;
+  background: oklch(52% 0.2 25 / 0.05);
+}
 .cookbook-guide-app .e-check {
   display: flex;
   align-items: flex-start;
