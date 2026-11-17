@@ -44,7 +44,12 @@ export function PrivacyPolicy() {
         </li>
         <li>
           <strong>If you create an account:</strong> your email address, your password (stored
-          encrypted by our login provider, so we can’t see it), and the places and recipes you save.
+          encrypted by our login provider, so we can’t see it), the places and recipes you save,
+          and the places you like.
+        </li>
+        <li>
+          <strong>Likes:</strong> each place shows its total number of likes to everyone. Who
+          liked a place is never shown.
         </li>
         <li>
           <strong>Your age:</strong> when you sign up we ask for your date of birth to confirm you
@@ -60,7 +65,7 @@ export function PrivacyPolicy() {
       <h2>How we use it</h2>
       <p>
         Only to run the site: to log you in, send you verification and password-reset codes, and
-        show you your saved places and recipes. We don’t sell your information, share it for
+        show you your saved places, recipes and likes. We don’t sell your information, share it for
         advertising, or send marketing emails.
       </p>
 
@@ -104,9 +109,12 @@ export function PrivacyPolicy() {
 
       <h2>Your choices</h2>
       <p>
-        You can ask us to see, correct or delete your account and data at any time by emailing{' '}
-        <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> from your account’s email address.
-        We keep account data until you delete your account or ask us to.
+        You can delete your account yourself at any time: log in, tap the ⚙️ button, then
+        choose <strong>Delete account</strong>. This removes your account, saved places, saved
+        recipes and likes right away, and can’t be undone. You can also ask us to see, correct or
+        delete your data by emailing <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> from
+        your account’s email address. We keep account data until you delete your account or ask us
+        to.
       </p>
 
       <h2>Changes</h2>
@@ -166,8 +174,8 @@ export function Terms() {
 
       <h2>Ending your account</h2>
       <p>
-        You can ask us to delete your account at any time. We may suspend or remove accounts that
-        break these terms.
+        You can delete your account at any time from the ⚙️ menu (Delete account), or by asking
+        us. We may suspend or remove accounts that break these terms.
       </p>
 
       <h2>Changes</h2>

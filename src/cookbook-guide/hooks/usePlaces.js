@@ -23,6 +23,7 @@ function mapRow(row) {
     photos: row.photos || [],
     price: row.price,
     maps_url: row.maps_url || null,
+    createdAt: row.created_at,
   };
 }
 

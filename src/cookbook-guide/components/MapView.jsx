@@ -70,7 +70,12 @@ export default function MapView({ places, onSelectPlace, selectedId }) {
 
       const icon = L.divIcon({
         className: '',
-        html: `<div class="emoji-marker">${cfg.emoji}</div>`,
+        // Places recommended by more than one person show how many.
+        html: `<div class="emoji-marker">${cfg.emoji}${
+          place.reviews?.length > 1
+            ? `<span class="pin-count" aria-label="${place.reviews.length} recommendations">${place.reviews.length}</span>`
+            : ''
+        }</div>`,
         iconSize: [32, 32],
         iconAnchor: [16, 16],
         popupAnchor: [0, -18],
@@ -81,7 +86,9 @@ export default function MapView({ places, onSelectPlace, selectedId }) {
       marker.bindPopup(
         `<div class="popup-inner">
           <strong>${place.name}</strong>
-          <span>${cfg.label} · ${place.cuisine}</span>
+          <span>${cfg.label} · ${place.cuisine}${
+            place.reviews?.length > 1 ? ` · ${place.reviews.length} recommendations` : ''
+          }</span>
         </div>`,
         { closeButton: false, minWidth: 100 }
       );

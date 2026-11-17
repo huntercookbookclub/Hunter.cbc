@@ -2,6 +2,7 @@ import { catConfig, cuisineEmoji } from '../lib/catConfig';
 import BookmarkIcon from './BookmarkIcon';
 import HeartIcon from './HeartIcon';
 import ExternalLinkIcon from './ExternalLinkIcon';
+import ReviewsCarousel from './ReviewsCarousel';
 import { useSheetDrag } from '../hooks/useSheetDrag';
 
 export default function PlaceDetailPanel({
@@ -72,70 +73,8 @@ export default function PlaceDetailPanel({
               </a>
             </div>
 
-            <div className="panel-section-label">Recommended by</div>
-            <div className="panel-recommender">
-              <div className="rec-avatar" style={{ background: place.recommender.color }}>
-                {place.recommender.avatarUrl ? (
-                  <img
-                    src={place.recommender.avatarUrl}
-                    alt=""
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
-                  />
-                ) : (
-                  place.recommender.avatar
-                )}
-              </div>
-              <div className="rec-info">
-                <div className="rec-name">{place.recommender.name}</div>
-                <div className="rec-role">{place.recommender.role}</div>
-              </div>
-            </div>
-
-            {place.tags?.length > 0 && (
-              <>
-                <div className="panel-section-label">Tags</div>
-                <div className="dishes-list">
-                  {place.tags.map((t) => (
-                    <span key={t} className="tag-pill-display">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </>
-            )}
-
-            {place.dishes?.length > 0 && (
-              <>
-                <div className="panel-section-label">Must-try dishes</div>
-                <div className="dishes-list">
-                  {place.dishes.map((d) => (
-                    <span key={d} className="dish-tag">
-                      {d}
-                    </span>
-                  ))}
-                </div>
-              </>
-            )}
-
-            {place.notes?.trim() && (
-              <>
-                <div className="panel-section-label">Notes</div>
-                <div className="panel-notes">{place.notes}</div>
-              </>
-            )}
-
-            {place.photos?.length > 0 && (
-              <>
-                <div className="panel-section-label">Photos</div>
-                <div className="panel-photos">
-                  {place.photos.map((url) => (
-                    <div key={url} className="photo">
-                      <img src={url} alt="" />
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
+            {/* key resets the swipe position when another place opens */}
+            <ReviewsCarousel key={place.id} reviews={place.reviews || [place]} />
           </div>
         )}
       </div>

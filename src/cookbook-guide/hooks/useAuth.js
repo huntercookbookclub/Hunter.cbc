@@ -94,6 +94,27 @@ export async function resetPasswordWithCode(email, code, newPassword) {
   return error ? error.message : null;
 }
 
+// ── Delete account (supabase/delete-account.sql) ──
+// Removes the profile picture, deletes the account on the server (saves and
+// likes go with it), then signs out. Returns an error message, or null.
+export async function deleteMyAccount() {
+  const { data } = await sbClient.auth.getUser();
+  const userId = data?.user?.id;
+  if (!userId) return 'You’re not logged in.';
+
+  // Profile pictures live in avatars/<user id>/. Best effort: the account
+  // deletion below is what matters.
+  const { data: files } = await sbClient.storage.from('avatars').list(userId);
+  if (files?.length) {
+    await sbClient.storage.from('avatars').remove(files.map((f) => `${userId}/${f.name}`));
+  }
+
+  const { error } = await sbClient.rpc('delete_my_account');
+  if (error) return error.message;
+  await sbClient.auth.signOut();
+  return null;
+}
+
 export function useAuth() {
   const [currentUser, setCurrentUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);

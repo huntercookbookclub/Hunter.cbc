@@ -53,6 +53,25 @@
   transition: transform 0.15s;
   cursor: pointer;
 }
+/* Count badge on pins with several recommendations (MapView.jsx). */
+.cookbook-guide-app .emoji-marker { position: relative; }
+.cookbook-guide-app .pin-count {
+  position: absolute;
+  top: -5px;
+  right: -7px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: var(--ink);
+  color: oklch(100% 0 0);
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.66rem;
+  font-weight: 500;
+  line-height: 17px;
+  text-align: center;
+  box-shadow: 0 0 0 2px oklch(100% 0 0);
+}
 .cookbook-guide-app .emoji-marker.is-selected {
   transform: scale(1.2);
   box-shadow: 0 0 0 3px var(--ink), 0 3px 10px oklch(0% 0 0 / 0.3);
@@ -923,6 +942,19 @@
   .cookbook-guide-app .e-btn-primary:hover { filter: brightness(0.93); }
 }
 
+.cookbook-guide-app .e-btn-danger {
+  padding: 10px 22px;
+  background: oklch(52% 0.2 25);
+  color: oklch(100% 0 0);
+  border: none;
+  border-radius: 10px;
+  font-family: 'ClashDisplay', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.cookbook-guide-app .e-btn-danger:active { transform: scale(0.97); }
+.cookbook-guide-app .e-btn-danger:disabled { cursor: default; }
 .cookbook-guide-app .e-btn-secondary {
   padding: 10px 22px;
   background: oklch(94.60% 0.0124 91.52);
@@ -1485,3 +1517,84 @@
   filter: blur(4px);
 }
 .toggle-glyph[data-on='false'] .glyph-on { transform: scale(0.6); }
+
+/* ── RECOMMENDATIONS CAROUSEL (ReviewsCarousel.jsx) ──
+   Native swipe: scroll-snap, one recommendation per page. The track reaches
+   into the panel's 20px side padding so the edge fades sit in the padding,
+   not over the text. */
+.cookbook-guide-app .reviews-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+}
+.cookbook-guide-app .reviews-count {
+  font-family: 'ClashDisplay', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.cookbook-guide-app .reviews-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.cookbook-guide-app .reviews-nav button {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background: oklch(94.6% 0.0124 91.52);
+  color: oklch(25% 0.02 280);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.cookbook-guide-app .reviews-nav button:disabled { opacity: 0.35; cursor: default; }
+.cookbook-guide-app .reviews-nav button:not(:disabled):active { transform: scale(0.94); }
+.cookbook-guide-app .reviews-pos {
+  min-width: 3.2em;
+  text-align: center;
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  color: oklch(25% 0.02 280 / 0.65);
+}
+.cookbook-guide-app .reviews-track {
+  display: flex;
+  margin: 0 -20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-mask: linear-gradient(90deg, transparent, black 20px, black calc(100% - 20px), transparent);
+  mask: linear-gradient(90deg, transparent, black 20px, black calc(100% - 20px), transparent);
+}
+.cookbook-guide-app .reviews-track::-webkit-scrollbar { display: none; }
+.cookbook-guide-app .review {
+  flex: 0 0 100%;
+  min-width: 0;
+  padding: 0 20px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.cookbook-guide-app .reviews-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 14px;
+}
+.cookbook-guide-app .reviews-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: oklch(0% 0 0 / 0.18);
+  transition: width 200ms ease, background 200ms ease;
+}
+.cookbook-guide-app .reviews-dots span.on { width: 16px; background: var(--ink); }
+
+@media (pointer: coarse) {
+  /* 44px tap area around the 30px arrow buttons */
+  .cookbook-guide-app .reviews-nav button::after { content: ''; position: absolute; inset: -7px; }
+}

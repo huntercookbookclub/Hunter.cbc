@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { usePlaces } from './hooks/usePlaces';
 import { useFilters } from './hooks/useFilters';
 import { useAuth } from './hooks/useAuth';
 import { useSaved } from './hooks/useSaved';
 import { useLikes } from './hooks/useLikes';
+import { groupPlaces } from './lib/groupPlaces';
 import MapView from './components/MapView';
 import PlaceDetailPanel from './components/PlaceDetailPanel';
 import TopBar from './components/TopBar';
@@ -21,7 +22,22 @@ export default function CookbookGuidePage() {
   const { places, loading, error, reload } = usePlaces();
   const filters = useFilters(places);
   const { currentUser, login, logout } = useAuth();
+  // selectedPlace is a place group: shared details + `reviews` (oldest first).
   const [selectedPlace, setSelectedPlace] = useState(null);
+
+  // One entry (and one pin) per place, even if several people recommended it.
+  const groups = useMemo(() => groupPlaces(places), [places]);
+  // A place shows if any of its recommendations passes the filters.
+  const visibleGroups = useMemo(() => {
+    const ids = new Set(filters.filteredPlaces.map((p) => p.id));
+    return groups.filter((g) => g.reviews.some((r) => ids.has(r.id)));
+  }, [groups, filters.filteredPlaces]);
+  // Type chips count places (pins), not recommendations.
+  const placeCounts = useMemo(() => {
+    const counts = { __total: groups.length };
+    groups.forEach((g) => (counts[g.category] = (counts[g.category] || 0) + 1));
+    return counts;
+  }, [groups]);
   const [filterPanelOpen, setFilterPanelOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [addPlaceOpen, setAddPlaceOpen] = useState(false);
@@ -44,29 +60,37 @@ export default function CookbookGuidePage() {
   const { isSaved, toggleSaved } = useSaved('place', currentUser);
   const { isLiked, likeCount, toggleLike } = useLikes(currentUser);
 
-  const handleToggleLike = async (place) => {
+  // Saves and likes are stored against a recommendation's id. A place with
+  // several recommendations has several ids: new saves/likes use the first one,
+  // and one made earlier on any of them still counts for the place.
+  const savedId = (group) => group.reviews.find((r) => isSaved(r.id))?.id;
+  const likedId = (group) => group.reviews.find((r) => isLiked(r.id))?.id;
+  const totalLikes = (group) => group.reviews.reduce((n, r) => n + likeCount(r.id), 0);
+  const groupOf = (id) => groups.find((g) => g.reviews.some((r) => r.id === id));
+
+  // Logged-out visitors are asked to log in instead.
+  const handleToggleLike = async (group) => {
     if (!currentUser) {
       setLoginOpen(true);
       return;
     }
-    const errMsg = await toggleLike(place.id);
+    const errMsg = await toggleLike(likedId(group) ?? group.id);
     if (errMsg) alert(`Couldn’t update your like: ${errMsg}`);
   };
 
-  // Logged-out visitors are asked to log in instead.
-  const handleToggleSave = async (place) => {
+  const handleToggleSave = async (group) => {
     if (!currentUser) {
       setLoginOpen(true);
       return;
     }
-    const errMsg = await toggleSaved(place.id);
+    const errMsg = await toggleSaved(savedId(group) ?? group.id);
     if (errMsg) alert(`Couldn’t update saved places: ${errMsg}`);
   };
 
   return (
     <div className="cookbook-guide-app">
       <TopBar
-        filters={filters}
+        filters={{ ...filters, typeCounts: placeCounts }}
         filterPanelOpen={filterPanelOpen}
         onToggleFilterPanel={() => setFilterPanelOpen((o) => !o)}
       />
@@ -83,7 +107,7 @@ export default function CookbookGuidePage() {
         />
 
         <MapView
-          places={filters.filteredPlaces}
+          places={visibleGroups}
           onSelectPlace={setSelectedPlace}
           selectedId={selectedPlace?.id}
         />
@@ -91,10 +115,10 @@ export default function CookbookGuidePage() {
         <PlaceDetailPanel
           place={selectedPlace}
           onClose={() => setSelectedPlace(null)}
-          saved={!!selectedPlace && isSaved(selectedPlace.id)}
+          saved={!!selectedPlace && !!savedId(selectedPlace)}
           onToggleSave={() => handleToggleSave(selectedPlace)}
-          liked={!!selectedPlace && isLiked(selectedPlace.id)}
-          likes={selectedPlace ? likeCount(selectedPlace.id) : 0}
+          liked={!!selectedPlace && !!likedId(selectedPlace)}
+          likes={selectedPlace ? totalLikes(selectedPlace) : 0}
           onToggleLike={() => handleToggleLike(selectedPlace)}
         />
       </div>
@@ -133,11 +157,11 @@ export default function CookbookGuidePage() {
         onClose={() => setSavedOpen(false)}
         title="Saved places"
         emptyText="No saved places yet. Tap Save on a place to keep it here."
-        items={places
-          .filter((p) => isSaved(p.id))
-          .map((p) => ({ id: p.id, title: p.name, subtitle: [p.cuisine, p.address].filter(Boolean).join(' · ') }))}
-        onOpenItem={(id) => setSelectedPlace(places.find((p) => p.id === id))}
-        onRemove={(id) => handleToggleSave({ id })}
+        items={groups
+          .filter((g) => savedId(g))
+          .map((g) => ({ id: g.id, title: g.name, subtitle: [g.cuisine, g.address].filter(Boolean).join(' · ') }))}
+        onOpenItem={(id) => setSelectedPlace(groupOf(id))}
+        onRemove={(id) => handleToggleSave(groupOf(id))}
       />
 
       <MyRecommendationsModal
