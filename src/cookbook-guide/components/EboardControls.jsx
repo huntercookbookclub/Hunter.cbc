@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { isEboardUser } from '../hooks/useAuth';
 
 export default function EboardControls({
   currentUser,
@@ -12,6 +13,8 @@ export default function EboardControls({
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  // Logged-in non-e-board accounts only get Sign Out; editing tools are e-board only.
+  const isEboard = isEboardUser(currentUser);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -40,16 +43,18 @@ export default function EboardControls({
         ref={menuRef}
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          className="gear-menu-item"
-          onClick={() => {
-            setMenuOpen(false);
-            onOpenAccountSettings();
-          }}
-        >
-          👤 Account Settings
-        </button>
-        {onOpenMyRecs && (
+        {isEboard && (
+          <button
+            className="gear-menu-item"
+            onClick={() => {
+              setMenuOpen(false);
+              onOpenAccountSettings();
+            }}
+          >
+            👤 Account Settings
+          </button>
+        )}
+        {isEboard && onOpenMyRecs && (
           <button
             className="gear-menu-item"
             onClick={() => {
@@ -72,7 +77,7 @@ export default function EboardControls({
       </div>
 
       <button
-        className={`add-place-btn${currentUser ? ' visible' : ''}`}
+        className={`add-place-btn${isEboard ? ' visible' : ''}`}
         onClick={onOpenAddPlace}
       >
         {addLabel}

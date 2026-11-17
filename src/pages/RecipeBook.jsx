@@ -87,8 +87,7 @@ function RecipeBook() {
   const [tagFilter, setTagFilter] = useState([])
 
   // Same Supabase e-board auth the map uses.
-  const { currentUser, login, logout } = useAuth()
-  const isEboard = !!currentUser
+  const { currentUser, isEboard, login, logout } = useAuth()
   const currentUserId = currentUser?.id ?? null
 
   const [loginOpen, setLoginOpen] = useState(false)

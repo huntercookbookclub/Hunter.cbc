@@ -105,7 +105,7 @@ function BigBackLookback() {
   const [status, setStatus] = useState('')
 
   // Same Supabase e-board auth the map and recipe book use.
-  const { currentUser, login, logout } = useAuth()
+  const { currentUser, isEboard, login, logout } = useAuth()
   const currentUserId = currentUser?.id ?? null
   const [loginOpen, setLoginOpen] = useState(false)
   const [accountSettingsOpen, setAccountSettingsOpen] = useState(false)
@@ -182,7 +182,7 @@ function BigBackLookback() {
       {!loading && photos.length === 0 ? (
         <p className="lookback-empty">
           The board is empty.{' '}
-          {currentUser ? 'Tap “+ Add photos” to hang the first ones.' : 'E-board members can log in with the ⚙️ button to add photos.'}
+          {isEboard ? 'Tap “+ Add photos” to hang the first ones.' : 'E-board members can log in with the ⚙️ button to add photos.'}
         </p>
       ) : (
         <div className="lookback-grid">

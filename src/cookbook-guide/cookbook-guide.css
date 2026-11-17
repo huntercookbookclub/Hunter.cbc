@@ -1066,6 +1066,31 @@
   margin-bottom: -2px;
 }
 
+/* ── LOGIN / FORGOT PASSWORD (LoginModal.jsx) ── */
+.cookbook-guide-app .e-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cookbook-guide-app .e-hint {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: rgba(26, 26, 46, 0.6);
+}
+.cookbook-guide-app .e-link {
+  align-self: center;
+  padding: 2px 4px;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 0.8rem;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
 /* ── MY RECOMMENDATIONS ── */
 .cookbook-guide-app .my-rec-row {
   display: flex;

@@ -1,6 +1,61 @@
 import { useEffect, useState } from 'react';
 import { sbClient } from '../lib/supabaseClient';
 
+// E-board accounts carry role 'eboard' in app_metadata, which only an admin can set
+// (see supabase/eboard-roles.sql). The database enforces this too; this check just
+// decides which buttons to show.
+export function isEboardUser(user) {
+  return user?.app_metadata?.role === 'eboard';
+}
+
+// ── Sign up (Hunter student emails only, verified with a one-time code) ──
+// The domain is also enforced on the server (supabase/signup-rules.sql), since
+// anyone can call Supabase directly and skip this form. The code comes from the
+// "Confirm signup" email template, which must include {{ .Token }}.
+
+export const SIGNUP_DOMAIN = '@stu-mail.hunter.cuny.edu';
+
+export async function signUp(email, password) {
+  if (!email.toLowerCase().endsWith(SIGNUP_DOMAIN)) {
+    return `Please use your ${SIGNUP_DOMAIN} email.`;
+  }
+  const { error } = await sbClient.auth.signUp({ email, password });
+  return error ? error.message : null;
+}
+
+// Checks the emailed code; on success the user is signed in.
+export async function verifySignupCode(email, code) {
+  const { error } = await sbClient.auth.verifyOtp({ email, token: code, type: 'signup' });
+  return error ? error.message : null;
+}
+
+export async function resendSignupCode(email) {
+  const { error } = await sbClient.auth.resend({ type: 'signup', email });
+  return error ? error.message : null;
+}
+
+// ── Forgot password (one-time code by email) ──
+// The code comes from the "Reset Password" email template, which must include
+// {{ .Token }} (Supabase → Authentication → Email Templates). Both return an
+// error message string, or null on success, like login() below.
+
+export async function requestPasswordReset(email) {
+  const { error } = await sbClient.auth.resetPasswordForEmail(email);
+  return error ? error.message : null;
+}
+
+// Checks the code (which signs the user in), then sets the new password.
+export async function resetPasswordWithCode(email, code, newPassword) {
+  const { error: codeError } = await sbClient.auth.verifyOtp({
+    email,
+    token: code,
+    type: 'recovery',
+  });
+  if (codeError) return codeError.message;
+  const { error } = await sbClient.auth.updateUser({ password: newPassword });
+  return error ? error.message : null;
+}
+
 export function useAuth() {
   const [currentUser, setCurrentUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
@@ -38,5 +93,12 @@ export function useAuth() {
     return null;
   };
 
-  return { currentUser, authLoading, login, logout, updateProfile };
+  return {
+    currentUser,
+    isEboard: isEboardUser(currentUser),
+    authLoading,
+    login,
+    logout,
+    updateProfile,
+  };
 }
