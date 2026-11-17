@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local secrets: set these in Vercel → Settings → Environment Variables instead
+.env
+.env.local
