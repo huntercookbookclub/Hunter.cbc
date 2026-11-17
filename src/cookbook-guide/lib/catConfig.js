@@ -1,10 +1,10 @@
 export const catConfig = {
-  restaurant: { emoji: '🍽️', color: '#FF6B6B', bg: '#FFE5E5', label: 'Restaurant' },
-  cafe:       { emoji: '☕', color: '#996600', bg: '#FFF4CC', label: 'Café' },
-  dessert:    { emoji: '🍰', color: '#C77DFF', bg: '#F0E5FF', label: 'Dessert' },
-  boba:       { emoji: '🧋', color: '#1a7bb5', bg: '#E5F5FF', label: 'Boba' },
-  bar:        { emoji: '🍸', color: '#2d8a3a', bg: '#E5F9E8', label: 'Bar' },
-  takeout:    { emoji: '🥡', color: '#C2410C', bg: '#FFEDD5', label: 'Takeout' },
+  restaurant: { emoji: '🍽️', color: 'oklch(71.16% 0.1812 22.84)', bg: 'oklch(94.30% 0.0286 17.67)', label: 'Restaurant' },
+  cafe:       { emoji: '☕', color: 'oklch(55.09% 0.1164 74.75)', bg: 'oklch(96.58% 0.0531 94.43)', label: 'Café' },
+  dessert:    { emoji: '🍰', color: 'oklch(71.97% 0.1930 308.60)', bg: 'oklch(93.83% 0.0366 304.78)', label: 'Dessert' },
+  boba:       { emoji: '🧋', color: 'oklch(55.84% 0.1228 241.72)', bg: 'oklch(96.12% 0.0216 234.99)', label: 'Boba' },
+  bar:        { emoji: '🍸', color: 'oklch(56.04% 0.1456 145.64)', bg: 'oklch(96.28% 0.0308 149.82)', label: 'Bar' },
+  takeout:    { emoji: '🥡', color: 'oklch(55.34% 0.1739 38.40)', bg: 'oklch(95.42% 0.0372 75.16)', label: 'Takeout' },
 };
 
 export const cuisineEmoji = {

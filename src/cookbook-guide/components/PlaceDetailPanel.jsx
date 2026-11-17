@@ -1,13 +1,24 @@
 import { catConfig, cuisineEmoji } from '../lib/catConfig';
 import BookmarkIcon from './BookmarkIcon';
+import { useSheetDrag } from '../hooks/useSheetDrag';
 
 export default function PlaceDetailPanel({ place, onClose, saved, onToggleSave }) {
   const isOpen = !!place;
   const cfg = place ? catConfig[place.category] : null;
+  const { sheetRef, handleProps } = useSheetDrag(onClose);
 
   return (
-    <div className={`side-panel${isOpen ? ' open' : ''}`}>
-      <button className="panel-close" title="Close" onClick={onClose}>
+    <div
+      ref={sheetRef}
+      className={`side-panel${isOpen ? ' open' : ''}`}
+      role="region"
+      aria-label={place ? place.name : 'Place details'}
+    >
+      {/* Phone only: drag down to close. */}
+      <div className="sheet-handle" aria-hidden="true" {...handleProps}>
+        <span />
+      </div>
+      <button className="panel-close" title="Close" aria-label="Close place details" onClick={onClose}>
         ✕
       </button>
 

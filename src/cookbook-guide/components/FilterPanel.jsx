@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSheetDrag } from '../hooks/useSheetDrag';
 import { cuisineEmoji } from '../lib/catConfig';
 import { predefinedTags } from '../lib/formOptions';
 
@@ -22,6 +23,7 @@ export default function FilterPanel({ open, onClose, filters, places }) {
     sortedCuisines,
   } = filters;
 
+  const { sheetRef, handleProps } = useSheetDrag(onClose);
   const [tagsOpen, setTagsOpen] = useState(false);
   const [tagSearch, setTagSearch] = useState('');
   const [customTags, setCustomTags] = useState([]);
@@ -37,8 +39,17 @@ export default function FilterPanel({ open, onClose, filters, places }) {
   );
 
   return (
-    <div className={`filter-panel${open ? ' open' : ''}`}>
-      <button className="filter-panel-close" onClick={onClose}>
+    <div
+      ref={sheetRef}
+      className={`filter-panel${open ? ' open' : ''}`}
+      role="region"
+      aria-label="Filters"
+    >
+      {/* Phone only: drag down to close. */}
+      <div className="sheet-handle" aria-hidden="true" {...handleProps}>
+        <span />
+      </div>
+      <button className="filter-panel-close" onClick={onClose} aria-label="Close filters">
         ✕
       </button>
 

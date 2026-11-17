@@ -80,6 +80,8 @@ export default function PlaceSearch({ onSelect, onUnavailable }) {
     <div className="tags-multiselect" ref={wrapRef}>
       <input
         type="search"
+        enterKeyHint="search"
+        autoCorrect="off"
         className="e-input"
         placeholder="🔍 Search for a place (auto-fills name, address & coords)"
         value={query}

@@ -63,19 +63,40 @@ function scrollToPage(el) {
   )
 }
 
+// Status bar / browser chrome color while the recipe book is open: its dark
+// brown top instead of the site's white (index.html), restored on leave.
+const RECIPE_THEME_COLOR = '#1a120c'
+
 function RecipeBook() {
   const rightPageRef = useRef(null)
+
+  useEffect(() => {
+    const meta = document.querySelector('meta[name="theme-color"]')
+    if (!meta) return
+    const previous = meta.content
+    meta.content = RECIPE_THEME_COLOR
+    return () => {
+      meta.content = previous
+    }
+  }, [])
   const filterRef = useRef(null)
 
-  // Close the filter dropdown on any click outside it (like the map's menus).
+  // Close the filter dropdown on any click outside it, or Escape (like the map's menus).
   useEffect(() => {
     const close = (e) => {
       if (filterRef.current?.open && !filterRef.current.contains(e.target)) {
         filterRef.current.open = false
       }
     }
+    const closeOnEscape = (e) => {
+      if (e.key === 'Escape' && filterRef.current?.open) filterRef.current.open = false
+    }
     document.addEventListener('click', close)
-    return () => document.removeEventListener('click', close)
+    document.addEventListener('keydown', closeOnEscape)
+    return () => {
+      document.removeEventListener('click', close)
+      document.removeEventListener('keydown', closeOnEscape)
+    }
   }, [])
 
   const [recipes, setRecipes] = useState([])
@@ -258,7 +279,6 @@ function RecipeBook() {
 
   return (
     <div className="recipe-book-page">
-      <div className="recipe-book-atmosphere" aria-hidden="true" />
 
       <header className="recipe-book-header">
         <Link to="/" className="recipe-book-back">

@@ -1,21 +1,21 @@
 /* A painted pegboard wall: every photo hangs from a coral peg. */
 .lookback-page {
-  --board: #e9e4da;
-  --hole: #c3baa9;
-  --card: #fffbf2;
-  --ink: #1a1a2e;
-  --ink-soft: #5d5a66;
-  --line: #d9d1c2;
-  --peg: #ff6b6b;
-  --danger: #b3261e;
+  --board: oklch(92% 0.0145 84.58);
+  --hole: oklch(79.16% 0.0256 83.41);
+  --card: oklch(98.87% 0.0126 86.83);
+  --ink: oklch(22.84% 0.0384 282.93);
+  --ink-soft: oklch(47.47% 0.0194 297.10);
+  --line: oklch(86.30% 0.0222 83.26);
+  --peg: oklch(71.16% 0.1812 22.84);
+  --danger: oklch(50.13% 0.1783 28.70);
 
-  min-height: 100svh;
+  min-height: 100dvh;
   box-sizing: border-box;
-  padding: 32px max(16px, env(safe-area-inset-right, 0px)) 96px max(16px, env(safe-area-inset-left, 0px));
+  padding: calc(32px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(96px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
   color: var(--ink);
   font-family: 'Satoshi', system-ui, sans-serif;
   background-color: var(--board);
-  background-image: radial-gradient(circle, var(--hole) 2.5px, transparent 3.2px);
+  background-image: radial-gradient(circle in oklch, var(--hole) 2.5px, transparent 3.2px);
   background-size: 24px 24px;
   background-position: 12px 12px;
 }
@@ -39,8 +39,10 @@
   letter-spacing: 0.04em;
   text-decoration: none;
 }
-.lookback-back:hover {
-  text-decoration: underline;
+@media (hover: hover) and (pointer: fine) {
+  .lookback-back:hover {
+    text-decoration: underline;
+  }
 }
 
 .lookback-title {
@@ -89,7 +91,7 @@
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 4px;
-  box-shadow: 0 6px 14px -8px rgba(26, 26, 46, 0.35);
+  box-shadow: 0 6px 14px -8px oklch(22.84% 0.0384 282.93 / 0.35);
   transform: rotate(var(--tilt, 0deg));
 }
 .lookback-card:nth-child(3n + 1) { --tilt: -0.8deg; }
@@ -104,7 +106,7 @@
   margin-left: -6px;
   border-radius: 50%;
   background: var(--peg);
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 0 oklch(0% 0.0000 0.00 / 0.25);
 }
 
 .lookback-photo {
@@ -155,7 +157,7 @@
   letter-spacing: 0;
   font-weight: 400;
   color: var(--ink);
-  background: #fff;
+  background: oklch(100% 0.0000 0.00);
   border: 1px solid var(--line);
   border-radius: 6px;
 }
@@ -180,7 +182,7 @@
   overflow: hidden;
   display: grid;
   place-items: center;
-  background: #e8e4dc;
+  background: oklch(91.98% 0.0116 84.58);
   font-size: 13px;
 }
 .lookback-pfp img { width: 100%; height: 100%; object-fit: cover; }
@@ -200,6 +202,8 @@
   border-radius: 999px;
   cursor: pointer;
 }
-.lookback-btn:hover { background: #fff; }
+@media (hover: hover) and (pointer: fine) {
+  .lookback-btn:hover { background: oklch(100% 0.0000 0.00); }
+}
 .lookback-btn-danger { color: var(--danger); }
 .lookback-page :focus-visible { outline: 3px solid var(--peg); outline-offset: 2px; }

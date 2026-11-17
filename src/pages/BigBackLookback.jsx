@@ -71,9 +71,9 @@ function PhotoCard({ photo, onSave, onDelete }) {
       ) : (
         <dl>
           <dt>What</dt>
-          <dd>{photo.what || '—'}</dd>
+          <dd>{photo.what || 'Not listed'}</dd>
           <dt>Where</dt>
-          <dd>{photo.where || '—'}</dd>
+          <dd>{photo.where || 'Not listed'}</dd>
           <dt>Rating out of 5</dt>
           <dd>
             <span className="lookback-stars">{stars(photo.rating)}</span>

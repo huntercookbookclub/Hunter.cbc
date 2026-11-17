@@ -32,12 +32,49 @@ body {
 }
 
 #root {
-  min-height: 100svh;
+  min-height: 100dvh;
+}
+
+/* ── MOBILE BASELINE ── */
+html {
+  -webkit-tap-highlight-color: transparent; /* no gray flash on tap; every control has its own :active */
+  -webkit-text-size-adjust: 100%;           /* no font inflation in landscape */
+}
+
+/* The map is an app screen (no page scroll), so pull-to-refresh / page bounce
+   only gets in the way of dragging the map and the bottom panels. The other
+   pages are documents, where pull-to-refresh is welcome. */
+body:has(> #root > .cookbook-guide-app) {
+  overscroll-behavior: none;
+}
+
+/* Fire taps immediately (no double-tap-zoom wait) on every control. */
+button, a, summary, label, input, select, textarea, [role='button'] {
+  touch-action: manipulation;
+}
+
+/* Long-pressing a control shouldn't select its label or pop the link callout.
+   Text that is content (recipes, addresses, legal pages) stays selectable. */
+button, summary, [role='button'], [role='menuitem'],
+.link-button, .back-to-landing-btn, .recipe-book-back, .legal-back, .lookback-back,
+.chip, .toc-item, .sheet-handle {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* iOS zooms into any field under 16px and never zooms back out. 16px on touch
+   screens fixes the cause (zoom stays enabled). !important because the page
+   stylesheets size their inputs with more specific selectors. */
+@media (pointer: coarse) {
+  input, textarea, select {
+    font-size: max(16px, 1em) !important;
+  }
 }
 
 /* Visible keyboard focus everywhere (mouse clicks don't trigger :focus-visible). */
 :focus-visible {
-  outline: 2px solid #c2185b;
+  outline: 2px solid oklch(53.13% 0.2015 5.62);
   outline-offset: 2px;
 }
 

@@ -140,6 +140,10 @@ export default function LoginModal({ open, onClose, onLogin }) {
       className="e-input"
       placeholder={placeholder}
       autoComplete="email"
+      autoCapitalize="none"
+      autoCorrect="off"
+      spellCheck={false}
+      enterKeyHint="next"
       value={email}
       onChange={(e) => setEmail(e.target.value)}
     />
@@ -152,10 +156,17 @@ export default function LoginModal({ open, onClose, onLogin }) {
       placeholder="One-time code"
       inputMode="numeric"
       autoComplete="one-time-code"
+      autoCapitalize="none"
+      autoCorrect="off"
+      spellCheck={false}
+      enterKeyHint="go"
       value={code}
       onChange={(e) => setCode(e.target.value)}
     />
   );
+
+  // Shown as you type, not only after submitting.
+  const mismatch = confirmPassword !== '' && password !== confirmPassword;
 
   const newPasswordInputs = (newLabel) => (
     <>
@@ -174,7 +185,14 @@ export default function LoginModal({ open, onClose, onLogin }) {
         autoComplete="new-password"
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
+        aria-invalid={mismatch}
+        aria-describedby={mismatch ? 'password-mismatch' : undefined}
       />
+      {mismatch && (
+        <p className="e-field-error" id="password-mismatch" role="status">
+          Passwords don’t match yet.
+        </p>
+      )}
     </>
   );
 

@@ -3,7 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- viewport-fit=cover: paint under the notch (content is padded back with
+         env(safe-area-inset-*)). interactive-widget: the keyboard shrinks the layout
+         on Android so bottom panels and inputs stay visible. Zoom stays enabled. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+    <!-- The site is light-only. Status bar matches the top of the page; the recipe
+         book switches it to its dark brown while open (RecipeBook.jsx). -->
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#ffffff" />
     <title>CookBook Club | Hunter College</title>
   </head>
   <body>

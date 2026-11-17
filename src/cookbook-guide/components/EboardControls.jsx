@@ -21,8 +21,13 @@ export default function EboardControls({
   useEffect(() => {
     if (!menuOpen) return;
     const closeOnOutsideClick = () => setMenuOpen(false);
+    const closeOnEscape = (e) => e.key === 'Escape' && setMenuOpen(false);
     document.addEventListener('click', closeOnOutsideClick);
-    return () => document.removeEventListener('click', closeOnOutsideClick);
+    document.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.removeEventListener('click', closeOnOutsideClick);
+      document.removeEventListener('keydown', closeOnEscape);
+    };
   }, [menuOpen]);
 
   const handleTriggerClick = (e) => {
@@ -41,6 +46,9 @@ export default function EboardControls({
       <button
         className={`eboard-trigger${currentUser ? ' signed-in' : ''}`}
         title={currentUser ? 'Account' : 'Log in'}
+        aria-label={currentUser ? 'Account menu' : 'Log in'}
+        aria-haspopup={currentUser ? 'menu' : undefined}
+        aria-expanded={currentUser ? menuOpen : undefined}
         onClick={handleTriggerClick}
       >
         ⚙️
@@ -49,10 +57,13 @@ export default function EboardControls({
       <div
         className={`gear-menu${menuOpen ? ' visible' : ''}`}
         ref={menuRef}
+        role="menu"
+        aria-hidden={!menuOpen}
         onClick={(e) => e.stopPropagation()}
       >
         {isEboard && (
           <button
+            role="menuitem"
             className="gear-menu-item"
             onClick={() => {
               setMenuOpen(false);
@@ -64,6 +75,7 @@ export default function EboardControls({
         )}
         {isEboard && onOpenMyRecs && (
           <button
+            role="menuitem"
             className="gear-menu-item"
             onClick={() => {
               setMenuOpen(false);
@@ -75,6 +87,7 @@ export default function EboardControls({
         )}
         {onOpenSaved && (
           <button
+            role="menuitem"
             className="gear-menu-item"
             onClick={() => {
               setMenuOpen(false);
@@ -85,6 +98,7 @@ export default function EboardControls({
           </button>
         )}
         <button
+          role="menuitem"
           className="gear-menu-item danger"
           onClick={() => {
             setMenuOpen(false);

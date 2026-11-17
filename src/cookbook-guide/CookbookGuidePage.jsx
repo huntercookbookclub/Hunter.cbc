@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePlaces } from './hooks/usePlaces';
 import { useFilters } from './hooks/useFilters';
 import { useAuth } from './hooks/useAuth';
@@ -28,6 +28,18 @@ export default function CookbookGuidePage() {
   const [accountSettingsOpen, setAccountSettingsOpen] = useState(false);
   const [myRecsOpen, setMyRecsOpen] = useState(false);
   const [savedOpen, setSavedOpen] = useState(false);
+
+  // Escape closes the place panel first, then the filter panel. (Pop-up boxes
+  // handle their own Escape and stop it from reaching here.)
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key !== 'Escape') return;
+      if (selectedPlace) setSelectedPlace(null);
+      else if (filterPanelOpen) setFilterPanelOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [selectedPlace, filterPanelOpen]);
   const { isSaved, toggleSaved } = useSaved('place', currentUser);
 
   // Logged-out visitors are asked to log in instead.
@@ -59,7 +71,11 @@ export default function CookbookGuidePage() {
           places={places}
         />
 
-        <MapView places={filters.filteredPlaces} onSelectPlace={setSelectedPlace} />
+        <MapView
+          places={filters.filteredPlaces}
+          onSelectPlace={setSelectedPlace}
+          selectedId={selectedPlace?.id}
+        />
 
         <PlaceDetailPanel
           place={selectedPlace}

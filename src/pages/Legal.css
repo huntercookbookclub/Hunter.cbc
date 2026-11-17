@@ -1,11 +1,11 @@
 /* Privacy Policy / Terms pages — same pink background as the landing page,
    with a wide readable card for long text. */
 .legal-page {
-  min-height: 100svh;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
-  padding: 48px 16px;
-  background: linear-gradient(160deg, #ffffff 0%, #f7d9d6 45%, #e8a8a2 100%);
+  padding: calc(48px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(48px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  background: linear-gradient(160deg in oklch, oklch(100% 0.0000 0.00) 0%, oklch(90.93% 0.0337 24.59) 45%, oklch(79.04% 0.0766 24.97) 100%);
   background-attachment: fixed;
 }
 
@@ -14,11 +14,11 @@
   max-width: 720px;
   height: fit-content;
   padding: 32px 36px 36px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 3px solid rgba(255, 198, 222, 0.8);
+  background: oklch(100% 0.0000 0.00 / 0.9);
+  border: 3px solid oklch(88.39% 0.0714 351.57 / 0.8);
   border-radius: 28px;
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
-  color: #1a1a1a;
+  box-shadow: 0 8px 32px oklch(33.82% 0.1582 271.28 / 0.15);
+  color: oklch(21.78% 0.0000 0.00);
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 16px;
   line-height: 1.6;
@@ -27,14 +27,16 @@
 .legal-back {
   display: inline-block;
   margin-bottom: 16px;
-  color: #c2185b;
+  color: oklch(53.13% 0.2015 5.62);
   font-size: 0.9rem;
   font-weight: 600;
   text-decoration: none;
 }
 
-.legal-back:hover {
-  text-decoration: underline;
+@media (hover: hover) and (pointer: fine) {
+  .legal-back:hover {
+    text-decoration: underline;
+  }
 }
 
 .legal-card h1 {
@@ -47,7 +49,7 @@
 
 .legal-date {
   margin: 6px 0 20px;
-  color: #6b6b6b;
+  color: oklch(52.78% 0.0000 0.00);
   font-size: 0.9rem;
 }
 
@@ -72,14 +74,14 @@
 }
 
 .legal-card a {
-  color: #c2185b;
+  color: oklch(53.13% 0.2015 5.62);
 }
 
 .legal-footer {
   margin-top: 32px !important;
   padding-top: 16px;
-  border-top: 1px solid #f0d6df;
-  color: #555;
+  border-top: 1px solid oklch(53.13% 0.2015 5.62 / 0.15);
+  color: oklch(44.95% 0.0000 0.00);
   font-size: 0.95rem;
 }
 

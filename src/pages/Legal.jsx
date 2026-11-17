@@ -44,12 +44,12 @@ export function PrivacyPolicy() {
         </li>
         <li>
           <strong>If you create an account:</strong> your email address, your password (stored
-          encrypted by our login provider — we can’t see it), and the places and recipes you save.
+          encrypted by our login provider, so we can’t see it), and the places and recipes you save.
         </li>
         <li>
           <strong>Your age:</strong> when you sign up we ask for your date of birth to confirm you
           are 13 or older. Your birthdate is checked in your browser and is <em>never</em> sent to
-          us or stored — we only keep a yes/no record that you are 13 or older.
+          us or stored. We only keep a yes/no record that you are 13 or older.
         </li>
         <li>
           <strong>E-board members</strong> who post content may also add a display name, role,
@@ -71,20 +71,20 @@ export function PrivacyPolicy() {
       </p>
       <ul>
         <li>
-          <strong>Supabase</strong> — accounts, login, the database and photo storage.
+          <strong>Supabase:</strong> accounts, login, the database and photo storage.
         </li>
         <li>
-          <strong>Vercel</strong> — hosts the website.
+          <strong>Vercel:</strong> hosts the website.
         </li>
         <li>
-          <strong>CARTO and OpenStreetMap</strong> — the map images on the CookBook Guide.
+          <strong>CARTO and OpenStreetMap:</strong> the map images on the CookBook Guide.
         </li>
         <li>
-          <strong>Google</strong> — place search, used only by e-board members when adding a
+          <strong>Google:</strong> place search, used only by e-board members when adding a
           place.
         </li>
         <li>
-          <strong>Image hosts</strong> such as Unsplash, for some recipe photos.
+          <strong>Image hosts</strong> such as Unsplash, which serve some recipe photos.
         </li>
       </ul>
 
@@ -153,7 +153,7 @@ export function Terms() {
       <p>
         Recipes are shared by club members for fun and haven’t been tested or checked for
         allergens or nutrition. Check ingredients for allergies and dietary needs, and cook
-        safely. Restaurant details, prices and hours can change — confirm with the place before
+        safely. Restaurant details, prices and hours can change, so confirm with the place before
         you go.
       </p>
 

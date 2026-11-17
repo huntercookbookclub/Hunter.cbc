@@ -34,47 +34,26 @@
 }
 
 .recipe-book-page {
-  --ink: #2a2118;
-  --ink-soft: #5a4a3a;
-  --parchment: #f3e6d0;
-  --parchment-deep: #e8d5b5;
-  --rule: #a8895f;
-  --leather: #4a2c1a;
-  --leather-deep: #2f1a10;
-  --gilt: #c4a35a;
-  --gilt-soft: #dfc98a;
+  --ink: oklch(25.54% 0.0212 66.64);
+  --ink-soft: oklch(42.09% 0.0333 66.71);
+  --parchment: oklch(92.95% 0.0324 80.99);
+  --parchment-deep: oklch(88.04% 0.0474 80.78);
+  --rule: oklch(64.89% 0.0688 74.53);
+  --leather: oklch(32.62% 0.0532 50.95);
+  --leather-deep: oklch(24.33% 0.0381 45.92);
+  --gilt: oklch(72.98% 0.1000 85.55);
+  --gilt-soft: oklch(83.98% 0.0848 91.01);
 
   position: relative;
   isolation: isolate;
-  min-height: 100svh;
-  padding: 32px 20px 56px;
+  min-height: 100dvh;
+  padding: calc(32px + env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) calc(56px + env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px));
   color: var(--ink);
   font-family: 'Libre Baskerville', Georgia, serif;
   background:
-    radial-gradient(ellipse at 50% 0%, rgba(196, 163, 90, 0.18), transparent 45%),
-    linear-gradient(165deg, #1a120c 0%, #3a2416 42%, #1f140e 100%);
+    radial-gradient(ellipse at 50% 0% in oklch, oklch(72.98% 0.1000 85.55 / 0.18), transparent 45%),
+    linear-gradient(165deg in oklch, oklch(19.05% 0.0177 58.31) 0%, oklch(28.42% 0.0412 52.83) 42%, oklch(20.37% 0.0215 49.72) 100%);
   overflow-x: hidden;
-}
-
-.recipe-book-atmosphere {
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  opacity: 0.35;
-  background-image:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
-  mix-blend-mode: soft-light;
-  animation: dust-drift 28s linear infinite;
-}
-
-@keyframes dust-drift {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(-2%, 1.5%, 0);
-  }
 }
 
 .recipe-book-header {
@@ -100,33 +79,35 @@
   margin-bottom: 14px;
   color: var(--gilt-soft);
   text-decoration: none;
-  font-size: 13px;
+  font-size: 0.8125rem;
   letter-spacing: 0.04em;
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 
-.recipe-book-back:hover {
-  color: #f0e2b8;
-  border-bottom-color: var(--gilt);
+@media (hover: hover) and (pointer: fine) {
+  .recipe-book-back:hover {
+    color: oklch(91.35% 0.0569 91.79);
+    border-bottom-color: var(--gilt);
+  }
 }
 
 .recipe-book-title {
   font-family: 'ClashDisplay', sans-serif;
   font-weight: 600;
-  font-size: clamp(36px, 7vw, 58px);
+  font-size: clamp(2.25rem, 7vw, 3.625rem);
   line-height: 1.05;
-  color: #f4e7c8;
+  color: oklch(93.03% 0.0431 87.96);
   margin: 0;
   letter-spacing: -0.01em;
-  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+  text-shadow: 0 2px 0 oklch(0% 0.0000 0.00 / 0.35);
 }
 
 .recipe-book-subtitle {
   max-width: 34em;
   margin: 12px auto 0;
-  color: #cbb89a;
-  font-size: 14px;
+  color: oklch(79.09% 0.0462 79.21);
+  font-size: 0.875rem;
   line-height: 1.65;
   font-style: italic;
 }
@@ -137,11 +118,11 @@
   padding: 14px;
   border-radius: 4px 18px 18px 4px;
   background:
-    linear-gradient(135deg, #5a3420 0%, var(--leather) 35%, var(--leather-deep) 100%);
+    linear-gradient(135deg in oklch, oklch(36.73% 0.0633 47.78) 0%, var(--leather) 35%, var(--leather-deep) 100%);
   box-shadow:
-    0 24px 50px rgba(0, 0, 0, 0.55),
-    inset 0 0 0 2px rgba(196, 163, 90, 0.35),
-    inset 0 0 40px rgba(0, 0, 0, 0.35);
+    0 24px 50px oklch(0% 0.0000 0.00 / 0.55),
+    inset 0 0 0 2px oklch(72.98% 0.1000 85.55 / 0.35),
+    inset 0 0 40px oklch(0% 0.0000 0.00 / 0.35);
   animation: book-settle 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -162,8 +143,10 @@
   grid-template-columns: 1fr 1fr;
   min-height: 620px;
   overflow: hidden;
+  /* Nested radius: cover's 18px corners minus its 14px padding. */
+  border-radius: 0 4px 4px 0;
   background: var(--parchment);
-  box-shadow: inset 0 0 80px rgba(90, 60, 30, 0.12);
+  box-shadow: inset 0 0 80px oklch(38.39% 0.0610 64.20 / 0.12);
 }
 
 .book-spine {
@@ -176,12 +159,12 @@
   z-index: 2;
   pointer-events: none;
   background: linear-gradient(
-    90deg,
-    rgba(60, 35, 18, 0.28),
-    rgba(60, 35, 18, 0.05) 35%,
-    rgba(255, 255, 255, 0.22) 50%,
-    rgba(60, 35, 18, 0.05) 65%,
-    rgba(60, 35, 18, 0.28)
+    90deg in oklch,
+    oklch(28.42% 0.0473 53.84 / 0.28),
+    oklch(28.42% 0.0473 53.84 / 0.05) 35%,
+    oklch(100% 0.0000 0.00 / 0.22) 50%,
+    oklch(28.42% 0.0473 53.84 / 0.05) 65%,
+    oklch(28.42% 0.0473 53.84 / 0.28)
   );
 }
 
@@ -190,11 +173,11 @@
   padding: 30px 34px 36px;
   background-color: var(--parchment);
   background-image:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 18%),
+    linear-gradient(180deg in oklch, oklch(100% 0.0000 0.00 / 0.18), transparent 18%),
     repeating-linear-gradient(
-      transparent,
+      in oklch, transparent,
       transparent 31px,
-      rgba(168, 137, 95, 0.16) 32px
+      oklch(64.89% 0.0688 74.53 / 0.16) 32px
     );
 }
 
@@ -204,14 +187,14 @@
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 10% 8%, rgba(120, 80, 40, 0.08), transparent 40%),
-    radial-gradient(ellipse at 90% 95%, rgba(90, 55, 25, 0.1), transparent 45%);
+    radial-gradient(ellipse at 10% 8% in oklch, oklch(46.70% 0.0771 63.89 / 0.08), transparent 40%),
+    radial-gradient(ellipse at 90% 95% in oklch, oklch(37.24% 0.0663 59.14 / 0.1), transparent 45%);
   mix-blend-mode: multiply;
 }
 
 .book-page-left {
   padding-right: 44px;
-  border-right: 1px solid rgba(90, 60, 30, 0.15);
+  border-right: 1px solid oklch(38.39% 0.0610 64.20 / 0.15);
 }
 
 /* Same 34px inset as the left page, so both pages' text starts the same distance in. */
@@ -234,7 +217,7 @@
 .recipe-form h2 {
   font-family: 'ClashDisplay', sans-serif;
   font-weight: 600;
-  font-size: 30px;
+  font-size: 1.875rem;
   margin: 0;
   color: var(--ink);
 }
@@ -261,14 +244,16 @@
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
-.toc-item:hover {
-  background: rgba(196, 163, 90, 0.12);
-  transform: translateX(2px);
+@media (hover: hover) and (pointer: fine) {
+  .toc-item:hover {
+    background: oklch(72.98% 0.1000 85.55 / 0.12);
+    transform: translateX(2px);
+  }
 }
 
 .toc-item.is-active {
-  background: rgba(196, 163, 90, 0.2);
-  border-color: rgba(168, 137, 95, 0.55);
+  background: oklch(72.98% 0.1000 85.55 / 0.2);
+  border-color: oklch(64.89% 0.0688 74.53 / 0.55);
 }
 
 .toc-text {
@@ -281,12 +266,12 @@
 .toc-title {
   font-family: 'ClashDisplay', sans-serif;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 1.2;
 }
 
 .toc-author {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--ink-soft);
   font-style: italic;
 }
@@ -294,34 +279,36 @@
 .book-btn {
   appearance: none;
   border: 1px solid var(--rule);
-  background: linear-gradient(180deg, #f7ecd8, #e4d0ad);
+  background: linear-gradient(180deg in oklch, oklch(94.64% 0.0290 82.60), oklch(86.52% 0.0515 81.61));
   color: var(--ink);
   border-radius: 2px;
   padding: 7px 12px;
   font-family: 'ClashDisplay', sans-serif;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 0.9375rem;
   letter-spacing: 0.03em;
   cursor: pointer;
-  box-shadow: 1px 1px 0 rgba(42, 33, 24, 0.18);
+  box-shadow: 1px 1px 0 oklch(25.54% 0.0212 66.64 / 0.18);
   transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
 }
 
-.book-btn:hover {
-  transform: translateY(-1px);
-  background: linear-gradient(180deg, #faf1df, #ebdaba);
-  box-shadow: 1px 2px 0 rgba(42, 33, 24, 0.22);
+@media (hover: hover) and (pointer: fine) {
+  .book-btn:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(180deg in oklch, oklch(96.04% 0.0256 84.59), oklch(89.40% 0.0463 83.28));
+    box-shadow: 1px 2px 0 oklch(25.54% 0.0212 66.64 / 0.22);
+  }
 }
 
 .book-btn-primary {
-  background: linear-gradient(180deg, #d8b86a, #b8923f);
-  border-color: #8f6d2e;
-  color: #24180c;
+  background: linear-gradient(180deg in oklch, oklch(79.40% 0.1042 87.70), oklch(67.95% 0.1104 84.23));
+  border-color: oklch(32% 0.0636 73.47 / 0.6);
+  color: oklch(22.09% 0.0287 65.41);
 }
 
 .book-btn-danger {
-  border-color: #8a4a3a;
-  color: #6e2f22;
+  border-color: oklch(36.29% 0.1157 32.75 / 0.75);
+  color: oklch(38.97% 0.0930 33.20);
 }
 
 .recipe-detail {
@@ -356,16 +343,16 @@
 .recipe-byline {
   margin: 6px 0 0;
   color: var(--ink-soft);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-style: italic;
 }
 
 .recipe-photo {
   margin: 0 0 18px;
   padding: 8px;
-  background: #f7efe0;
+  background: oklch(95.43% 0.0217 83.26);
   border: 1px solid var(--rule);
-  box-shadow: 2px 3px 0 rgba(42, 33, 24, 0.12);
+  box-shadow: 2px 3px 0 oklch(25.54% 0.0212 66.64 / 0.12);
   transform: rotate(-0.4deg);
 }
 
@@ -380,10 +367,10 @@
 .recipe-detail h3 {
   margin: 18px 0 8px;
   font-family: 'ClashDisplay', sans-serif;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 600;
   color: var(--leather);
-  border-bottom: 1px solid rgba(168, 137, 95, 0.45);
+  border-bottom: 1px solid oklch(64.89% 0.0688 74.53 / 0.45);
   padding-bottom: 4px;
 }
 
@@ -393,7 +380,7 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.45;
 }
 
@@ -404,7 +391,7 @@
   flex-direction: column;
   gap: 8px;
   line-height: 1.6;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .recipe-empty {
@@ -435,7 +422,7 @@
   gap: 6px;
   font-family: 'ClashDisplay', sans-serif;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 1rem;
   color: var(--ink-soft);
   text-align: left;
 }
@@ -447,8 +434,8 @@
   border-radius: 2px;
   padding: 9px 11px;
   font-family: 'Libre Baskerville', Georgia, serif;
-  font-size: 13px;
-  background: rgba(255, 252, 245, 0.9);
+  font-size: 0.8125rem;
+  background: oklch(99.14% 0.0098 87.47 / 0.9);
   color: var(--ink);
   resize: vertical;
 }
@@ -456,19 +443,19 @@
 .recipe-form input:focus,
 .recipe-form textarea:focus {
   outline: none;
-  border-color: #8f6d2e;
-  box-shadow: 0 0 0 2px rgba(196, 163, 90, 0.35);
+  border-color: oklch(32% 0.0636 73.47 / 0.6);
+  box-shadow: 0 0 0 2px oklch(72.98% 0.1000 85.55 / 0.35);
 }
 
 .image-field input[type='file'] {
   padding: 8px;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .image-error {
   margin: 0;
-  color: #6e2f22;
-  font-size: 12px;
+  color: oklch(38.97% 0.0930 33.20);
+  font-size: 0.75rem;
 }
 
 .image-preview-wrap {
@@ -501,7 +488,7 @@
 
 .toc-filter summary {
   list-style: none;
-  font-size: 13px;
+  font-size: 0.8125rem;
   padding: 5px 10px;
 }
 
@@ -523,8 +510,8 @@
   padding: 10px 12px;
   background: var(--parchment);
   border: 1px solid var(--rule);
-  box-shadow: 2px 4px 12px rgba(42, 33, 24, 0.25);
-  font-size: 13px;
+  box-shadow: 2px 4px 12px oklch(25.54% 0.0212 66.64 / 0.25);
+  font-size: 0.8125rem;
 }
 
 .toc-filter-group {
@@ -539,13 +526,13 @@
 .toc-filter-group + .toc-filter-group {
   margin-top: 6px;
   padding-top: 8px;
-  border-top: 1px solid rgba(168, 137, 95, 0.45);
+  border-top: 1px solid oklch(64.89% 0.0688 74.53 / 0.45);
 }
 
 .toc-filter-group legend {
   padding: 0 0 4px;
   font-family: 'ClashDisplay', sans-serif;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--leather);
 }
 
@@ -560,9 +547,9 @@
   padding: 3px 9px;
   border: 1px solid var(--rule);
   border-radius: 2px;
-  background: rgba(255, 252, 245, 0.7);
+  background: oklch(99.14% 0.0098 87.47 / 0.7);
   color: var(--ink-soft);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-style: italic;
 }
 
@@ -590,7 +577,7 @@
 .recipe-book-page .cookbook-guide-app {
   display: contents;
   /* Re-skin the map's components to the book: its CSS reads these variables. */
-  --coral: #8f6d2e;
+  --coral: oklch(55.61% 0.0910 80.29);
   --ink: var(--leather);
 }
 
@@ -616,7 +603,7 @@ body .recipe-book-page .cookbook-guide-app :is(.e-modal, .gear-menu, .tags-ms-dr
 body .recipe-book-page .cookbook-guide-app :is(.e-modal, .gear-menu) {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  box-shadow: 2px 6px 24px rgba(42, 33, 24, 0.35);
+  box-shadow: 2px 6px 24px oklch(25.54% 0.0212 66.64 / 0.35);
 }
 
 body .recipe-book-page .cookbook-guide-app :is(.e-modal, .gear-menu)::before {
@@ -624,29 +611,35 @@ body .recipe-book-page .cookbook-guide-app :is(.e-modal, .gear-menu)::before {
 }
 
 body .recipe-book-page .cookbook-guide-app :is(.e-input, .tags-ms-display, .tags-ms-search) {
-  background: rgba(255, 252, 245, 0.9);
+  background: oklch(99.14% 0.0098 87.47 / 0.9);
   border: 1px solid var(--rule);
   border-radius: 2px;
 }
 
 body .recipe-book-page .cookbook-guide-app :is(.e-header, .my-rec-row) {
-  border-color: rgba(168, 137, 95, 0.35);
+  border-color: oklch(64.89% 0.0688 74.53 / 0.35);
 }
 
-body .recipe-book-page .cookbook-guide-app :is(.e-close, .e-btn-secondary, .gear-menu-item:hover, .tags-ms-option:hover, .btn-rec-edit) {
+body .recipe-book-page .cookbook-guide-app :is(.e-close, .e-btn-secondary, .btn-rec-edit) {
   background: var(--parchment-deep);
 }
 
+@media (hover: hover) and (pointer: fine) {
+  body .recipe-book-page .cookbook-guide-app :is(.gear-menu-item:hover, .tags-ms-option:hover) {
+    background: var(--parchment-deep);
+  }
+}
+
 body .recipe-book-page .cookbook-guide-app :is(.e-btn-primary, .add-place-btn) {
-  background: linear-gradient(180deg, #d8b86a, #b8923f);
-  color: #24180c;
-  border: 1px solid #8f6d2e;
+  background: linear-gradient(180deg in oklch, oklch(79.40% 0.1042 87.70), oklch(67.95% 0.1104 84.23));
+  color: oklch(22.09% 0.0287 65.41);
+  border: 1px solid oklch(32% 0.0636 73.47 / 0.6);
   border-radius: 2px;
-  box-shadow: 1px 2px 0 rgba(42, 33, 24, 0.25);
+  box-shadow: 1px 2px 0 oklch(25.54% 0.0212 66.64 / 0.25);
 }
 
 body .recipe-book-page .cookbook-guide-app :is(.tags-ms-option.selected, .btn-rec-delete) {
-  background: rgba(196, 163, 90, 0.25);
+  background: oklch(72.98% 0.1000 85.55 / 0.25);
 }
 
 body .recipe-book-page .cookbook-guide-app .tags-ms-pill {
@@ -697,7 +690,7 @@ body .recipe-book-page .cookbook-guide-app .tags-ms-pill {
   .page-heading h2,
   .recipe-detail h2,
   .recipe-form h2 {
-    font-size: 24px;
+    font-size: 1.5rem;
     line-height: 1.15;
   }
 
@@ -705,11 +698,15 @@ body .recipe-book-page .cookbook-guide-app .tags-ms-pill {
      "+ Add" button and menu at the bottom-right instead. */
   body .recipe-book-page .cookbook-guide-app :is(.eboard-trigger, .add-place-btn) {
     top: auto;
-    bottom: 20px;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
   }
 
   body .recipe-book-page .cookbook-guide-app .gear-menu {
     top: auto;
-    bottom: calc(20px + var(--gear-size) + 8px);
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px) + var(--gear-size) + 8px);
+    transform-origin: bottom right;
   }
 }
+
+/* Filter dropdown scrolls on its own without moving the page. */
+.toc-filter-menu { overscroll-behavior: contain; }

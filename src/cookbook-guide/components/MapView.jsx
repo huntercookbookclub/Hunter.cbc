@@ -14,7 +14,7 @@ const TILE_URL = CARTO_KEY
 // Fixed landmark pin, not from Supabase, not filterable. Category: 'college'.
 const HUNTER_COLLEGE = { lat: 40.7685, lng: -73.9645, label: 'College' };
 
-export default function MapView({ places, onSelectPlace }) {
+export default function MapView({ places, onSelectPlace, selectedId }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const markersRef = useRef([]);
@@ -88,9 +88,19 @@ export default function MapView({ places, onSelectPlace }) {
 
       marker.on('click', () => onSelectPlace?.(place));
       marker.addTo(map);
+      marker.placeId = place.id;
       markersRef.current.push(marker);
     });
   }, [places, onSelectPlace]);
+
+  // Ring and lift the pin whose place panel is open, so it's clear which one it is.
+  useEffect(() => {
+    markersRef.current.forEach((marker) => {
+      const isSelected = marker.placeId === selectedId;
+      marker.getElement()?.querySelector('.emoji-marker')?.classList.toggle('is-selected', isSelected);
+      marker.setZIndexOffset(isSelected ? 1000 : 0);
+    });
+  }, [selectedId, places]);
 
   return <div id="map" ref={containerRef} style={{ flex: 1, zIndex: 1 }} />;
 }
