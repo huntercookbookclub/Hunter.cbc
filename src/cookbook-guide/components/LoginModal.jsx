@@ -28,6 +28,8 @@ export default function LoginModal({ open, onClose, onLogin }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [code, setCode] = useState('');
+  const [birthDate, setBirthDate] = useState('');
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
@@ -79,7 +81,9 @@ export default function LoginModal({ open, onClose, onLogin }) {
   const handleSignup = async (e) => {
     e.preventDefault();
     if (!passwordsMatch()) return;
-    if (await run(() => signUp(email.trim(), password))) {
+    if (await run(() => signUp(email.trim(), password, birthDate, agreedToTerms))) {
+      setBirthDate('');
+      setAgreedToTerms(false);
       goTo('verify');
       setNotice(`We sent a one-time code to ${email.trim()}.`);
     }
@@ -203,6 +207,30 @@ export default function LoginModal({ open, onClose, onLogin }) {
         <form className="e-form" onSubmit={handleSignup}>
           {emailInput()}
           {newPasswordInputs('Password')}
+          {/* Neutral age screen: no hint about the cutoff age. */}
+          <label className="e-field-label">
+            Date of birth
+            <input
+              type="date"
+              className="e-input"
+              autoComplete="bday"
+              max={new Date().toISOString().slice(0, 10)}
+              value={birthDate}
+              onChange={(e) => setBirthDate(e.target.value)}
+            />
+          </label>
+          <label className="e-check">
+            <input
+              type="checkbox"
+              checked={agreedToTerms}
+              onChange={(e) => setAgreedToTerms(e.target.checked)}
+            />
+            <span>
+              I agree to the{' '}
+              <a href="/terms" target="_blank" rel="noopener noreferrer">Terms</a> and{' '}
+              <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
+            </span>
+          </label>
           <button type="submit" className="e-btn-primary" disabled={busy}>
             {busy ? 'Creating…' : 'Create account'}
           </button>

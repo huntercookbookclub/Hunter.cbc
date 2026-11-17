@@ -1072,6 +1072,25 @@
   flex-direction: column;
   gap: 10px;
 }
+.cookbook-guide-app .e-field-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(26, 26, 46, 0.6);
+}
+.cookbook-guide-app .e-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: rgba(26, 26, 46, 0.75);
+  cursor: pointer;
+}
+.cookbook-guide-app .e-check input { margin-top: 2px; accent-color: var(--ink); }
+.cookbook-guide-app .e-check a { color: var(--ink); }
 .cookbook-guide-app .e-hint {
   margin: 0;
   font-size: 0.8rem;

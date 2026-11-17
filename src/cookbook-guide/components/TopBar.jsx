@@ -19,14 +19,14 @@ export default function TopBar({ filters, filterPanelOpen, onToggleFilterPanel }
         <div className="logo-col">
           <div className="logo-block">
             <div className="logo-img">
-              <img src={logoDataUri} alt="Cookbook Guide" />
+              <img src={logoDataUri} alt="CookBook Guide" />
             </div>
           </div>
         </div>
 
         <div className="controls-col">
           <Link to="/" className="back-to-landing-btn">
-            ← Back to Cookbook Club
+            ← Back to CookBook Club
           </Link>
 
           <div className="controls-row">

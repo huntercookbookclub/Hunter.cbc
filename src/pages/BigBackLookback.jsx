@@ -170,7 +170,7 @@ function BigBackLookback() {
     <div className="lookback-page">
       <header className="lookback-header">
         <Link to="/" className="lookback-back">
-          ← Back to Cookbook Club
+          ← Back to CookBook Club
         </Link>
         <h1 className="lookback-title">The Big Back Lookback</h1>
       </header>

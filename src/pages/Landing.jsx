@@ -49,13 +49,13 @@ const links = [
     external: true,
   },
   {
-    label: 'The Cookbook Guide',
+    label: 'The CookBook Guide',
     to: '/cookbook-guide',
     icon: <span className="link-emoji" aria-hidden="true">📍</span>,
     internal: true,
   },
   {
-    label: 'The Cookbook Recipe Book',
+    label: 'The CookBook Recipe Book',
     to: '/recipe-book',
     icon: <span className="link-emoji" aria-hidden="true">📖</span>,
     internal: true,
@@ -73,10 +73,10 @@ function Landing() {
     <div className="page">
       <div className="card">
         <div className="plate">
-          <img src={profilePic} alt="Cookbook Club" className="avatar" />
+          <img src={profilePic} alt="CookBook Club" className="avatar" />
         </div>
 
-        <h1 className="title">Cookbook Club</h1>
+        <h1 className="title">CookBook Club</h1>
 
         <div className="links">
           {links.map((link) =>
@@ -99,6 +99,10 @@ function Landing() {
             ),
           )}
         </div>
+
+        <p className="legal-links">
+          <Link to="/privacy">Privacy Policy</Link> · <Link to="/terms">Terms</Link>
+        </p>
       </div>
     </div>
   )

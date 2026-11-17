@@ -247,9 +247,9 @@ function RecipeBook() {
 
       <header className="recipe-book-header">
         <Link to="/" className="recipe-book-back">
-          ← Back to Cookbook Club
+          ← Back to CookBook Club
         </Link>
-        <h1 className="recipe-book-title">The Cookbook Recipe Book</h1>
+        <h1 className="recipe-book-title">The CookBook Recipe Book</h1>
       </header>
 
       <div className="book-cover">

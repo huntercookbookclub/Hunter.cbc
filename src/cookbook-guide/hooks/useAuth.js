@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { sbClient } from '../lib/supabaseClient';
+import { isOldEnough } from '../lib/age';
 
 // E-board accounts carry role 'eboard' in app_metadata, which only an admin can set
 // (see supabase/eboard-roles.sql). The database enforces this too; this check just
@@ -11,9 +12,52 @@ export function isEboardUser(user) {
 // ── Sign up (any email, verified with a one-time code) ──
 // The code comes from the "Confirm signup" email template, which must include
 // {{ .Token }} (Supabase → Authentication → Emails).
+//
+// Age screen (COPPA): the form asks for a birthdate, but only the yes/no flag
+// over_13 is sent — the birthdate itself never leaves the browser. The server
+// rejects any signup without that flag (supabase/signup-checks.sql), so skipping
+// this form doesn't skip the check. The same server rule requires the user to
+// have agreed to the Terms and Privacy Policy; we record which version and when.
 
-export async function signUp(email, password) {
-  const { error } = await sbClient.auth.signUp({ email, password });
+// Bump this (and the "Effective" date in pages/Legal.jsx) when the terms change.
+export const TERMS_VERSION = '2026-11-17';
+
+export const UNDER_AGE_MESSAGE = 'Sorry, we can’t create an account for you.';
+const AGE_BLOCK_KEY = 'cbc-signup-blocked';
+
+// After an under-13 answer, keep blocking on this device, so the age can't just
+// be changed and resubmitted (FTC guidance for neutral age screens).
+export function isSignupBlocked() {
+  try {
+    return localStorage.getItem(AGE_BLOCK_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+export async function signUp(email, password, birthDate, agreedToTerms) {
+  if (isSignupBlocked()) return UNDER_AGE_MESSAGE;
+  if (!birthDate) return 'Enter your date of birth.';
+  if (!agreedToTerms) return 'Please agree to the Terms and Privacy Policy.';
+  if (!isOldEnough(birthDate)) {
+    try {
+      localStorage.setItem(AGE_BLOCK_KEY, '1');
+    } catch {
+      // storage unavailable: the server check still applies
+    }
+    return UNDER_AGE_MESSAGE;
+  }
+  const { error } = await sbClient.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        over_13: true,
+        terms_version: TERMS_VERSION,
+        terms_accepted_at: new Date().toISOString(),
+      },
+    },
+  });
   return error ? error.message : null;
 }
 
