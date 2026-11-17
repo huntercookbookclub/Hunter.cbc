@@ -1,8 +1,17 @@
 import { catConfig, cuisineEmoji } from '../lib/catConfig';
 import BookmarkIcon from './BookmarkIcon';
+import HeartIcon from './HeartIcon';
 import { useSheetDrag } from '../hooks/useSheetDrag';
 
-export default function PlaceDetailPanel({ place, onClose, saved, onToggleSave }) {
+export default function PlaceDetailPanel({
+  place,
+  onClose,
+  saved,
+  onToggleSave,
+  liked,
+  likes,
+  onToggleLike,
+}) {
   const isOpen = !!place;
   const cfg = place ? catConfig[place.category] : null;
   const { sheetRef, handleProps } = useSheetDrag(onClose);
@@ -43,14 +52,6 @@ export default function PlaceDetailPanel({ place, onClose, saved, onToggleSave }
 
             <div className="panel-name">
               <span>{place.name}</span>
-              <button
-                type="button"
-                className={`save-btn${saved ? ' saved' : ''}`}
-                aria-pressed={saved}
-                onClick={onToggleSave}
-              >
-                <BookmarkIcon filled={saved} /> {saved ? 'Saved' : 'Save'}
-              </button>
             </div>
 
             <div className="panel-address">
@@ -135,6 +136,32 @@ export default function PlaceDetailPanel({ place, onClose, saved, onToggleSave }
           </div>
         )}
       </div>
+
+      {/* Actions pinned to the bottom of the card, always in reach. */}
+      {place && (
+        <div className="panel-actions">
+          <button
+            type="button"
+            className={`panel-action like${liked ? ' active' : ''}`}
+            aria-pressed={liked}
+            aria-label={`${liked ? 'Unlike' : 'Like'} ${place.name}${likes ? `, ${likes} likes` : ''}`}
+            onClick={onToggleLike}
+          >
+            <HeartIcon filled={liked} />
+            <span>{liked ? 'Liked' : 'Like'}</span>
+            {likes > 0 && <span className="action-count">{likes}</span>}
+          </button>
+          <button
+            type="button"
+            className={`panel-action save${saved ? ' active' : ''}`}
+            aria-pressed={saved}
+            onClick={onToggleSave}
+          >
+            <BookmarkIcon filled={saved} />
+            <span>{saved ? 'Saved' : 'Save'}</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -1253,20 +1253,49 @@
   font-weight: 700;
   cursor: pointer;
 }
-.cookbook-guide-app .save-btn {
-  margin-left: auto;
-  padding: 5px 12px;
-  border: 1.5px solid var(--ink);
-  border-radius: 999px;
-  background: oklch(100% 0.0000 0.00);
-  color: var(--ink);
-  font-family: 'Satoshi', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+/* Like + Save bar pinned to the bottom of the place card (PlaceDetailPanel.jsx).
+   8px padding inside the card's 18px corners -> 10px button corners. */
+.cookbook-guide-app .panel-actions {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  border-top: 1px solid oklch(0% 0 0 / 0.08);
+  flex-shrink: 0;
 }
-.cookbook-guide-app .save-btn.saved { background: var(--ink); color: oklch(100% 0.0000 0.00); }
+.cookbook-guide-app .panel-action {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1.5px solid oklch(0% 0 0 / 0.12);
+  border-radius: 10px;
+  background: oklch(100% 0 0);
+  color: oklch(25% 0.02 280);
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.1s;
+}
+.cookbook-guide-app .panel-action:active { transform: scale(0.97); }
+.cookbook-guide-app .panel-action .toggle-glyph { font-size: 1.15em; }
+.cookbook-guide-app .panel-action.like.active {
+  border-color: oklch(62% 0.21 20 / 0.4);
+  background: oklch(96% 0.025 20);
+  color: oklch(52% 0.21 20);
+}
+.cookbook-guide-app .panel-action.save.active {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: oklch(100% 0 0);
+}
+.cookbook-guide-app .action-count {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.8;
+}
 .cookbook-guide-app .my-rec-name {
   font-family: 'ClashDisplay', sans-serif;
   font-size: 0.92rem;
@@ -1396,9 +1425,6 @@
   }
 }
 
-/* Bookmark icon (BookmarkIcon.jsx): sit on the text baseline. */
-.bookmark-icon { vertical-align: -0.15em; flex-shrink: 0; }
-
 /* ── TOUCH TARGETS: 44px minimum on touch screens (Apple's guideline) ── */
 @media (pointer: coarse) {
   .cookbook-guide-app { --gear-size: 44px; }
@@ -1422,3 +1448,25 @@
 .cookbook-guide-app :is(.panel-scroll, .filter-panel-scroll, .e-body, .tags-ms-dropdown, .header-type-row) {
   overscroll-behavior: contain;
 }
+
+/* ── TOGGLE ICONS (ToggleGlyph.jsx): outline <-> filled cross-fade; the outgoing
+   icon blurs as it fades. ── */
+.toggle-glyph {
+  display: inline-grid;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  flex-shrink: 0;
+}
+.toggle-glyph svg {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  transition: opacity 180ms ease, filter 180ms ease, transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.toggle-glyph[data-on='true'] .glyph-off,
+.toggle-glyph[data-on='false'] .glyph-on {
+  opacity: 0;
+  filter: blur(4px);
+}
+.toggle-glyph[data-on='false'] .glyph-on { transform: scale(0.6); }

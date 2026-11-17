@@ -3,6 +3,7 @@ import { usePlaces } from './hooks/usePlaces';
 import { useFilters } from './hooks/useFilters';
 import { useAuth } from './hooks/useAuth';
 import { useSaved } from './hooks/useSaved';
+import { useLikes } from './hooks/useLikes';
 import MapView from './components/MapView';
 import PlaceDetailPanel from './components/PlaceDetailPanel';
 import TopBar from './components/TopBar';
@@ -41,6 +42,16 @@ export default function CookbookGuidePage() {
     return () => window.removeEventListener('keydown', onKey);
   }, [selectedPlace, filterPanelOpen]);
   const { isSaved, toggleSaved } = useSaved('place', currentUser);
+  const { isLiked, likeCount, toggleLike } = useLikes(currentUser);
+
+  const handleToggleLike = async (place) => {
+    if (!currentUser) {
+      setLoginOpen(true);
+      return;
+    }
+    const errMsg = await toggleLike(place.id);
+    if (errMsg) alert(`Couldn’t update your like: ${errMsg}`);
+  };
 
   // Logged-out visitors are asked to log in instead.
   const handleToggleSave = async (place) => {
@@ -82,6 +93,9 @@ export default function CookbookGuidePage() {
           onClose={() => setSelectedPlace(null)}
           saved={!!selectedPlace && isSaved(selectedPlace.id)}
           onToggleSave={() => handleToggleSave(selectedPlace)}
+          liked={!!selectedPlace && isLiked(selectedPlace.id)}
+          likes={selectedPlace ? likeCount(selectedPlace.id) : 0}
+          onToggleLike={() => handleToggleLike(selectedPlace)}
         />
       </div>
 
