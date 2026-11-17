@@ -44,12 +44,16 @@ export function PrivacyPolicy() {
         </li>
         <li>
           <strong>If you create an account:</strong> your email address, your password (stored
-          encrypted by our login provider, so we can’t see it), the places and recipes you save,
-          and the places you like.
+          encrypted by our login provider, so we can’t see it), a display name, an optional profile
+          picture, the places and recipes you save, and the places you like.
         </li>
         <li>
-          <strong>Likes:</strong> each place shows its total number of likes to everyone. Who
-          liked a place is never shown.
+          <strong>Likes and saves:</strong> each place shows its total number of likes to everyone.
+          Who liked or saved a place is private by default. If you turn on{' '}
+          <strong>Show my name and photo on places I like or save</strong> (in Account Settings or
+          on any place card), your display name and profile picture can appear on places you’ve
+          liked or saved, along with which one you did. Turn it off and they disappear. Saved recipes
+          are always private. Your email is never shown.
         </li>
         <li>
           <strong>Your age:</strong> when you sign up we ask for your date of birth to confirm you
@@ -109,7 +113,8 @@ export function PrivacyPolicy() {
 
       <h2>Your choices</h2>
       <p>
-        You can delete your account yourself at any time: log in, tap the ⚙️ button, then
+        You choose whether your name and photo show on places you like or save, and can change it
+        any time in Account Settings. You can delete your account yourself at any time: log in, tap the ⚙️ button, then
         choose <strong>Delete account</strong>. This removes your account, saved places, saved
         recipes and likes right away, and can’t be undone. You can also ask us to see, correct or
         delete your data by emailing <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> from
@@ -152,7 +157,9 @@ export function Terms() {
       <h2>Content</h2>
       <p>
         Places, recipes, photos and other content on the site are posted by CookBook Club e-board
-        members, who keep ownership of what they post. You may view and share links to it for
+        members, who keep ownership of what they post. Everyone can add a display name and profile
+        picture: only use a picture you have the right to use, and keep names and pictures
+        respectful. We may remove a name or picture that breaks these rules. You may view and share links to it for
         personal, non-commercial use. If you believe something on the site infringes your
         copyright, email us and we’ll review it.
       </p>

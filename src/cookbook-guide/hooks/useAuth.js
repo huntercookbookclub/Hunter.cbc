@@ -35,8 +35,11 @@ export function isSignupBlocked() {
   }
 }
 
-export async function signUp(email, password, birthDate, agreedToTerms) {
+export async function signUp(email, password, birthDate, agreedToTerms, displayName = '') {
   if (isSignupBlocked()) return UNDER_AGE_MESSAGE;
+  const name = displayName.trim();
+  if (!name) return 'Add a display name.';
+  if (name.length > 40) return 'Display name can be up to 40 characters.';
   if (!birthDate) return 'Enter your date of birth.';
   if (!agreedToTerms) return 'Please agree to the Terms and Privacy Policy.';
   if (!isOldEnough(birthDate)) {
@@ -53,6 +56,7 @@ export async function signUp(email, password, birthDate, agreedToTerms) {
     options: {
       data: {
         over_13: true,
+        display_name: name, // shown on places only if they opt in (Account Settings)
         terms_version: TERMS_VERSION,
         terms_accepted_at: new Date().toISOString(),
       },

@@ -41,13 +41,14 @@ begin
   end loop;
 end $$;
 
--- 3. Restrictive rules on the photo buckets (profile pictures included,
---    so public accounts can't upload anything at all).
+-- 3. Restrictive rules on the content photo buckets. Profile pictures
+--    (avatars) are open to every account, limited to its own folder, in
+--    profiles-activity.sql.
 drop policy if exists "eboard only uploads" on storage.objects;
 create policy "eboard only uploads" on storage.objects as restrictive
   for insert to authenticated
   with check (
-    bucket_id not in ('place-photos', 'recipe-photos', 'lookback-photos', 'avatars')
+    bucket_id not in ('place-photos', 'recipe-photos', 'lookback-photos')
     or public.is_eboard()
   );
 
@@ -55,7 +56,7 @@ drop policy if exists "eboard only file edits" on storage.objects;
 create policy "eboard only file edits" on storage.objects as restrictive
   for update to authenticated
   using (
-    bucket_id not in ('place-photos', 'recipe-photos', 'lookback-photos', 'avatars')
+    bucket_id not in ('place-photos', 'recipe-photos', 'lookback-photos')
     or public.is_eboard()
   );
 
@@ -63,7 +64,7 @@ drop policy if exists "eboard only file deletes" on storage.objects;
 create policy "eboard only file deletes" on storage.objects as restrictive
   for delete to authenticated
   using (
-    bucket_id not in ('place-photos', 'recipe-photos', 'lookback-photos', 'avatars')
+    bucket_id not in ('place-photos', 'recipe-photos', 'lookback-photos')
     or public.is_eboard()
   );
 

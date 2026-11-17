@@ -2,6 +2,7 @@
 -- Signup checks, enforced on the server so skipping the form skips nothing:
 --   • Age (COPPA): only 13+. The form asks for a birthdate in the browser and
 --     sends only the yes/no flag over_13 — the birthdate is never sent or stored.
+--   • Display name: 1 to 40 characters (shown on places if they opt in).
 --   • Terms: the user ticked "I agree to the Terms and Privacy Policy". The form
 --     records which version and when (terms_version, terms_accepted_at).
 -- Re-running this file replaces the earlier age-only version.
@@ -27,6 +28,14 @@ begin
       'error', jsonb_build_object(
         'http_code', 403,
         'message', 'Sorry, we can’t create an account for you.'
+      )
+    );
+  end if;
+  if length(trim(coalesce(event -> 'user' -> 'user_metadata' ->> 'display_name', ''))) not between 1 and 40 then
+    return jsonb_build_object(
+      'error', jsonb_build_object(
+        'http_code', 400,
+        'message', 'Please add a display name (up to 40 characters).'
       )
     );
   end if;

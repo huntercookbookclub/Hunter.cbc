@@ -17,7 +17,8 @@ export default function EboardControls({
   const [menuOpen, setMenuOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const menuRef = useRef(null);
-  // Any logged-in account gets Saved, Delete account and Sign Out; editing tools are e-board only.
+  // Any logged-in account gets Account Settings, Saved, Delete account and Sign Out;
+  // editing tools are e-board only.
   const isEboard = isEboardUser(currentUser);
 
   useEffect(() => {
@@ -63,18 +64,16 @@ export default function EboardControls({
         aria-hidden={!menuOpen}
         onClick={(e) => e.stopPropagation()}
       >
-        {isEboard && (
-          <button
-            role="menuitem"
-            className="gear-menu-item"
-            onClick={() => {
-              setMenuOpen(false);
-              onOpenAccountSettings();
-            }}
-          >
-            👤 Account Settings
-          </button>
-        )}
+        <button
+          role="menuitem"
+          className="gear-menu-item"
+          onClick={() => {
+            setMenuOpen(false);
+            onOpenAccountSettings();
+          }}
+        >
+          👤 Account Settings
+        </button>
         {isEboard && onOpenMyRecs && (
           <button
             role="menuitem"

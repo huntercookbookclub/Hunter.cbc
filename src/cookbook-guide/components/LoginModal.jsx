@@ -29,6 +29,7 @@ export default function LoginModal({ open, onClose, onLogin }) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [code, setCode] = useState('');
   const [birthDate, setBirthDate] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
@@ -81,8 +82,9 @@ export default function LoginModal({ open, onClose, onLogin }) {
   const handleSignup = async (e) => {
     e.preventDefault();
     if (!passwordsMatch()) return;
-    if (await run(() => signUp(email.trim(), password, birthDate, agreedToTerms))) {
+    if (await run(() => signUp(email.trim(), password, birthDate, agreedToTerms, displayName))) {
       setBirthDate('');
+      setDisplayName('');
       setAgreedToTerms(false);
       goTo('verify');
       setNotice(`We sent a one-time code to ${email.trim()}.`);
@@ -223,6 +225,16 @@ export default function LoginModal({ open, onClose, onLogin }) {
 
       {step === 'signup' && (
         <form className="e-form" onSubmit={handleSignup}>
+          <input
+            type="text"
+            className="e-input"
+            placeholder="Display name (e.g. Maya C.)"
+            autoComplete="nickname"
+            maxLength={40}
+            enterKeyHint="next"
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
+          />
           {emailInput()}
           {newPasswordInputs('Password')}
           {/* Neutral age screen: no hint about the cutoff age. */}

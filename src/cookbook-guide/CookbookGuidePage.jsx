@@ -4,6 +4,8 @@ import { useFilters } from './hooks/useFilters';
 import { useAuth } from './hooks/useAuth';
 import { useSaved } from './hooks/useSaved';
 import { useLikes } from './hooks/useLikes';
+import { useShowActivity } from './hooks/useProfile';
+import { usePlaceActivity } from './hooks/usePlaceActivity';
 import { groupPlaces } from './lib/groupPlaces';
 import MapView from './components/MapView';
 import PlaceDetailPanel from './components/PlaceDetailPanel';
@@ -68,6 +70,18 @@ export default function CookbookGuidePage() {
   const totalLikes = (group) => group.reviews.reduce((n, r) => n + likeCount(r.id), 0);
   const groupOf = (id) => groups.find((g) => g.reviews.some((r) => r.id === id));
 
+  // Faces of opted-in people who liked/saved the open place; fetched again
+  // whenever your own like, save or opt-in switch changes.
+  const { showActivity, setShowActivity } = useShowActivity(currentUser);
+  const selectedSaved = !!selectedPlace && !!savedId(selectedPlace);
+  const selectedLiked = !!selectedPlace && !!likedId(selectedPlace);
+  const activity = usePlaceActivity(selectedPlace, `${selectedSaved}-${selectedLiked}-${showActivity}`);
+
+  const handleSetShowActivity = async (value) => {
+    const errMsg = await setShowActivity(value);
+    if (errMsg) alert(`Couldn’t change your privacy setting: ${errMsg}`);
+  };
+
   // Logged-out visitors are asked to log in instead.
   const handleToggleLike = async (group) => {
     if (!currentUser) {
@@ -115,11 +129,15 @@ export default function CookbookGuidePage() {
         <PlaceDetailPanel
           place={selectedPlace}
           onClose={() => setSelectedPlace(null)}
-          saved={!!selectedPlace && !!savedId(selectedPlace)}
+          saved={selectedSaved}
           onToggleSave={() => handleToggleSave(selectedPlace)}
-          liked={!!selectedPlace && !!likedId(selectedPlace)}
+          liked={selectedLiked}
           likes={selectedPlace ? totalLikes(selectedPlace) : 0}
           onToggleLike={() => handleToggleLike(selectedPlace)}
+          activity={activity}
+          loggedIn={!!currentUser}
+          showActivity={showActivity}
+          onSetShowActivity={handleSetShowActivity}
         />
       </div>
 
