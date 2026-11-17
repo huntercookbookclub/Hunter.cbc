@@ -8,17 +8,11 @@ export function isEboardUser(user) {
   return user?.app_metadata?.role === 'eboard';
 }
 
-// ── Sign up (Hunter student emails only, verified with a one-time code) ──
-// The domain is also enforced on the server (supabase/signup-rules.sql), since
-// anyone can call Supabase directly and skip this form. The code comes from the
-// "Confirm signup" email template, which must include {{ .Token }}.
-
-export const SIGNUP_DOMAIN = '@stu-mail.hunter.cuny.edu';
+// ── Sign up (any email, verified with a one-time code) ──
+// The code comes from the "Confirm signup" email template, which must include
+// {{ .Token }} (Supabase → Authentication → Emails).
 
 export async function signUp(email, password) {
-  if (!email.toLowerCase().endsWith(SIGNUP_DOMAIN)) {
-    return `Please use your ${SIGNUP_DOMAIN} email.`;
-  }
   const { error } = await sbClient.auth.signUp({ email, password });
   return error ? error.message : null;
 }

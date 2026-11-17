@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Modal from './Modal';
 import {
-  SIGNUP_DOMAIN,
   requestPasswordReset,
   resendSignupCode,
   resetPasswordWithCode,
@@ -202,8 +201,7 @@ export default function LoginModal({ open, onClose, onLogin }) {
 
       {step === 'signup' && (
         <form className="e-form" onSubmit={handleSignup}>
-          <p className="e-hint">Hunter students only. Use your {SIGNUP_DOMAIN} email.</p>
-          {emailInput(`you${SIGNUP_DOMAIN}`)}
+          {emailInput()}
           {newPasswordInputs('Password')}
           <button type="submit" className="e-btn-primary" disabled={busy}>
             {busy ? 'Creating…' : 'Create account'}
