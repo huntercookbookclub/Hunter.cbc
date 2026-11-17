@@ -1,6 +1,7 @@
 import { catConfig, cuisineEmoji } from '../lib/catConfig';
 import BookmarkIcon from './BookmarkIcon';
 import HeartIcon from './HeartIcon';
+import ExternalLinkIcon from './ExternalLinkIcon';
 import { useSheetDrag } from '../hooks/useSheetDrag';
 
 export default function PlaceDetailPanel({
@@ -66,6 +67,8 @@ export default function PlaceDetailPanel({
                 title="Open in Google Maps"
               >
                 {place.address}
+                <ExternalLinkIcon />
+                <span className="visually-hidden"> (opens Google Maps in a new tab)</span>
               </a>
             </div>
 
