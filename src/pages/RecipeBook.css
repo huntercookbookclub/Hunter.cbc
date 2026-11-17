@@ -1,16 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
-
+/* Libre Baskerville, self-hosted (no requests to Google Fonts). Variable font:
+   one file covers weights 400–700. License: src/assets/fonts/LibreBaskerville-OFL.txt */
 @font-face {
-  font-family: 'Forward Serif';
-  src: url('../assets/fonts/ForwardSerif-Regular.otf') format('opentype');
-  font-weight: 400;
+  font-family: 'Libre Baskerville';
   font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('../assets/fonts/LibreBaskerville-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
-  font-family: 'Forward Serif';
-  src: url('../assets/fonts/ForwardSerif-Bold.otf') format('opentype');
-  font-weight: 700;
+  font-family: 'Libre Baskerville';
   font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('../assets/fonts/LibreBaskerville-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Libre Baskerville';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/LibreBaskerville-Italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Libre Baskerville';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/LibreBaskerville-Italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 .recipe-book-page {
@@ -92,8 +112,8 @@
 }
 
 .recipe-book-title {
-  font-family: 'Forward Serif', Georgia, serif;
-  font-weight: 700;
+  font-family: 'ClashDisplay', sans-serif;
+  font-weight: 600;
   font-size: clamp(36px, 7vw, 58px);
   line-height: 1.05;
   color: #f4e7c8;
@@ -212,8 +232,8 @@
 .page-heading h2,
 .recipe-detail h2,
 .recipe-form h2 {
-  font-family: 'Forward Serif', Georgia, serif;
-  font-weight: 400;
+  font-family: 'ClashDisplay', sans-serif;
+  font-weight: 600;
   font-size: 30px;
   margin: 0;
   color: var(--ink);
@@ -259,8 +279,8 @@
 }
 
 .toc-title {
-  font-family: 'Forward Serif', Georgia, serif;
-  font-weight: 400;
+  font-family: 'ClashDisplay', sans-serif;
+  font-weight: 600;
   font-size: 18px;
   line-height: 1.2;
 }
@@ -278,8 +298,8 @@
   color: var(--ink);
   border-radius: 2px;
   padding: 7px 12px;
-  font-family: 'Forward Serif', Georgia, serif;
-  font-weight: 400;
+  font-family: 'ClashDisplay', sans-serif;
+  font-weight: 600;
   font-size: 15px;
   letter-spacing: 0.03em;
   cursor: pointer;
@@ -359,9 +379,9 @@
 
 .recipe-detail h3 {
   margin: 18px 0 8px;
-  font-family: 'Forward Serif', Georgia, serif;
+  font-family: 'ClashDisplay', sans-serif;
   font-size: 20px;
-  font-weight: 400;
+  font-weight: 600;
   color: var(--leather);
   border-bottom: 1px solid rgba(168, 137, 95, 0.45);
   padding-bottom: 4px;
@@ -413,8 +433,8 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-family: 'Forward Serif', Georgia, serif;
-  font-weight: 400;
+  font-family: 'ClashDisplay', sans-serif;
+  font-weight: 600;
   font-size: 16px;
   color: var(--ink-soft);
   text-align: left;
@@ -524,7 +544,7 @@
 
 .toc-filter-group legend {
   padding: 0 0 4px;
-  font-family: 'Forward Serif', Georgia, serif;
+  font-family: 'ClashDisplay', sans-serif;
   font-size: 14px;
   color: var(--leather);
 }
@@ -581,8 +601,8 @@ body .recipe-book-page .cookbook-guide-app * {
 }
 
 body .recipe-book-page .cookbook-guide-app :is(.e-title, .my-rec-name) {
-  font-family: 'Forward Serif', Georgia, serif;
-  font-weight: 400;
+  font-family: 'ClashDisplay', sans-serif;
+  font-weight: 600;
   font-size: 1.2rem;
 }
 

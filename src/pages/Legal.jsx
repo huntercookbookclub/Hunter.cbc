@@ -80,8 +80,8 @@ export function PrivacyPolicy() {
           <strong>CARTO and OpenStreetMap</strong> — the map images on the CookBook Guide.
         </li>
         <li>
-          <strong>Google</strong> — web fonts, and place search used by e-board members when
-          adding a place.
+          <strong>Google</strong> — place search, used only by e-board members when adding a
+          place.
         </li>
         <li>
           <strong>Image hosts</strong> such as Unsplash, for some recipe photos.
