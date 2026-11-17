@@ -1,6 +1,7 @@
 import { catConfig, cuisineEmoji } from '../lib/catConfig';
+import BookmarkIcon from './BookmarkIcon';
 
-export default function PlaceDetailPanel({ place, onClose, currentUser, onEdit }) {
+export default function PlaceDetailPanel({ place, onClose, saved, onToggleSave }) {
   const isOpen = !!place;
   const cfg = place ? catConfig[place.category] : null;
 
@@ -31,6 +32,14 @@ export default function PlaceDetailPanel({ place, onClose, currentUser, onEdit }
 
             <div className="panel-name">
               <span>{place.name}</span>
+              <button
+                type="button"
+                className={`save-btn${saved ? ' saved' : ''}`}
+                aria-pressed={saved}
+                onClick={onToggleSave}
+              >
+                <BookmarkIcon filled={saved} /> {saved ? 'Saved' : 'Save'}
+              </button>
             </div>
 
             <div className="panel-address">

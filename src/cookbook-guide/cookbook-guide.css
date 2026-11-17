@@ -672,28 +672,36 @@
 .cookbook-guide-app .price-tooltip strong { font-size: 0.72rem; color: var(--yellow); margin-bottom: 4px; }
 
 /* ── EBOARD TRIGGER / MENU ── */
+.cookbook-guide-app {
+  /* Top-right corner: gear at the edge, the "+ Add" / "Log in" button just left of it. */
+  --corner-top: 20px;
+  --corner-right: 20px;
+  --gear-size: 40px;
+}
+
 .cookbook-guide-app .eboard-trigger {
   position: fixed;
-  bottom: 20px;
-  left: 20px;
-  width: 36px;
-  height: 36px;
+  top: var(--corner-top);
+  right: var(--corner-right);
+  width: var(--gear-size);
+  height: var(--gear-size);
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
+  background: #fff;
   border: none;
-  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-size: 1.1rem;
   cursor: pointer;
   z-index: 2000;
-  opacity: 0.25;
-  transition: opacity 0.2s;
+  transition: transform 0.15s;
 }
-.cookbook-guide-app .eboard-trigger:hover { opacity: 1; }
+.cookbook-guide-app .eboard-trigger:hover { transform: translateY(-1px); }
 
+/* Drops down from the gear. */
 .cookbook-guide-app .gear-menu {
   display: none;
   position: fixed;
-  bottom: 62px;
-  left: 16px;
+  top: calc(var(--corner-top) + var(--gear-size) + 8px);
+  right: calc(var(--corner-right) - 4px);
   border-radius: 14px;
   overflow: hidden;
   z-index: 2001;
@@ -722,8 +730,9 @@
 .cookbook-guide-app .add-place-btn {
   display: none;
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: var(--corner-top);
+  right: calc(var(--corner-right) + var(--gear-size) + 8px);
+  height: var(--gear-size);
   padding: 10px 20px;
   background: var(--coral);
   color: #fff;
@@ -1120,6 +1129,37 @@
   background: #F8F5EE;
 }
 .cookbook-guide-app .my-rec-info { flex: 1; min-width: 0; }
+
+/* ── SAVED (SavedListModal.jsx, PlaceDetailPanel.jsx) ── */
+.cookbook-guide-app .saved-open {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.cookbook-guide-app .saved-open:hover .my-rec-name { text-decoration: underline; }
+.cookbook-guide-app .saved-empty {
+  padding: 20px 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: rgba(26, 26, 46, 0.5);
+}
+.cookbook-guide-app .save-btn {
+  margin-left: auto;
+  padding: 5px 12px;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  font-family: 'Satoshi', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.cookbook-guide-app .save-btn.saved { background: var(--ink); color: #fff; }
 .cookbook-guide-app .my-rec-name {
   font-family: 'ClashDisplay', sans-serif;
   font-size: 0.92rem;
@@ -1226,3 +1266,6 @@
     transition-duration: 0.25s !important;
   }
 }
+
+/* Bookmark icon (BookmarkIcon.jsx): sit on the text baseline. */
+.bookmark-icon { vertical-align: -0.15em; flex-shrink: 0; }

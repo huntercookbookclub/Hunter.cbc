@@ -7,6 +7,9 @@ import {
   updateRecipe,
 } from '../data/recipes'
 import { useAuth } from '../cookbook-guide/hooks/useAuth'
+import { useSaved } from '../cookbook-guide/hooks/useSaved'
+import SavedListModal from '../cookbook-guide/components/SavedListModal'
+import BookmarkIcon from '../cookbook-guide/components/BookmarkIcon'
 import EboardControls from '../cookbook-guide/components/EboardControls'
 import LoginModal from '../cookbook-guide/components/LoginModal'
 import AccountSettingsModal from '../cookbook-guide/components/AccountSettingsModal'
@@ -93,6 +96,18 @@ function RecipeBook() {
   const [loginOpen, setLoginOpen] = useState(false)
   const [accountSettingsOpen, setAccountSettingsOpen] = useState(false)
   const [myRecipesOpen, setMyRecipesOpen] = useState(false)
+  const [savedOpen, setSavedOpen] = useState(false)
+  const { isSaved, toggleSaved } = useSaved('recipe', currentUser)
+
+  // Logged-out visitors are asked to log in instead.
+  async function handleToggleSave(recipeId) {
+    if (!currentUser) {
+      setLoginOpen(true)
+      return
+    }
+    const errMsg = await toggleSaved(recipeId)
+    if (errMsg) alert(`Couldn’t update saved recipes: ${errMsg}`)
+  }
 
   const selected = recipes.find((recipe) => recipe.id === selectedId) ?? null
 
@@ -432,20 +447,30 @@ function RecipeBook() {
                       Written by {selected.author}
                     </p>
                   </div>
-                  {isEboard && selected.owned && (
-                    <div className="recipe-actions">
-                      <button type="button" className="book-btn" onClick={() => openEdit()}>
-                        Edit
-                      </button>
-                      <button
-                        type="button"
-                        className="book-btn book-btn-danger"
-                        onClick={() => handleDelete()}
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  )}
+                  <div className="recipe-actions">
+                    <button
+                      type="button"
+                      className={`book-btn${isSaved(selected.id) ? ' book-btn-primary' : ''}`}
+                      aria-pressed={isSaved(selected.id)}
+                      onClick={() => handleToggleSave(selected.id)}
+                    >
+                      <BookmarkIcon filled={isSaved(selected.id)} /> {isSaved(selected.id) ? 'Saved' : 'Save'}
+                    </button>
+                    {isEboard && selected.owned && (
+                      <>
+                        <button type="button" className="book-btn" onClick={() => openEdit()}>
+                          Edit
+                        </button>
+                        <button
+                          type="button"
+                          className="book-btn book-btn-danger"
+                          onClick={() => handleDelete()}
+                        >
+                          Remove
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </div>
 
                 {(selected.cuisine || selected.tags.length > 0) && (
@@ -509,6 +534,7 @@ function RecipeBook() {
           onOpenAccountSettings={() => setAccountSettingsOpen(true)}
           onOpenMyRecs={() => setMyRecipesOpen(true)}
           myRecsLabel="📖 Your Recipes"
+          onOpenSaved={() => setSavedOpen(true)}
           onLogout={handleLogout}
           onOpenAddPlace={openAdd}
           addLabel="+ Add a page"
@@ -520,6 +546,22 @@ function RecipeBook() {
           open={accountSettingsOpen}
           onClose={() => setAccountSettingsOpen(false)}
           currentUser={currentUser}
+        />
+
+        <SavedListModal
+          open={savedOpen}
+          onClose={() => setSavedOpen(false)}
+          title="Saved recipes"
+          emptyText="No saved recipes yet. Tap Save on a recipe to keep it here."
+          items={recipes
+            .filter((r) => isSaved(r.id))
+            .map((r) => ({ id: r.id, title: r.title, subtitle: `by ${r.author}` }))}
+          onOpenItem={(id) => {
+            setSelectedId(id)
+            setMode('view')
+            scrollToPage(rightPageRef.current)
+          }}
+          onRemove={(id) => handleToggleSave(id)}
         />
 
         {/* Same look as the map's "Your Recommendations" modal, listing your recipes. */}

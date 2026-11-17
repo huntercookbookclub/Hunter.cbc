@@ -654,17 +654,6 @@ body .recipe-book-page .cookbook-guide-app .tags-ms-pill {
   border-radius: 2px;
 }
 
-/* Gear sits at the bottom of the page instead of floating over recipe text. */
-body .recipe-book-page .cookbook-guide-app .eboard-trigger {
-  position: absolute;
-  bottom: 14px;
-}
-
-body .recipe-book-page .cookbook-guide-app .gear-menu {
-  position: absolute;
-  bottom: 56px;
-}
-
 /* Press feedback (phones have no hover) and keyboard focus. */
 :is(.book-btn, .toc-item, .recipe-book-back):active {
   transform: scale(0.97);
@@ -712,9 +701,15 @@ body .recipe-book-page .cookbook-guide-app .gear-menu {
     line-height: 1.15;
   }
 
-  /* Pages stack, so the top-right button would sit on the title; dock it bottom-right. */
-  body .recipe-book-page .cookbook-guide-app .add-place-btn {
+  /* Pages stack, so the top-right corner would sit on the title; dock the gear,
+     "+ Add" button and menu at the bottom-right instead. */
+  body .recipe-book-page .cookbook-guide-app :is(.eboard-trigger, .add-place-btn) {
     top: auto;
     bottom: 20px;
+  }
+
+  body .recipe-book-page .cookbook-guide-app .gear-menu {
+    top: auto;
+    bottom: calc(20px + var(--gear-size) + 8px);
   }
 }

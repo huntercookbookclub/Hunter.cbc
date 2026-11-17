@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { isEboardUser } from '../hooks/useAuth';
+import BookmarkIcon from './BookmarkIcon';
 
 export default function EboardControls({
   currentUser,
   onOpenLogin,
   onOpenAccountSettings,
   onOpenMyRecs,
+  onOpenSaved,
   onLogout,
   onOpenAddPlace,
   addLabel = '+ Add Place',
@@ -34,7 +36,13 @@ export default function EboardControls({
 
   return (
     <>
-      <button className="eboard-trigger" title="Eboard" onClick={handleTriggerClick}>
+      {/* Faint while logged out (e-board entry); fully visible once signed in so
+          members can find Saved and Sign Out. */}
+      <button
+        className={`eboard-trigger${currentUser ? ' signed-in' : ''}`}
+        title={currentUser ? 'Account' : 'Log in'}
+        onClick={handleTriggerClick}
+      >
         ⚙️
       </button>
 
@@ -65,6 +73,17 @@ export default function EboardControls({
             {myRecsLabel}
           </button>
         )}
+        {onOpenSaved && (
+          <button
+            className="gear-menu-item"
+            onClick={() => {
+              setMenuOpen(false);
+              onOpenSaved();
+            }}
+          >
+            <BookmarkIcon filled /> Saved
+          </button>
+        )}
         <button
           className="gear-menu-item danger"
           onClick={() => {
@@ -75,6 +94,13 @@ export default function EboardControls({
           ↩ Sign Out
         </button>
       </div>
+
+      {/* Pages with saving get a visible way in for the public. */}
+      {!currentUser && onOpenSaved && (
+        <button className="add-place-btn login-btn visible" onClick={onOpenLogin}>
+          Log in / Sign up
+        </button>
+      )}
 
       <button
         className={`add-place-btn${isEboard ? ' visible' : ''}`}

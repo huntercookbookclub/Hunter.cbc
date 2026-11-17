@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { usePlaces } from './hooks/usePlaces';
 import { useFilters } from './hooks/useFilters';
 import { useAuth } from './hooks/useAuth';
+import { useSaved } from './hooks/useSaved';
 import MapView from './components/MapView';
 import PlaceDetailPanel from './components/PlaceDetailPanel';
 import TopBar from './components/TopBar';
@@ -11,6 +12,7 @@ import LoginModal from './components/LoginModal';
 import AddPlaceModal from './components/AddPlaceModal';
 import AccountSettingsModal from './components/AccountSettingsModal';
 import MyRecommendationsModal from './components/MyRecommendationsModal';
+import SavedListModal from './components/SavedListModal';
 import './fonts.css';
 import './cookbook-guide.css';
 
@@ -25,6 +27,18 @@ export default function CookbookGuidePage() {
   const [editingPlace, setEditingPlace] = useState(null);
   const [accountSettingsOpen, setAccountSettingsOpen] = useState(false);
   const [myRecsOpen, setMyRecsOpen] = useState(false);
+  const [savedOpen, setSavedOpen] = useState(false);
+  const { isSaved, toggleSaved } = useSaved('place', currentUser);
+
+  // Logged-out visitors are asked to log in instead.
+  const handleToggleSave = async (place) => {
+    if (!currentUser) {
+      setLoginOpen(true);
+      return;
+    }
+    const errMsg = await toggleSaved(place.id);
+    if (errMsg) alert(`Couldn’t update saved places: ${errMsg}`);
+  };
 
   return (
     <div className="cookbook-guide-app">
@@ -47,7 +61,12 @@ export default function CookbookGuidePage() {
 
         <MapView places={filters.filteredPlaces} onSelectPlace={setSelectedPlace} />
 
-        <PlaceDetailPanel place={selectedPlace} onClose={() => setSelectedPlace(null)} />
+        <PlaceDetailPanel
+          place={selectedPlace}
+          onClose={() => setSelectedPlace(null)}
+          saved={!!selectedPlace && isSaved(selectedPlace.id)}
+          onToggleSave={() => handleToggleSave(selectedPlace)}
+        />
       </div>
 
       <EboardControls
@@ -55,6 +74,7 @@ export default function CookbookGuidePage() {
         onOpenLogin={() => setLoginOpen(true)}
         onOpenAccountSettings={() => setAccountSettingsOpen(true)}
         onOpenMyRecs={() => setMyRecsOpen(true)}
+        onOpenSaved={() => setSavedOpen(true)}
         onLogout={logout}
         onOpenAddPlace={() => {
           setEditingPlace(null);
@@ -76,6 +96,18 @@ export default function CookbookGuidePage() {
         open={accountSettingsOpen}
         onClose={() => setAccountSettingsOpen(false)}
         currentUser={currentUser}
+      />
+
+      <SavedListModal
+        open={savedOpen}
+        onClose={() => setSavedOpen(false)}
+        title="Saved places"
+        emptyText="No saved places yet. Tap Save on a place to keep it here."
+        items={places
+          .filter((p) => isSaved(p.id))
+          .map((p) => ({ id: p.id, title: p.name, subtitle: [p.cuisine, p.address].filter(Boolean).join(' · ') }))}
+        onOpenItem={(id) => setSelectedPlace(places.find((p) => p.id === id))}
+        onRemove={(id) => handleToggleSave({ id })}
       />
 
       <MyRecommendationsModal
