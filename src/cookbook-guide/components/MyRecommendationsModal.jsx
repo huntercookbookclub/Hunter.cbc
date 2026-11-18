@@ -12,11 +12,14 @@ export default function MyRecommendationsModal({
 }) {
   const meta = currentUser?.user_metadata || {};
   const recName = `${meta.first_name || ''} ${meta.last_initial || ''}`.trim();
-  const matchName = recName || currentUser?.email;
+  // Names this account may have posted under (older places could have the email).
+  const matchNames = new Set(
+    [recName, (meta.display_name || '').trim(), currentUser?.email].filter(Boolean)
+  );
 
   // Matches the original's logic: places are tied to the user by the
   // recommender_name string stored on each row, not a user_id foreign key.
-  const myPlaces = places.filter((p) => p.recommender.name === matchName);
+  const myPlaces = places.filter((p) => matchNames.has(p.recommender.name));
 
   const handleDelete = async (place) => {
     if (!confirm(`Delete "${place.name}"? This cannot be undone.`)) return;

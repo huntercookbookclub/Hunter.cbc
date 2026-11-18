@@ -48,7 +48,7 @@ export async function addRecipe({ title, author, cuisine, tags, ingredients, ins
     .from('recipes')
     .insert({
       title: title.trim(),
-      author: author.trim() || 'Eboard Member',
+      author: author.trim() || 'Member',
       cuisine,
       tags,
       ingredients: cleanIngredients(ingredients),
@@ -81,7 +81,7 @@ export async function updateRecipe(id, { title, author, cuisine, tags, ingredien
     .from('recipes')
     .update({
       title: title.trim(),
-      author: author.trim() || 'Eboard Member',
+      author: author.trim() || 'Member',
       cuisine,
       tags,
       ingredients: cleanIngredients(ingredients),

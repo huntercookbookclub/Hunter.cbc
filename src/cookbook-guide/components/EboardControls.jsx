@@ -11,6 +11,9 @@ export default function EboardControls({
   onLogout,
   onOpenAddPlace,
   addLabel = '+ Add Place',
+  // true on pages any logged-in account can post to (recipes, Lookback);
+  // false on the map, where only e-board can add places.
+  openToAll = false,
   myRecsLabel = '📍 Your Recommendations',
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -18,6 +21,7 @@ export default function EboardControls({
   // Any logged-in account gets Account Settings (incl. Delete account), Saved and Sign Out;
   // editing tools are e-board only.
   const isEboard = isEboardUser(currentUser);
+  const canPost = openToAll ? !!currentUser : isEboard;
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -72,7 +76,7 @@ export default function EboardControls({
         >
           👤 Account Settings
         </button>
-        {isEboard && onOpenMyRecs && (
+        {canPost && onOpenMyRecs && (
           <button
             role="menuitem"
             className="gear-menu-item"
@@ -116,7 +120,7 @@ export default function EboardControls({
       )}
 
       <button
-        className={`add-place-btn${isEboard ? ' visible' : ''}`}
+        className={`add-place-btn${canPost ? ' visible' : ''}`}
         onClick={onOpenAddPlace}
       >
         {addLabel}

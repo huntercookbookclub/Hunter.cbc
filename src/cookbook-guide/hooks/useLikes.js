@@ -1,9 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import { sbClient } from '../lib/supabaseClient';
 
-// Place likes (supabase/place-likes.sql): which places the logged-in user
-// liked, plus public like counts for every place.
-export function useLikes(currentUser) {
+const KINDS = {
+  place: { table: 'place_likes', idCol: 'place_id', counts: 'place_like_counts' }, // place-likes.sql
+  recipe: { table: 'recipe_likes', idCol: 'recipe_id', counts: 'recipe_like_counts' }, // recipe-activity.sql
+};
+
+// Likes on places or recipes: which ones the logged-in user liked, plus public
+// like counts for every one.
+export function useLikes(currentUser, kind = 'place') {
+  const { table, idCol, counts: countsFn } = KINDS[kind];
   const userId = currentUser?.id ?? null;
   const [likedIds, setLikedIds] = useState(() => new Set());
   const [counts, setCounts] = useState({});
@@ -11,32 +17,32 @@ export function useLikes(currentUser) {
   // Counts are public, so load them for everyone.
   useEffect(() => {
     let cancelled = false;
-    sbClient.rpc('place_like_counts').then(({ data, error }) => {
+    sbClient.rpc(countsFn).then(({ data, error }) => {
       if (cancelled) return;
       if (error) console.error('Could not load like counts:', error.message);
-      else setCounts(Object.fromEntries(data.map((row) => [row.place_id, Number(row.likes)])));
+      else setCounts(Object.fromEntries(data.map((row) => [row[idCol], Number(row.likes)])));
     });
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [countsFn, idCol]);
 
   useEffect(() => {
     setLikedIds(new Set());
     if (!userId) return;
     let cancelled = false;
     sbClient
-      .from('place_likes')
-      .select('place_id')
+      .from(table)
+      .select(idCol)
       .then(({ data, error }) => {
         if (cancelled) return;
         if (error) console.error('Could not load likes:', error.message);
-        else setLikedIds(new Set(data.map((row) => row.place_id)));
+        else setLikedIds(new Set(data.map((row) => row[idCol])));
       });
     return () => {
       cancelled = true;
     };
-  }, [userId]);
+  }, [userId, table, idCol]);
 
   const isLiked = useCallback((id) => likedIds.has(String(id)), [likedIds]);
   const likeCount = useCallback((id) => counts[String(id)] || 0, [counts]);
@@ -58,8 +64,8 @@ export function useLikes(currentUser) {
 
     apply(!wasLiked);
     const { error } = wasLiked
-      ? await sbClient.from('place_likes').delete().match({ user_id: userId, place_id: key })
-      : await sbClient.from('place_likes').insert({ place_id: key });
+      ? await sbClient.from(table).delete().match({ user_id: userId, [idCol]: key })
+      : await sbClient.from(table).insert({ [idCol]: key });
     if (error) {
       apply(wasLiked);
       return error.message;

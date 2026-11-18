@@ -228,7 +228,7 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
       <label className="e-check">
         <input type="checkbox" checked={share} onChange={(e) => setShare(e.target.checked)} />
         <span>
-          <strong>Show my name and photo on places I like or save.</strong> Keep unticked to keep
+          <strong>Show my name and photo on places and recipes I like or save.</strong> Keep unticked to keep
           likes and saves private.
         </span>
       </label>

@@ -8,6 +8,11 @@ import {
 } from '../data/recipes'
 import { useAuth } from '../cookbook-guide/hooks/useAuth'
 import { useSaved } from '../cookbook-guide/hooks/useSaved'
+import { useLikes } from '../cookbook-guide/hooks/useLikes'
+import { useShowActivity } from '../cookbook-guide/hooks/useProfile'
+import { usePlaceActivity } from '../cookbook-guide/hooks/usePlaceActivity'
+import ActivityFaces, { ActivityNote } from '../cookbook-guide/components/ActivityFaces'
+import HeartIcon from '../cookbook-guide/components/HeartIcon'
 import SavedListModal from '../cookbook-guide/components/SavedListModal'
 import BookmarkIcon from '../cookbook-guide/components/BookmarkIcon'
 import EboardControls from '../cookbook-guide/components/EboardControls'
@@ -44,12 +49,14 @@ function toSteps(instructions) {
     .filter(Boolean)
 }
 
+// Name shown as a recipe's author: the display name (everyone has one), or an
+// e-board member's first name + last initial. Never the email: that's private.
 function authorName(user) {
   const meta = user?.user_metadata || {}
   return (
+    (meta.display_name || '').trim() ||
     `${meta.first_name || ''} ${meta.last_initial || ''}`.trim() ||
-    user?.email ||
-    'Eboard Member'
+    'Member'
   )
 }
 
@@ -130,7 +137,34 @@ function RecipeBook() {
     if (errMsg) alert(`Couldn’t update saved recipes: ${errMsg}`)
   }
 
+  const { isLiked, likeCount, toggleLike } = useLikes(currentUser, 'recipe')
+
+  async function handleToggleLike(recipeId) {
+    if (!currentUser) {
+      setLoginOpen(true)
+      return
+    }
+    const errMsg = await toggleLike(recipeId)
+    if (errMsg) alert(`Couldn’t update your like: ${errMsg}`)
+  }
+
   const selected = recipes.find((recipe) => recipe.id === selectedId) ?? null
+
+  // Faces of opted-in people who liked/saved the open recipe; fetched again
+  // whenever your own like, save or opt-in switch changes.
+  const { showActivity, setShowActivity } = useShowActivity(currentUser)
+  const selectedLiked = !!selected && isLiked(selected.id)
+  const selectedSaved = !!selected && isSaved(selected.id)
+  const activity = usePlaceActivity(
+    selected,
+    `${selectedLiked}-${selectedSaved}-${showActivity}`,
+    'recipe_activity',
+  )
+
+  async function handleSetShowActivity(value) {
+    const errMsg = await setShowActivity(value)
+    if (errMsg) alert(`Couldn’t change your privacy setting: ${errMsg}`)
+  }
 
   // Filter only offers cuisines/tags that some recipe actually uses.
   // Same rules as the map: any picked cuisine AND any picked tag.
@@ -260,8 +294,9 @@ function RecipeBook() {
     }
   }
 
+  // Your own recipe, or any recipe for e-board (moderation; the database checks this too).
   async function handleDelete(recipe = selected) {
-    if (!recipe?.owned) return
+    if (!recipe?.owned && !isEboard) return
     if (!window.confirm(`Delete “${recipe.title}”?`)) return
     try {
       await deleteRecipe(recipe.id)
@@ -470,17 +505,34 @@ function RecipeBook() {
                   <div className="recipe-actions">
                     <button
                       type="button"
+                      className={`book-btn${selectedLiked ? ' book-btn-primary' : ''}`}
+                      aria-pressed={selectedLiked}
+                      aria-label={`${selectedLiked ? 'Unlike' : 'Like'} ${selected.title}${
+                        likeCount(selected.id) ? `, ${likeCount(selected.id)} likes` : ''
+                      }`}
+                      onClick={() => handleToggleLike(selected.id)}
+                    >
+                      <HeartIcon filled={selectedLiked} /> {selectedLiked ? 'Liked' : 'Like'}
+                      {likeCount(selected.id) > 0 && (
+                        <span className="book-btn-count">{likeCount(selected.id)}</span>
+                      )}
+                    </button>
+                    <button
+                      type="button"
                       className={`book-btn${isSaved(selected.id) ? ' book-btn-primary' : ''}`}
                       aria-pressed={isSaved(selected.id)}
                       onClick={() => handleToggleSave(selected.id)}
                     >
                       <BookmarkIcon filled={isSaved(selected.id)} /> {isSaved(selected.id) ? 'Saved' : 'Save'}
                     </button>
-                    {isEboard && selected.owned && (
+                    {/* Your own recipe: edit and remove. E-board: remove any (moderation). */}
+                    {(selected.owned || isEboard) && (
                       <>
-                        <button type="button" className="book-btn" onClick={() => openEdit()}>
-                          Edit
-                        </button>
+                        {selected.owned && (
+                          <button type="button" className="book-btn" onClick={() => openEdit()}>
+                            Edit
+                          </button>
+                        )}
                         <button
                           type="button"
                           className="book-btn book-btn-danger"
@@ -491,6 +543,19 @@ function RecipeBook() {
                       </>
                     )}
                   </div>
+                </div>
+
+                {/* Who liked or saved this (opted-in only), and your own privacy note.
+                    The wrapper only scopes the shared styles (display: contents). */}
+                <div className="cookbook-guide-app">
+                  <ActivityFaces activity={activity} inline />
+                  {currentUser && (
+                    <ActivityNote
+                      className="activity-note recipe-activity-note"
+                      showActivity={showActivity}
+                      onSetShowActivity={handleSetShowActivity}
+                    />
+                  )}
                 </div>
 
                 {(selected.cuisine || selected.tags.length > 0) && (
@@ -532,12 +597,12 @@ function RecipeBook() {
             ) : loading ? null : (
               <div className="recipe-empty">
                 <p>These pages are blank. Add the first recipe to the volume.</p>
-                {isEboard ? (
+                {currentUser ? (
                   <button type="button" className="book-btn book-btn-primary" onClick={openAdd}>
                     Add a page
                   </button>
                 ) : (
-                  <p className="recipe-empty-note">E-board members can log in below to add one.</p>
+                  <p className="recipe-empty-note">Log in to add one.</p>
                 )}
               </div>
             )}
@@ -558,6 +623,7 @@ function RecipeBook() {
           onLogout={handleLogout}
           onOpenAddPlace={openAdd}
           addLabel="+ Add a page"
+          openToAll
         />
 
         <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} onLogin={login} />

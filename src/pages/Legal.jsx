@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 import './Legal.css'
 
-// Privacy Policy and Terms & Conditions. Starting drafts — have Hunter's Office
-// of Student Activities or a lawyer review before launch. When the terms change,
+// Privacy Policy and Terms & Conditions. Starting drafts — have a lawyer (or the
+// club's school office) review before launch. When the terms change,
 // update EFFECTIVE_DATE and TERMS_VERSION in hooks/useAuth.js.
 const CONTACT_EMAIL = 'cookbookhunter@gmail.com'
 const EFFECTIVE_DATE = 'November 17, 2026'
@@ -31,9 +31,8 @@ export function PrivacyPolicy() {
   return (
     <LegalPage title="Privacy Policy">
       <p>
-        This site is run by the CookBook Club, a group of Hunter College students (“we”, “us”).
-        It is not an official website of Hunter College or CUNY. This policy explains what we
-        collect, why, and your choices.
+        This site is run by the CookBook Club (“we”, “us”). This policy explains what we collect,
+        why, and your choices.
       </p>
 
       <h2>What we collect</h2>
@@ -45,15 +44,15 @@ export function PrivacyPolicy() {
         <li>
           <strong>If you create an account:</strong> your email address, your password (stored
           encrypted by our login provider, so we can’t see it), a display name, an optional profile
-          picture, the places and recipes you save, and the places you like.
+          picture, and the places and recipes you save or like.
         </li>
         <li>
-          <strong>Likes and saves:</strong> each place shows its total number of likes to everyone.
-          Who liked or saved a place is private by default. If you turn on{' '}
-          <strong>Show my name and photo on places I like or save</strong> (in Account Settings or
-          on any place card), your display name and profile picture can appear on places you’ve
-          liked or saved, along with which one you did. Turn it off and they disappear. Saved recipes
-          are always private. Your email is never shown.
+          <strong>Likes and saves:</strong> each place and recipe shows its total number of likes to everyone.
+          Who liked or saved something is private by default. If you turn on{' '}
+          <strong>Show my name and photo on places and recipes I like or save</strong> (in Account Settings or
+          on any place or recipe), your display name and profile picture can appear on places and
+          recipes you’ve liked or saved, along with which one you did. Turn it off and they
+          disappear. Your email is never shown.
         </li>
         <li>
           <strong>Your age:</strong> when you sign up we ask for your date of birth to confirm you
@@ -61,8 +60,9 @@ export function PrivacyPolicy() {
           us or stored. We only keep a yes/no record that you are 13 or older.
         </li>
         <li>
-          <strong>E-board members</strong> who post content may also add a display name, role,
-          profile picture, and the places, recipes and photos they post.
+          <strong>What you post:</strong> recipes and Big Back Lookback photos you add (and their
+          details) are public, shown with your display name. E-board members also post places
+          on the map with their name, role and profile picture.
         </li>
       </ul>
 
@@ -135,9 +135,8 @@ export function Terms() {
   return (
     <LegalPage title="Terms &amp; Conditions">
       <p>
-        These terms cover your use of this site, run by the CookBook Club, a group of Hunter
-        College students (“we”, “us”). It is not an official website of Hunter College or CUNY. By
-        creating an account or using the site, you agree to these terms.
+        These terms cover your use of this site, run by the CookBook Club (“we”, “us”). By creating
+        an account or using the site, you agree to these terms.
       </p>
 
       <h2>Who can have an account</h2>
@@ -156,12 +155,13 @@ export function Terms() {
 
       <h2>Content</h2>
       <p>
-        Places, recipes, photos and other content on the site are posted by CookBook Club e-board
-        members, who keep ownership of what they post. Everyone can add a display name and profile
-        picture: only use a picture you have the right to use, and keep names and pictures
-        respectful. We may remove a name or picture that breaks these rules. You may view and share links to it for
-        personal, non-commercial use. If you believe something on the site infringes your
-        copyright, email us and we’ll review it.
+        Places on the map are posted by CookBook Club e-board members. Any member with an account
+        can post recipes and Big Back Lookback photos, and add a display name and profile picture.
+        You keep ownership of what you post, and you let us show it on this site. Only post
+        recipes, photos and pictures you have the right to share, and keep everything respectful.
+        We may remove anything that breaks these rules. You may view and share links to content
+        here for personal, non-commercial use. If you believe something on the site infringes
+        your copyright, email us and we’ll review it.
       </p>
 
       <h2>Recipes and restaurant info</h2>

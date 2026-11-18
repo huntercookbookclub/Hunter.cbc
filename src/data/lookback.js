@@ -6,7 +6,11 @@ const BUCKET = 'lookback-photos'
 
 function uploaderName(user) {
   const meta = user?.user_metadata || {}
-  return `${meta.first_name || ''} ${meta.last_initial || ''}`.trim() || 'Eboard Member'
+  return (
+    (meta.display_name || '').trim() ||
+    `${meta.first_name || ''} ${meta.last_initial || ''}`.trim() ||
+    'Member'
+  )
 }
 
 // Turn a database row into the shape BigBackLookback.jsx uses.

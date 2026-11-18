@@ -1734,3 +1734,19 @@
   .cookbook-guide-app .face:nth-child(3) { --scatter: 0 2px; }
   .cookbook-guide-app .face:nth-child(4) { --scatter: 0 -10px; }
 }
+
+/* Recipe book: the same faces in a row under the recipe title (ActivityFaces
+   `inline`), sitting at different heights instead of floating beside a card. */
+.cookbook-guide-app .activity-faces.inline {
+  position: static;
+  flex-direction: row;
+  align-items: flex-end;
+  min-height: 56px;
+  margin: 2px 0 12px 4px;
+}
+.cookbook-guide-app .activity-faces.inline .face { margin: 0 -3px 0 0; }
+.cookbook-guide-app .activity-faces.inline .face:nth-child(1) { --scatter: 0 0; }
+.cookbook-guide-app .activity-faces.inline .face:nth-child(2) { --scatter: 0 -12px; }
+.cookbook-guide-app .activity-faces.inline .face:nth-child(3) { --scatter: 0 2px; }
+.cookbook-guide-app .activity-faces.inline .face:nth-child(4) { --scatter: 0 -9px; }
+.cookbook-guide-app .recipe-activity-note { padding: 0; margin: 0 0 14px; }

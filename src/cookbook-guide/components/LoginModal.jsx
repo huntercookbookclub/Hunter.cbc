@@ -18,7 +18,7 @@ const titles = {
 
 // One box, five steps:
 //   login   → email + password
-//   signup  → Hunter email + password + confirm, sends a one-time code
+//   signup  → display name + email + password + confirm, sends a one-time code
 //   verify  → code from the signup email (logs the user in when done)
 //   request → email, sends a one-time password-reset code
 //   reset   → code + new password + confirm (logs the user in when done)

@@ -710,3 +710,10 @@ body .recipe-book-page .cookbook-guide-app .tags-ms-pill {
 
 /* Filter dropdown scrolls on its own without moving the page. */
 .toc-filter-menu { overscroll-behavior: contain; }
+
+/* Like count inside the recipe's Like button. */
+.book-btn-count {
+  margin-left: 6px;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.75;
+}

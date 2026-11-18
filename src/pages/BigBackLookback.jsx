@@ -27,7 +27,7 @@ function Uploader({ uploader }) {
   )
 }
 
-function PhotoCard({ photo, onSave, onDelete }) {
+function PhotoCard({ photo, onSave, onDelete, canModerate }) {
   // Text boxes save when you leave them, only if something changed.
   const saveText = (key) => (e) => {
     const value = e.target.value.trim()
@@ -88,7 +88,8 @@ function PhotoCard({ photo, onSave, onDelete }) {
         <a href={photo.downloadUrl} className="lookback-btn">
           Download
         </a>
-        {photo.owned && (
+        {/* Your own photo, or any photo for e-board (moderation). */}
+        {(photo.owned || canModerate) && (
           <button type="button" className="lookback-btn lookback-btn-danger" onClick={() => onDelete(photo)}>
             Delete
           </button>
@@ -182,12 +183,18 @@ function BigBackLookback() {
       {!loading && photos.length === 0 ? (
         <p className="lookback-empty">
           The board is empty.{' '}
-          {isEboard ? 'Tap “+ Add photos” to hang the first ones.' : 'E-board members can log in with the ⚙️ button to add photos.'}
+          {currentUser ? 'Tap “+ Add photos” to hang the first ones.' : 'Log in with the ⚙️ button to add photos.'}
         </p>
       ) : (
         <div className="lookback-grid">
           {photos.map((photo) => (
-            <PhotoCard key={photo.id} photo={photo} onSave={handleSave} onDelete={handleDelete} />
+            <PhotoCard
+              key={photo.id}
+              photo={photo}
+              onSave={handleSave}
+              onDelete={handleDelete}
+              canModerate={isEboard}
+            />
           ))}
         </div>
       )}
@@ -204,6 +211,7 @@ function BigBackLookback() {
           onLogout={logout}
           onOpenAddPlace={() => fileRef.current?.click()}
           addLabel="+ Add photos"
+          openToAll
         />
         <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} onLogin={login} />
         <AccountSettingsModal

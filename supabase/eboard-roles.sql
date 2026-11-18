@@ -19,12 +19,19 @@ as $$
   select coalesce(auth.jwt() -> 'app_metadata' ->> 'role', '') = 'eboard'
 $$;
 
--- 2. Restrictive write rules on the content tables
+-- 2. Places: e-board only (restrictive). Recipes and Lookback photos used to
+--    be e-board only too; those rules are removed here.
 do $$
 declare
   t text;
 begin
-  foreach t in array array['places', 'recipes', 'lookback_photos'] loop
+  foreach t in array array['recipes', 'lookback_photos'] loop
+    execute format('drop policy if exists "eboard only insert" on public.%I', t);
+    execute format('drop policy if exists "eboard only update" on public.%I', t);
+    execute format('drop policy if exists "eboard only delete" on public.%I', t);
+  end loop;
+
+  foreach t in array array['places'] loop
     execute format('drop policy if exists "eboard only insert" on public.%I', t);
     execute format('drop policy if exists "eboard only update" on public.%I', t);
     execute format('drop policy if exists "eboard only delete" on public.%I', t);
@@ -41,14 +48,14 @@ begin
   end loop;
 end $$;
 
--- 3. Restrictive rules on the content photo buckets. Profile pictures
---    (avatars) are open to every account, limited to its own folder, in
---    profiles-activity.sql.
+-- 3. Place photos: e-board only (restrictive). Recipe and Lookback photos
+--    follow recipes.sql / lookback.sql; profile pictures are open to every
+--    account, limited to its own folder, in profiles-activity.sql.
 drop policy if exists "eboard only uploads" on storage.objects;
 create policy "eboard only uploads" on storage.objects as restrictive
   for insert to authenticated
   with check (
-    bucket_id not in ('place-photos', 'recipe-photos', 'lookback-photos')
+    bucket_id <> 'place-photos'
     or public.is_eboard()
   );
 
@@ -56,7 +63,7 @@ drop policy if exists "eboard only file edits" on storage.objects;
 create policy "eboard only file edits" on storage.objects as restrictive
   for update to authenticated
   using (
-    bucket_id not in ('place-photos', 'recipe-photos', 'lookback-photos')
+    bucket_id <> 'place-photos'
     or public.is_eboard()
   );
 
@@ -64,11 +71,26 @@ drop policy if exists "eboard only file deletes" on storage.objects;
 create policy "eboard only file deletes" on storage.objects as restrictive
   for delete to authenticated
   using (
-    bucket_id not in ('place-photos', 'recipe-photos', 'lookback-photos')
+    bucket_id <> 'place-photos'
     or public.is_eboard()
   );
 
--- 4. Mark the e-board accounts. Replace the emails with your e-board's logins,
+-- 4. Moderation: e-board can remove anyone's recipe or Lookback photo,
+--    including the photo files.
+drop policy if exists "eboard can remove any recipe" on public.recipes;
+create policy "eboard can remove any recipe" on public.recipes
+  for delete to authenticated using (public.is_eboard());
+
+drop policy if exists "eboard can remove any lookback photo" on public.lookback_photos;
+create policy "eboard can remove any lookback photo" on public.lookback_photos
+  for delete to authenticated using (public.is_eboard());
+
+drop policy if exists "eboard can remove any recipe or lookback file" on storage.objects;
+create policy "eboard can remove any recipe or lookback file" on storage.objects
+  for delete to authenticated
+  using (bucket_id in ('recipe-photos', 'lookback-photos') and public.is_eboard());
+
+-- 5. Mark the e-board accounts. Replace the emails with your e-board's logins,
 --    then run just this statement (and again whenever someone joins the e-board).
 -- update auth.users
 --   set raw_app_meta_data = coalesce(raw_app_meta_data, '{}'::jsonb) || '{"role": "eboard"}'
