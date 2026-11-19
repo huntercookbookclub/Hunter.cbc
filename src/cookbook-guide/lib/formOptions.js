@@ -7,16 +7,24 @@ export const categoryOptions = [
 ];
 
 export const cuisineOptions = [
-  'Afghan','American','Asian Fusion','Australian','Bangladeshi','BBQ','Bakery','Boba',
-  'Brazilian','British','Burmese','Cambodian','Canadian',
-  'Caribbean','Chinese','Colombian','Cuban','Dominican','Egyptian','Ethiopian',
-  'Filipino','French','Fusion','Georgian','German','Greek','Hawaiian','Hong Kong',
-  'Indian','Indonesian','Irish','Israeli','Italian','Japanese','Korean','Kosher',
-  'Laotian','Latin Fusion','Lebanese','Malaysian','Mediterranean Fusion','Mexican',
-  'Mongolian','Moroccan','Nepali','Nigerian','Pakistani','Peruvian','Persian',
-  'Pizza','Polish','Portuguese','Puerto Rican','Russian','Scandinavian','Seafood',
-  'Singaporean','South African','Spanish','Sri Lankan','Steakhouse','Taiwanese',
-  'Thai','Turkish','Uzbek','Vegan','Vegetarian','Venezuelan','Vietnamese','Other'
+  'Afghan','Albanian','Algerian','American','Argentinian','Armenian','Asian Fusion',
+  'Australian','Austrian','Bakery','Bangladeshi','Barbadian','BBQ','Belgian','Bhutanese',
+  'Boba','Bolivian','Bosnian','Brazilian','British','Burmese','Cajun / Creole','Cambodian',
+  'Cameroonian','Canadian','Caribbean','Chilean','Chinese','Colombian','Congolese',
+  'Costa Rican','Croatian','Cuban','Czech','Dominican','Dutch','Ecuadorian','Egyptian',
+  'Emirati','Eritrean','Ethiopian','Fijian','Filipino','French','Fusion','Georgian',
+  'German','Ghanaian','Greek','Guatemalan','Guyanese','Haitian','Hawaiian','Honduran',
+  'Hong Kong','Hungarian','Indian','Indonesian','Iraqi','Irish','Israeli','Italian',
+  'Ivorian','Jamaican','Japanese','Jordanian','Kazakh','Kenyan','Korean','Kosher','Kurdish',
+  'Laotian','Latin Fusion','Lebanese','Liberian','Malaysian','Mediterranean Fusion',
+  'Mexican','Middle Eastern','Mongolian','Moroccan','Nepali','Nicaraguan','Nigerian',
+  'Pakistani','Palestinian','Panamanian','Paraguayan','Persian','Peruvian','Pizza','Polish',
+  'Portuguese','Puerto Rican','Romanian','Russian','Salvadoran','Samoan','Saudi',
+  'Scandinavian','Seafood','Senegalese','Serbian','Sierra Leonean','Singaporean','Somali',
+  'Soul Food','South African','Spanish','Sri Lankan','Steakhouse','Sudanese','Swiss',
+  'Syrian','Taiwanese','Tex-Mex','Thai','Tibetan','Trinidadian','Tunisian','Turkish',
+  'Ukrainian','Uruguayan','Uyghur','Uzbek','Vegan','Vegetarian','Venezuelan','Vietnamese',
+  'Yemeni','Other'
 ];
 
 export const recipeTags = [

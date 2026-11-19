@@ -10,7 +10,7 @@ export const cuisineEmoji = {
   Chinese: '🇨🇳', Japanese: '🇯🇵', Korean: '🇰🇷', Taiwanese: '🇹🇼', Mongolian: '🇲🇳',
   Thai: '🇹🇭', Vietnamese: '🇻🇳', Malaysian: '🇲🇾', Indonesian: '🇮🇩', Filipino: '🇵🇭',
   Singaporean: '🇸🇬', Cambodian: '🇰🇭', Burmese: '🇲🇲', Laotian: '🇱🇦',
-  Indian: '🇮🇳', Pakistani: '🇵🇰', Bangladeshi: '🇧🇩', 'Sri Lankan': '🇱🇰', Nepali: '🇳🇵',
+  Indian: '🇮🇳', Pakistani: '🇵🇰', Palestinian: '🇵🇸', Bangladeshi: '🇧🇩', 'Sri Lankan': '🇱🇰', Nepali: '🇳🇵',
   Turkish: '🇹🇷', Lebanese: '🇱🇧', Persian: '🇮🇷', Israeli: '🇮🇱', Afghan: '🇦🇫', Uzbek: '🇺🇿',
   Italian: '🇮🇹', French: '🇫🇷', Spanish: '🇪🇸', Greek: '🇬🇷', Portuguese: '🇵🇹', German: '🇩🇪',
   British: '🇬🇧', Irish: '🇮🇪', Polish: '🇵🇱', Russian: '🇷🇺', Georgian: '🇬🇪', Scandinavian: '🇸🇪',
@@ -22,5 +22,6 @@ export const cuisineEmoji = {
   Vegan: '🌱', Vegetarian: '🥦', Halal: '☪️', Kosher: '✡️', Seafood: '🦐', BBQ: '🍖',
   Steakhouse: '🥩', Pizza: '🍕', Bakery: '🥐', Boba: '🧋',
   'Asian Fusion': '✨', 'Latin Fusion': '✨', 'Mediterranean Fusion': '✨', Fusion: '✨',
+  Albanian: '🇦🇱', Algerian: '🇩🇿', Armenian: '🇦🇲', Austrian: '🇦🇹', Barbadian: '🇧🇧', Belgian: '🇧🇪', Bhutanese: '🇧🇹', Bolivian: '🇧🇴', Bosnian: '🇧🇦', 'Cajun / Creole': '⚜️', Cameroonian: '🇨🇲', Chilean: '🇨🇱', Congolese: '🇨🇩', 'Costa Rican': '🇨🇷', Croatian: '🇭🇷', Czech: '🇨🇿', Dutch: '🇳🇱', Ecuadorian: '🇪🇨', Emirati: '🇦🇪', Eritrean: '🇪🇷', Fijian: '🇫🇯', Ghanaian: '🇬🇭', Guatemalan: '🇬🇹', Guyanese: '🇬🇾', Haitian: '🇭🇹', Honduran: '🇭🇳', Hungarian: '🇭🇺', Iraqi: '🇮🇶', Ivorian: '🇨🇮', Jamaican: '🇯🇲', Jordanian: '🇯🇴', Kazakh: '🇰🇿', Kenyan: '🇰🇪', Kurdish: '🫓', Liberian: '🇱🇷', 'Middle Eastern': '🧆', Nicaraguan: '🇳🇮', Panamanian: '🇵🇦', Paraguayan: '🇵🇾', Romanian: '🇷🇴', Salvadoran: '🇸🇻', Samoan: '🇼🇸', Saudi: '🇸🇦', Senegalese: '🇸🇳', Serbian: '🇷🇸', 'Sierra Leonean': '🇸🇱', Somali: '🇸🇴', 'Soul Food': '🍗', Sudanese: '🇸🇩', Swiss: '🇨🇭', Syrian: '🇸🇾', 'Tex-Mex': '🌮', Tibetan: '🏔️', Trinidadian: '🇹🇹', Tunisian: '🇹🇳', Ukrainian: '🇺🇦', Uruguayan: '🇺🇾', Uyghur: '🥟', Yemeni: '🇾🇪',
   Other: '🍴',
 };
