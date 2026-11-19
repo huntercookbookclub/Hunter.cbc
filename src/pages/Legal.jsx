@@ -5,7 +5,7 @@ import SiteLogo from '../components/SiteLogo'
 // Privacy Policy and Terms & Conditions. Starting drafts — have a lawyer (or the
 // club's school office) review before launch. When the terms change,
 // update EFFECTIVE_DATE and TERMS_VERSION in hooks/useAuth.js.
-const CONTACT_EMAIL = 'cookbookhunter@gmail.com'
+import { CONTACT_EMAIL } from '../contact'
 const EFFECTIVE_DATE = 'November 17, 2026'
 
 // DMCA designated agent, exactly as registered with the U.S. Copyright Office

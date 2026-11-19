@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { FEEDBACK_MAILTO, INSTAGRAM_DM } from '../../contact';
 import { isEboardUser } from "../hooks/useAuth";
 import BookmarkIcon from "./BookmarkIcon";
 import NotificationBell from "./NotificationBell";
@@ -107,6 +108,26 @@ export default function EboardControls({
                 <BookmarkIcon filled /> Saved
               </button>
             )}
+            <a
+              role="menuitem"
+              className="gear-menu-item"
+              href={FEEDBACK_MAILTO}
+              onClick={() => setMenuOpen(false)}
+              style={{ textDecoration: 'none' }}
+            >
+              ✉️ Feedback / Issues
+            </a>
+            <a
+              role="menuitem"
+              className="gear-menu-item"
+              href={INSTAGRAM_DM}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMenuOpen(false)}
+              style={{ textDecoration: 'none' }}
+            >
+              💬 DM us on Instagram
+            </a>
             <button
               role="menuitem"
               className="gear-menu-item danger"

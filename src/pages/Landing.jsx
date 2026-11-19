@@ -1,3 +1,4 @@
+import { FEEDBACK_MAILTO, INSTAGRAM_DM } from '../contact'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import profilePic from '../assets/cbcpic.jpg'
@@ -131,6 +132,10 @@ function Landing() {
         <p className="legal-links">
           <Link to="/privacy">Privacy Policy</Link> · <Link to="/terms">Terms</Link> ·{' '}
           <Link to="/copyright">Copyright</Link>
+        </p>
+        <p className="legal-links">
+          Feedback or issues? <a href={FEEDBACK_MAILTO}>Email us</a> or{' '}
+          <a href={INSTAGRAM_DM} target="_blank" rel="noopener noreferrer">send us a DM on Instagram</a>
         </p>
       </div>
     </div>

@@ -9,6 +9,9 @@
 alter table public.places
   add column if not exists author_id uuid references auth.users (id) on delete set null default auth.uid();
 
+-- Members have no role, so recommender_role must allow null.
+alter table public.places alter column recommender_role drop not null;
+
 -- Existing places: link them to the account whose name they show.
 update public.places p
 set author_id = u.id
