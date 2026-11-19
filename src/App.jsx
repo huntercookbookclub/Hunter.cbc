@@ -4,7 +4,7 @@ import Landing from './pages/Landing'
 import RecipeBook from './pages/RecipeBook'
 import CookbookGuidePage from './cookbook-guide/CookbookGuidePage'
 import BigBackLookback from './pages/BigBackLookback'
-import { PrivacyPolicy, Terms } from './pages/Legal'
+import { Copyright, PrivacyPolicy, Terms } from './pages/Legal'
 
 function App() {
   return (
@@ -16,6 +16,7 @@ function App() {
         <Route path="/big-back-lookback" element={<BigBackLookback />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<Terms />} />
+        <Route path="/copyright" element={<Copyright />} />
       </Routes>
     </BrowserRouter>
   )

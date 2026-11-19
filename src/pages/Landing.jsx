@@ -101,7 +101,8 @@ function Landing() {
         </div>
 
         <p className="legal-links">
-          <Link to="/privacy">Privacy Policy</Link> · <Link to="/terms">Terms</Link>
+          <Link to="/privacy">Privacy Policy</Link> · <Link to="/terms">Terms</Link> ·{' '}
+          <Link to="/copyright">Copyright</Link>
         </p>
       </div>
     </div>

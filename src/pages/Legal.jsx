@@ -7,6 +7,23 @@ import './Legal.css'
 const CONTACT_EMAIL = 'cookbookhunter@gmail.com'
 const EFFECTIVE_DATE = 'November 17, 2026'
 
+// DMCA designated agent, exactly as registered with the U.S. Copyright Office
+// (dmca.copyright.gov, registration DMCA-1086785). Keep this in sync whenever the
+// registration is amended, and renew it before it expires (November 2029).
+const DMCA_AGENT = {
+  name: 'Copyright Agent',
+  organization: 'CookBook Club',
+  address: '85 Chrystie St, New York, NY 10002',
+  phone: '(347) 559-0148',
+  email: 'copyright@cookbookclub.nyc',
+}
+
+const LEGAL_PAGES = [
+  { title: 'Privacy Policy', to: '/privacy' },
+  { title: 'Terms & Conditions', to: '/terms' },
+  { title: 'Copyright & DMCA', to: '/copyright' },
+]
+
 function LegalPage({ title, children }) {
   return (
     <div className="legal-page">
@@ -19,8 +36,13 @@ function LegalPage({ title, children }) {
         {children}
         <p className="legal-footer">
           Questions? Email{' '}
-          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. See also our{' '}
-          {title === 'Privacy Policy' ? <Link to="/terms">Terms &amp; Conditions</Link> : <Link to="/privacy">Privacy Policy</Link>}.
+          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. See also:{' '}
+          {LEGAL_PAGES.filter((page) => page.title !== title).map((page, i) => (
+            <span key={page.to}>
+              {i > 0 && ' · '}
+              <Link to={page.to}>{page.title}</Link>
+            </span>
+          ))}
         </p>
       </article>
     </div>
@@ -161,7 +183,8 @@ export function Terms() {
         recipes, photos and pictures you have the right to share, and keep everything respectful.
         We may remove anything that breaks these rules. You may view and share links to content
         here for personal, non-commercial use. If you believe something on the site infringes
-        your copyright, email us and we’ll review it.
+        your copyright, see our <Link to="/copyright">Copyright &amp; DMCA</Link> page. We
+        remove the accounts of people who repeatedly post content that infringes copyright.
       </p>
 
       <h2>Recipes and restaurant info</h2>
@@ -193,6 +216,69 @@ export function Terms() {
 
       <h2>Law</h2>
       <p>These terms are governed by the laws of the State of New York.</p>
+    </LegalPage>
+  )
+}
+
+export function Copyright() {
+  const agent = DMCA_AGENT
+  return (
+    <LegalPage title="Copyright & DMCA">
+      <p>
+        Members can post recipes, photos and profile pictures on this site. We respect copyright
+        and respond to notices of claimed infringement under the Digital Millennium Copyright Act
+        (DMCA).
+      </p>
+
+      <h2>Reporting content that infringes your copyright</h2>
+      <p>Send a written notice to our designated agent (below) that includes:</p>
+      <ol>
+        <li>Your physical or electronic signature.</li>
+        <li>The copyrighted work you believe was infringed.</li>
+        <li>
+          Where the material is on this site, with enough detail for us to find it (for example
+          the page link and the recipe, photo or profile it appears on).
+        </li>
+        <li>Your name, mailing address, phone number and email.</li>
+        <li>
+          A statement that you believe in good faith the use isn’t authorized by the copyright
+          owner, its agent or the law.
+        </li>
+        <li>
+          A statement that the information in your notice is accurate and, under penalty of
+          perjury, that you are the copyright owner or authorized to act for them.
+        </li>
+      </ol>
+      <p>When we receive a valid notice, we remove or disable the material promptly.</p>
+
+      <h2>Designated agent</h2>
+      <address className="legal-address">
+        {agent.name}
+        <br />
+        {agent.organization}
+        <br />
+        {agent.address}
+        <br />
+        Phone: {agent.phone}
+        <br />
+        Email: <a href={`mailto:${agent.email}`}>{agent.email}</a>
+      </address>
+
+      <h2>If your content was removed</h2>
+      <p>
+        If you believe something you posted was removed by mistake or misidentification, you can
+        send a counter-notice to the same agent with: your signature; the material that was
+        removed and where it appeared; a statement under penalty of perjury that you believe in
+        good faith it was removed by mistake or misidentification; your name, address and phone
+        number; and a statement that you consent to the jurisdiction of the federal court for your
+        address and will accept service from the person who sent the original notice. We may then
+        restore the material unless the copyright owner tells us they’ve filed a court action.
+      </p>
+
+      <h2>Repeat infringers</h2>
+      <p>
+        We remove the accounts of members who repeatedly post content that infringes copyright.
+      </p>
     </LegalPage>
   )
 }
