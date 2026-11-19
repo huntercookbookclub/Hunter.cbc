@@ -12,6 +12,7 @@ function mapRow(row, currentUserId) {
     id: row.id,
     title: row.title,
     author: row.author,
+    authorRole: row.author_role || null, // e-board only
     cuisine: row.cuisine || '',
     tags: row.tags || [],
     image: row.image_url || '',
@@ -43,12 +44,13 @@ export async function getRecipes(currentUserId) {
   return data.map((row) => mapRow(row, currentUserId))
 }
 
-export async function addRecipe({ title, author, cuisine, tags, ingredients, instructions, imageFile }) {
+export async function addRecipe({ title, author, authorRole, cuisine, tags, ingredients, instructions, imageFile }) {
   const { data: inserted, error } = await sbClient
     .from('recipes')
     .insert({
       title: title.trim(),
       author: author.trim() || 'Member',
+      author_role: authorRole || null,
       cuisine,
       tags,
       ingredients: cleanIngredients(ingredients),

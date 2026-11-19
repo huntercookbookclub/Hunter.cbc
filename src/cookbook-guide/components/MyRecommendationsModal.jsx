@@ -11,11 +11,8 @@ export default function MyRecommendationsModal({
   onDeleted,
 }) {
   const meta = currentUser?.user_metadata || {};
-  const recName = `${meta.first_name || ''} ${meta.last_initial || ''}`.trim();
   // Names this account may have posted under (older places could have the email).
-  const matchNames = new Set(
-    [recName, (meta.display_name || '').trim(), currentUser?.email].filter(Boolean)
-  );
+  const matchNames = new Set([(meta.display_name || '').trim(), currentUser?.email].filter(Boolean));
 
   // Matches the original's logic: places are tied to the user by the
   // recommender_name string stored on each row, not a user_id foreign key.

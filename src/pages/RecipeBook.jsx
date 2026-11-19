@@ -6,7 +6,7 @@ import {
   getRecipes,
   updateRecipe,
 } from '../data/recipes'
-import { useAuth } from '../cookbook-guide/hooks/useAuth'
+import { isEboardUser, useAuth } from '../cookbook-guide/hooks/useAuth'
 import { useSaved } from '../cookbook-guide/hooks/useSaved'
 import { useLikes } from '../cookbook-guide/hooks/useLikes'
 import { useShowActivity } from '../cookbook-guide/hooks/useProfile'
@@ -50,15 +50,14 @@ function toSteps(instructions) {
     .filter(Boolean)
 }
 
-// Name shown as a recipe's author: the display name (everyone has one), or an
-// e-board member's first name + last initial. Never the email: that's private.
+// Name shown as a recipe's author: the display name. Never the email: that's private.
 function authorName(user) {
-  const meta = user?.user_metadata || {}
-  return (
-    (meta.display_name || '').trim() ||
-    `${meta.first_name || ''} ${meta.last_initial || ''}`.trim() ||
-    'Member'
-  )
+  return (user?.user_metadata?.display_name || '').trim() || 'Member'
+}
+
+// E-board authors' role (Account Settings), shown next to their name.
+function authorRole(user) {
+  return isEboardUser(user) ? (user.user_metadata?.role || '').trim() || 'Eboard' : null
 }
 
 // On phones the pages stack, so the right page is off-screen after a tap.
@@ -268,6 +267,7 @@ function RecipeBook() {
       // New pages are signed by whoever is logged in (same name format as the map);
       // edits keep the original author.
       author: mode === 'edit' && selected ? selected.author : authorName(currentUser),
+      authorRole: authorRole(currentUser), // used for new pages only
       cuisine: form.cuisine,
       tags: form.tags,
       ingredients: form.ingredients.split('\n'),
@@ -502,6 +502,7 @@ function RecipeBook() {
                     <h2>{selected.title}</h2>
                     <p className="recipe-byline">
                       Written by {selected.author}
+                      {selected.authorRole ? `, ${selected.authorRole}` : ''}
                     </p>
                   </div>
                   <div className="recipe-actions">

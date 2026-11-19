@@ -145,11 +145,8 @@ export default function AddPlaceModal({ open, onClose, currentUser, editingPlace
 
     const meta = currentUser?.user_metadata || {};
     // Shown publicly on the map, so never the email.
-    const recName =
-      `${meta.first_name || ''} ${meta.last_initial || ''}`.trim() ||
-      (meta.display_name || '').trim() ||
-      'Eboard Member';
-    const recRole = meta.role || 'Eboard';
+    const recName = (meta.display_name || '').trim() || 'Eboard Member';
+    const recRole = (meta.role || '').trim() || 'Eboard';
     const recAvatarUrl = meta.avatar_url || null;
 
     const payload = {

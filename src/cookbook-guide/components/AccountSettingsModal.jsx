@@ -7,16 +7,14 @@ import { setThemeChoice, useThemeChoice } from '../../theme';
 
 export default function AccountSettingsModal({ open, onClose, currentUser, onSaved }) {
   const theme = useThemeChoice();
-  const [firstName, setFirstName] = useState('');
-  const [lastInitial, setLastInitial] = useState('');
   const [role, setRole] = useState('');
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [pendingFile, setPendingFile] = useState(null);
   const [removeFlag, setRemoveFlag] = useState(false);
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
-  // Everyone has a picture and a display name; e-board also keep first name,
-  // last initial and role (used on their place recommendations).
+  // Everyone has a picture and a display name; e-board also have a role,
+  // shown on their places and recipes.
   const isEboard = isEboardUser(currentUser);
   const [displayName, setDisplayName] = useState('');
   const { showActivity, setShowActivity } = useShowActivity(currentUser);
@@ -30,8 +28,6 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
   useEffect(() => {
     if (open) {
       const meta = currentUser?.user_metadata || {};
-      setFirstName(meta.first_name || '');
-      setLastInitial(meta.last_initial || '');
       setRole(meta.role || '');
       setDisplayName(meta.display_name || '');
       setAvatarUrl(meta.avatar_url || null);
@@ -84,7 +80,7 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
   const handleSave = async () => {
     setError('');
     const name = displayName.trim();
-    if (!isEboard && (!name || name.length > 40)) {
+    if (!name || name.length > 40) {
       setError('Add a display name (up to 40 characters).');
       return;
     }
@@ -92,12 +88,9 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
 
     setSaving(true);
 
-    // Public name, worked out the same way as sync_profile in profiles-activity.sql.
     const meta = currentUser?.user_metadata || {};
-    const publicName = isEboard
-      ? meta.display_name?.trim() || `${firstName.trim()} ${lastInitial.trim()}`.trim()
-      : name;
-    if (publicName && !(await isDisplayNameAvailable(publicName))) {
+    const oldName = (meta.display_name || '').trim();
+    if (name.toLowerCase() !== oldName.toLowerCase() && !(await isDisplayNameAvailable(name))) {
       setSaving(false);
       setError(NAME_TAKEN_MESSAGE);
       return;
@@ -123,15 +116,28 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
     }
 
     const { error: updateErr } = await sbClient.auth.updateUser({
-      data: isEboard
-        ? {
-            first_name: firstName.trim(),
-            last_initial: lastInitial.trim(),
-            role: role.trim(),
-            avatar_url: finalAvatarUrl,
-          }
-        : { display_name: name, avatar_url: finalAvatarUrl },
+      data: {
+        display_name: name,
+        avatar_url: finalAvatarUrl,
+        ...(isEboard && { role: role.trim() }),
+      },
     });
+
+    // Places and recipes keep a copy of the poster's name, role and picture.
+    // Bring this account's copies up to date.
+    if (!updateErr) {
+      const roleLabel = role.trim() || 'Eboard';
+      await sbClient
+        .from('recipes')
+        .update({ author: name, author_role: isEboard ? roleLabel : null })
+        .eq('author_id', currentUser.id);
+      if (isEboard && oldName) {
+        await sbClient
+          .from('places')
+          .update({ recommender_name: name, recommender_role: roleLabel, recommender_avatar_url: finalAvatarUrl })
+          .eq('recommender_name', oldName);
+      }
+    }
 
     if (!updateErr && share !== showActivity) {
       const shareErr = await setShowActivity(share);
@@ -165,7 +171,7 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
               style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
             />
           ) : (
-            <span>{((isEboard ? firstName : displayName) || '?')[0].toUpperCase()}</span>
+            <span>{(displayName || '?')[0].toUpperCase()}</span>
           )}
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -198,43 +204,29 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
       </div>
 
       <div className="e-section-label">Display name</div>
-      {isEboard ? (
-        <>
-          <input
-            type="text"
-            className="e-input"
-            placeholder="First name"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-          <input
-            type="text"
-            className="e-input"
-            placeholder="Last initial"
-            maxLength={1}
-            value={lastInitial}
-            onChange={(e) => setLastInitial(e.target.value)}
-          />
+      <input
+        type="text"
+        className="e-input"
+        placeholder="e.g. Maya C."
+        autoComplete="nickname"
+        maxLength={40}
+        value={displayName}
+        onChange={(e) => setDisplayName(e.target.value)}
+      />
 
+      {isEboard && (
+        <>
           <div className="e-section-label">Role</div>
           <input
             type="text"
             className="e-input"
             placeholder="e.g. President, Treasurer..."
+            maxLength={40}
             value={role}
             onChange={(e) => setRole(e.target.value)}
           />
+          <p className="e-hint">Shown with your name on places and recipes you post.</p>
         </>
-      ) : (
-        <input
-          type="text"
-          className="e-input"
-          placeholder="e.g. Maya C."
-          autoComplete="nickname"
-          maxLength={40}
-          value={displayName}
-          onChange={(e) => setDisplayName(e.target.value)}
-        />
       )}
 
       <div className="e-section-label">Privacy</div>
