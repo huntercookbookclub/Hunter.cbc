@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import './Legal.css'
+import SiteLogo from '../components/SiteLogo'
 
 // Privacy Policy and Terms & Conditions. Starting drafts — have a lawyer (or the
 // club's school office) review before launch. When the terms change,
@@ -27,10 +28,8 @@ const LEGAL_PAGES = [
 function LegalPage({ title, children }) {
   return (
     <div className="legal-page">
+      <SiteLogo corner />
       <article className="legal-card">
-        <Link to="/" className="legal-back">
-          ← Back to CookBook Club
-        </Link>
         <h1>{title}</h1>
         <p className="legal-date">Effective {EFFECTIVE_DATE}</p>
         {children}

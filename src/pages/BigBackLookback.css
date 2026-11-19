@@ -32,22 +32,9 @@
 .lookback-header {
   max-width: 1200px;
   margin: 0 auto 8px;
+  /* Room for the fixed top-right buttons (Log in, bell, gear) above the title. */
+  padding-top: max(36px, var(--logo-clear));
   text-align: center;
-}
-
-.lookback-back {
-  display: inline-block;
-  margin-bottom: 14px;
-  color: var(--red-text);
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-decoration: none;
-}
-@media (hover: hover) and (pointer: fine) {
-  .lookback-back:hover {
-    text-decoration: underline;
-  }
 }
 
 .lookback-title {

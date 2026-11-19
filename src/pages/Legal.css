@@ -4,7 +4,7 @@
   min-height: 100dvh;
   display: flex;
   justify-content: center;
-  padding: calc(48px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(48px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  padding: calc(48px + var(--logo-clear) + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(48px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
   background: linear-gradient(160deg in oklch, light-dark(oklch(100% 0.0000 0.00), oklch(25.0% 0.0000 0.00)) 0%, light-dark(oklch(90.93% 0.0337 24.59), oklch(20.5% 0.0202 24.59)) 45%, light-dark(oklch(79.04% 0.0766 24.97), oklch(14.5% 0.0460 24.97)) 100%);
   background-attachment: fixed;
 }
@@ -24,20 +24,6 @@
   line-height: 1.6;
 }
 
-.legal-back {
-  display: inline-block;
-  margin-bottom: 16px;
-  color: light-dark(oklch(53.13% 0.2015 5.62), oklch(70.0% 0.2015 5.62));
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .legal-back:hover {
-    text-decoration: underline;
-  }
-}
 
 .legal-card h1 {
   margin: 0;

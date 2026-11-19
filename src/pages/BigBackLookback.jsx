@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { addPhotos, deletePhoto, getPhotos, syncUploader, updatePhoto } from '../data/lookback'
 import { useAuth } from '../cookbook-guide/hooks/useAuth'
 import { sbClient } from '../cookbook-guide/lib/supabaseClient'
 import EboardControls from '../cookbook-guide/components/EboardControls'
+import SiteLogo from '../components/SiteLogo'
 import LoginModal from '../cookbook-guide/components/LoginModal'
 import AccountSettingsModal from '../cookbook-guide/components/AccountSettingsModal'
 import '../cookbook-guide/fonts.css'
@@ -169,10 +169,8 @@ function BigBackLookback() {
 
   return (
     <div className="lookback-page">
+      <SiteLogo corner />
       <header className="lookback-header">
-        <Link to="/" className="lookback-back">
-          ← Back to CookBook Club
-        </Link>
         <h1 className="lookback-title">The Big Back Lookback</h1>
       </header>
 

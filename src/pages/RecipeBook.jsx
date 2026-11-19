@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
 import {
   addRecipe,
   deleteRecipe,
@@ -16,6 +15,7 @@ import HeartIcon from '../cookbook-guide/components/HeartIcon'
 import SavedListModal from '../cookbook-guide/components/SavedListModal'
 import BookmarkIcon from '../cookbook-guide/components/BookmarkIcon'
 import EboardControls from '../cookbook-guide/components/EboardControls'
+import SiteLogo from '../components/SiteLogo'
 import LoginModal from '../cookbook-guide/components/LoginModal'
 import AccountSettingsModal from '../cookbook-guide/components/AccountSettingsModal'
 import Modal from '../cookbook-guide/components/Modal'
@@ -316,11 +316,9 @@ function RecipeBook() {
 
   return (
     <div className="recipe-book-page">
+      <SiteLogo corner />
 
       <header className="recipe-book-header">
-        <Link to="/" className="recipe-book-back">
-          ← Back to CookBook Club
-        </Link>
         <h1 className="recipe-book-title">The CookBook Recipe Book</h1>
       </header>
 

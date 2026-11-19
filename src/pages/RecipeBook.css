@@ -59,6 +59,8 @@
 .recipe-book-header {
   max-width: 1040px;
   margin: 0 auto 28px;
+  /* Room for the fixed top-right buttons (Log in, bell, gear) above the title. */
+  padding-top: max(36px, var(--logo-clear));
   text-align: center;
   animation: fade-rise 0.7s ease both;
 }
@@ -74,23 +76,6 @@
   }
 }
 
-.recipe-book-back {
-  display: inline-block;
-  margin-bottom: 14px;
-  color: var(--gilt-soft);
-  text-decoration: none;
-  font-size: 0.8125rem;
-  letter-spacing: 0.04em;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.2s ease, color 0.2s ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .recipe-book-back:hover {
-    color: light-dark(oklch(91.35% 0.0569 91.79), oklch(91.3% 0.0569 91.79));
-    border-bottom-color: var(--gilt);
-  }
-}
 
 .recipe-book-title {
   font-family: 'ClashDisplay', sans-serif;
@@ -648,7 +633,7 @@ body .recipe-book-page .cookbook-guide-app .tags-ms-pill {
 }
 
 /* Press feedback (phones have no hover) and keyboard focus. */
-:is(.book-btn, .toc-item, .recipe-book-back):active {
+:is(.book-btn, .toc-item):active {
   transform: scale(0.97);
   transition-duration: 0.08s;
 }

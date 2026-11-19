@@ -46,6 +46,36 @@ body {
   min-height: 100dvh;
 }
 
+/* CookBook Club logo (components/SiteLogo.jsx): links back to the landing page. */
+.site-logo {
+  display: block;
+  width: fit-content;
+  border-radius: 12px;
+  transition: transform 0.15s;
+}
+.site-logo img { display: block; }
+.site-logo:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) {
+  .site-logo:hover { transform: translateY(-1px); }
+}
+/* Corner logo is 96px tall (56px on phones). Below 1280px wide it would sit on
+   the centered titles, so pages start their content under it there. */
+:root { --logo-h: 96px; --logo-clear: 0px; }
+@media (max-width: 1280px) { :root { --logo-clear: calc(var(--logo-h) + 8px); } }
+@media (max-width: 860px) { :root { --logo-h: 56px; } }
+.site-logo.corner {
+  position: absolute;
+  top: calc(16px + env(safe-area-inset-top, 0px));
+  left: max(20px, env(safe-area-inset-left, 0px));
+  z-index: 10;
+}
+.site-logo.corner img {
+  height: var(--logo-h);
+  width: auto;
+  filter: drop-shadow(0 1px 4px light-dark(oklch(0% 0 0 / 0.25), oklch(0% 0 0 / 0.45)));
+}
+
+
 /* ── MOBILE BASELINE ── */
 html {
   -webkit-tap-highlight-color: transparent; /* no gray flash on tap; every control has its own :active */
@@ -67,7 +97,7 @@ button, a, summary, label, input, select, textarea, [role='button'] {
 /* Long-pressing a control shouldn't select its label or pop the link callout.
    Text that is content (recipes, addresses, legal pages) stays selectable. */
 button, summary, [role='button'], [role='menuitem'],
-.link-button, .back-to-landing-btn, .recipe-book-back, .legal-back, .lookback-back,
+.link-button,
 .chip, .toc-item, .sheet-handle {
   user-select: none;
   -webkit-user-select: none;

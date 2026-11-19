@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom';
-import { logoDataUri } from '../lib/logo';
+import SiteLogo from '../../components/SiteLogo';
 import { FilterIcon } from './Icons';
 
 const typeConfig = [
@@ -19,15 +18,12 @@ export default function TopBar({ filters, filterPanelOpen, onToggleFilterPanel }
         <div className="logo-col">
           <div className="logo-block">
             <div className="logo-img">
-              <img src={logoDataUri} alt="CookBook Guide" />
+              <SiteLogo />
             </div>
           </div>
         </div>
 
         <div className="controls-col">
-          <Link to="/" className="back-to-landing-btn">
-            ← Back to CookBook Club
-          </Link>
 
           <div className="controls-row">
             <button

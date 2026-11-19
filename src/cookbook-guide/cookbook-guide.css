@@ -399,29 +399,6 @@
 /* Let the chip row shrink and scroll instead of overflowing the column. */
 .cookbook-guide-app .controls-row .header-type-row { min-width: 0; }
 
-.cookbook-guide-app .back-to-landing-btn {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  padding: 4px 12px;
-  border-radius: 999px;
-  /* Solid white chip, like the type chips. */
-  background: light-dark(oklch(100% 0.0000 0.00), oklch(25.0% 0.0000 0.00));
-  border: 1px solid light-dark(oklch(0% 0.0000 0.00 / 0.06), oklch(92.0% 0.0000 0.00 / 0.084));
-  color: var(--ink);
-  font-size: 0.78rem;
-  font-weight: 600;
-  text-decoration: none;
-  box-shadow: 0 1px 4px light-dark(oklch(0% 0.0000 0.00 / 0.18), oklch(0.0% 0.0000 0.00 / 0.324));
-  transition: background 0.15s, transform 0.15s;
-}
-@media (hover: hover) and (pointer: fine) {
-  .cookbook-guide-app .back-to-landing-btn:hover {
-    background: light-dark(oklch(97.05% 0.0098 87.47), oklch(23.5% 0.0059 87.47));
-    transform: translateY(-1px);
-  }
-}
-
 .cookbook-guide-app .header-type-row {
   display: flex;
   align-items: center;
@@ -1507,7 +1484,7 @@
 }
 
 /* ── PRESS FEEDBACK (phones have no hover) ── */
-.cookbook-guide-app :is(.chip, .search-toggle-btn, .back-to-landing-btn, .add-place-btn, .e-btn-primary, .e-btn-secondary, .my-rec-actions button):active {
+.cookbook-guide-app :is(.chip, .search-toggle-btn, .add-place-btn, .e-btn-primary, .e-btn-secondary, .my-rec-actions button):active {
   transform: scale(0.96);
   transition-duration: 0.08s;
 }
@@ -1533,7 +1510,7 @@
   .cookbook-guide-app .logo-col,
   .cookbook-guide-app .controls-col { flex-basis: 100%; }
   .cookbook-guide-app .controls-row { gap: 8px; align-items: center; }
-  .cookbook-guide-app .logo-img img { height: 64px; }
+  .cookbook-guide-app .logo-img img { height: var(--logo-h); }
   .cookbook-guide-app .search-toggle-btn {
     margin-top: 0;
     width: 36px;
