@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { logoDataUri } from '../lib/logo';
+import { FilterIcon } from './Icons';
 
 const typeConfig = [
   { cat: 'restaurant', label: 'Restaurant', emoji: '🍽️' },
@@ -32,9 +33,10 @@ export default function TopBar({ filters, filterPanelOpen, onToggleFilterPanel }
             <button
               className={`search-toggle-btn${anySecondaryActive ? ' has-active' : ''}`}
               title="More filters"
+              aria-label="More filters"
               onClick={onToggleFilterPanel}
             >
-              🔍
+              <FilterIcon />
             </button>
 
             <div className="header-type-row">

@@ -696,12 +696,12 @@ body .recipe-book-page .cookbook-guide-app .tags-ms-pill {
 
   /* Pages stack, so the top-right corner would sit on the title; dock the gear,
      "+ Add" button and menu at the bottom-right instead. */
-  body .recipe-book-page .cookbook-guide-app :is(.eboard-trigger, .add-place-btn) {
+  body .recipe-book-page .cookbook-guide-app :is(.eboard-trigger, .add-place-btn, .notif-bell) {
     top: auto;
     bottom: calc(20px + env(safe-area-inset-bottom, 0px));
   }
 
-  body .recipe-book-page .cookbook-guide-app .gear-menu {
+  body .recipe-book-page .cookbook-guide-app :is(.gear-menu, .notif-menu) {
     top: auto;
     bottom: calc(20px + env(safe-area-inset-bottom, 0px) + var(--gear-size) + 8px);
     transform-origin: bottom right;

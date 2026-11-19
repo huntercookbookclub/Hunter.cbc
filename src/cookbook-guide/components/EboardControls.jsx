@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { isEboardUser } from "../hooks/useAuth";
 import BookmarkIcon from "./BookmarkIcon";
+import NotificationBell from "./NotificationBell";
 
 export default function EboardControls({
   currentUser,
@@ -18,6 +19,7 @@ export default function EboardControls({
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  const triggerRef = useRef(null);
   // Any logged-in account gets Account Settings (incl. Delete account), Saved and Sign Out;
   // editing tools are e-board only.
   const isEboard = isEboardUser(currentUser);
@@ -25,18 +27,20 @@ export default function EboardControls({
 
   useEffect(() => {
     if (!menuOpen) return;
-    const closeOnOutsideClick = () => setMenuOpen(false);
+    // Any press outside the gear and its menu (the bell included) closes it.
+    const closeOnOutsideClick = (e) => {
+      if (!menuRef.current?.contains(e.target) && !triggerRef.current?.contains(e.target)) setMenuOpen(false);
+    };
     const closeOnEscape = (e) => e.key === "Escape" && setMenuOpen(false);
-    document.addEventListener("click", closeOnOutsideClick);
+    document.addEventListener("pointerdown", closeOnOutsideClick);
     document.addEventListener("keydown", closeOnEscape);
     return () => {
-      document.removeEventListener("click", closeOnOutsideClick);
+      document.removeEventListener("pointerdown", closeOnOutsideClick);
       document.removeEventListener("keydown", closeOnEscape);
     };
   }, [menuOpen]);
 
-  const handleTriggerClick = (e) => {
-    e.stopPropagation();
+  const handleTriggerClick = () => {
     if (currentUser) {
       setMenuOpen((o) => !o);
     } else {
@@ -46,10 +50,12 @@ export default function EboardControls({
 
   return (
     <>
+      <NotificationBell signedIn={!!currentUser} />
       {/* Settings gear only for logged-in accounts; logged out sees "Log in / Sign up". */}
       {currentUser && (
         <>
           <button
+            ref={triggerRef}
             className={`eboard-trigger${currentUser ? " signed-in" : ""}`}
             title={currentUser ? "Account" : "Log in"}
             aria-label={currentUser ? "Account menu" : "Log in"}
@@ -65,7 +71,7 @@ export default function EboardControls({
             ref={menuRef}
             role="menu"
             aria-hidden={!menuOpen}
-            onClick={(e) => e.stopPropagation()}
+
           >
             <button
               role="menuitem"
