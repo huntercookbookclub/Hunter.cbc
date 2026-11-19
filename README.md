@@ -1,85 +1,130 @@
-# Hunter Cookbook Club Website
+# CookBook Club
 
-The official website for the Cookbook Club at Hunter College (CUNY). It brings together three tools for a food appreciation club: a map of restaurants our members recommend, a shared recipe book, and a photo board of the food we've eaten together.
+The website for CookBook Club, a food club. It has three tools: a map of restaurants members recommend, a shared recipe book, and a photo board of meals the club has eaten together.
 
-Anyone can browse the site. Logged-in e-board members can add, edit, and remove their own content.
+Live at [cookbookclub.nyc](https://cookbookclub.nyc) (mirror: [hc-cookbookclub.vercel.app](https://hc-cookbookclub.vercel.app)).
 
-<!-- Add a screenshot of the landing page here -->
-<!-- ![Landing page](docs/landing.png) -->
+Anyone can browse. Anyone with an account can add places, recipes and photos, and can edit or delete their own posts. E-board accounts can edit or remove any post.
+
+> All screenshots use made-up test data (Test User A, Golden Ladle Noodle House, and so on). Photos are generated placeholders.
+
+![Landing page](docs/landing.png)
 
 ## Pages
 
-### The Cookbook Guide (`/cookbook-guide`)
-An interactive map of restaurants, cafés, dessert spots, boba shops, bars, and takeout places recommended by club members.
+### Landing (`/`)
 
-- Search for a place with Google Places autocomplete, and the name, address, and coordinates fill in automatically
-- Addresses that don't come from autocomplete are geocoded so every place lands on the map
-- Filter by type, cuisine, price, and tags such as Cheap Eats, Date Night, or Group Friendly
-- Each place has a detail panel with the recommender, must-try dishes, notes, photos, and a link to the address
-- Built on Leaflet.js with CARTO Voyager map tiles and a responsive layout for phones
+Links to Instagram, the WhatsApp group and the three pages below. Like every page, it has the club logo (links back home), the log in / account menu, and the notification bell.
 
-<!-- ![Cookbook Guide map](docs/map.png) -->
+![Recent uploads bell](docs/landing-bell.png)
 
-### The Cookbook Recipe Book (`/recipe-book`)
-A two-page book layout where members share their own recipes.
+### The CookBook Guide (`/cookbook-guide`)
 
-- Table of contents on the left, the selected recipe on the right
-- Each recipe has a title, cuisine, tags, ingredients, numbered steps, and a photo
-- Filter the book by cuisine and tags (Quick, Budget, Vegan, Halal, and more)
-- Recipe photos are stored in Supabase Storage, with a 5 MB limit per image
-- A "Your Recipes" view shows everything you've written
+A map of restaurants, cafés, dessert spots, bars and takeout places recommended by members.
 
-<!-- ![Recipe Book](docs/recipe-book.png) -->
+- Category chips with counts, plus a filter panel for cuisine, price and tags (Cheap Eats, Date Night, Study Spot, Halal, and more)
+- Click a pin to open the place: recommender (with role for e-board), tags, must-try dishes, notes, photos and an address link
+- Like and save places; your saved places and your own recommendations each have their own list
+- Add a place with Google Places autocomplete, which fills in the name, address and coordinates. Other addresses are geocoded
+- Several recommendations for the same place are grouped on one pin
+- Leaflet with CARTO tiles (Voyager in light mode, Dark Matter in dark mode)
+- On phones the place panel is a bottom sheet you can drag
+
+![CookBook Guide with a place open](docs/map-place.png)
+
+<p>
+  <img src="docs/map-dark.png" alt="CookBook Guide in dark mode" width="68%">
+  <img src="docs/map-mobile.png" alt="CookBook Guide on a phone" width="28%">
+</p>
+
+### The CookBook Recipe Book (`/recipe-book`)
+
+A two-page book: table of contents on the left, the open recipe on the right.
+
+- Each recipe has a title, author, cuisine, tags, a photo, ingredients and numbered steps
+- Filter by cuisine and tag (Quick, Budget, Vegan, Halal, and more)
+- Like and save recipes; "Your Recipes" shows the ones you wrote
+- Photos go to Supabase Storage (5 MB limit per image)
+
+![Recipe Book](docs/recipe-book.png)
 
 ### The Big Back Lookback (`/big-back-lookback`)
-A photo board of past club outings and meals.
 
-- Members upload photos in bulk, stored at full quality with no compression
-- Each photo can be labeled with what it is, where it's from, and a rating out of 5
-- Photos show the uploader's name and profile picture
-- Anyone can view or download the originals
+A pinboard of photos from club outings.
 
-<!-- ![Big Back Lookback](docs/lookback.png) -->
+- Upload many photos at once, stored at full quality
+- Label each photo with what it is, where it's from, and a rating out of 5
+- Each photo shows the uploader's name and picture
+- Anyone can view and download the originals
+
+![Big Back Lookback](docs/lookback.png)
+
+### Legal (`/privacy`, `/terms`, `/copyright`)
+
+Privacy policy, terms of use and copyright pages, linked from the landing page.
+
+## Accounts
+
+- Sign up with email, password, a unique display name and a birthdate (13 and up only). Emails and display names must be unique, checked on the server
+- Confirmation and password reset emails use the templates in `supabase/email-templates/`
+- **Account Settings**: profile picture, display name, role (e-board only), privacy, appearance, and delete account
+- **Privacy**: likes and saves are private by default. Members can opt in to show their name and picture on the places and recipes they like or save. Emails are never shown on the site
+- **Appearance**: Auto (follows the device), Light or Dark. Saved per device
+- **Delete account**: needs your password. Removes your account, saves and likes
+- **Notification bell**: the latest uploads across all three pages (which page, who, what). A dot shows when there's something new since you last looked
+
+## Permissions
+
+Permissions are enforced in the database with Row Level Security, not just in the browser.
+
+| | Visitors | Members | E-board |
+| --- | --- | --- | --- |
+| Browse places, recipes, photos | Yes | Yes | Yes |
+| Like and save | | Yes | Yes |
+| Add places, recipes, photos | | Yes | Yes |
+| Edit or delete own posts | | Yes | Yes |
+| Edit or delete anyone's posts | | | Yes |
+| Role shown on posts | | | Yes |
+
+E-board is set with `app_metadata.role = 'eboard'` on the user in Supabase (Authentication → Users). Users can't change their own `app_metadata`. Uploaded files go in a folder named after the uploader's user ID, and storage rules only let the owner (or e-board) change them.
 
 ## Tech Stack
 
 | Area | Tools |
 | --- | --- |
 | Frontend | React 19, React Router, Vite |
-| Map | Leaflet.js, CARTO Voyager tiles, OpenStreetMap |
+| Map | Leaflet, CARTO tiles, OpenStreetMap |
 | Location data | Google Places API (autocomplete), Google Geocoding API |
-| Backend | Supabase (PostgreSQL, Auth, Storage) |
+| Backend | Supabase (PostgreSQL, Auth, Storage, RLS) |
+| Email | Resend, through Supabase custom SMTP |
+| Hosting | Vercel |
 | Linting | oxlint |
 
-## Security
-
-The database uses PostgreSQL Row Level Security, so permissions are enforced on the server rather than only in the browser:
-
-- Anyone visiting the site can read places, recipes, and photos
-- Only logged-in members can add content, and only under their own account
-- Members can edit or delete only the content they created
-- Uploaded files are stored in a folder named after the uploader's user ID, and storage rules only let members change files in their own folder
+Styling is plain CSS with OKLCH colors and `light-dark()` for the theme. A small script in `index.html` sets the saved theme before the first paint so there's no flash.
 
 ## Project Structure
 
 ```
 src/
+  App.jsx                  Routes
+  theme.js                 Light / dark / auto theme
+  components/SiteLogo.jsx  Corner logo that links home
   pages/
-    Landing.jsx            Link hub with Instagram, WhatsApp, and the three pages
-    RecipeBook.jsx         Recipe book page
-    BigBackLookback.jsx    Photo board page
+    Landing.jsx            Link hub
+    RecipeBook.jsx         Recipe book
+    BigBackLookback.jsx    Photo board
+    Legal.jsx              Privacy, terms, copyright
   cookbook-guide/
     CookbookGuidePage.jsx  Map page
-    components/            Map, panels, modals, filters, login, account settings
-    hooks/                 useAuth, usePlaces, useFilters
-    lib/                   Supabase client, Google Maps loader, form options
+    components/            Map, place panel, filters, modals, login, settings, bell
+    hooks/                 useAuth, usePlaces, useFilters, useLikes, useSaved, useProfile
+    lib/                   Supabase client, Google Maps loader, form options, categories
   data/
-    recipes.js             Recipe book data layer
-    lookback.js            Photo board data layer
-supabase/
-  recipes.sql              Recipes table, security rules, and photo bucket
-  lookback.sql             Lookback table, security rules, and photo bucket
-  seed-recipes.sql         Sample recipes
+    recipes.js             Recipe book data
+    lookback.js            Photo board data
+    recent.js              Recent uploads for the bell
+supabase/                  SQL migrations and email templates
+docs/                      README screenshots
 ```
 
 ## Getting Started
@@ -92,9 +137,9 @@ cd Hunter.cbc
 npm install
 ```
 
-### 2. Add your environment variables
+### 2. Environment variables
 
-Copy `.env.example` to `.env.local` and fill in your keys:
+Copy `.env.example` to `.env.local` and fill it in:
 
 ```
 VITE_SUPABASE_URL=
@@ -103,19 +148,39 @@ VITE_GOOGLE_MAPS_KEY=
 VITE_CARTO_KEY=
 ```
 
-`VITE_CARTO_KEY` is optional. Without it, the map falls back to standard OpenStreetMap tiles.
+`VITE_CARTO_KEY` is optional. In production, set these in Vercel → Settings → Environment Variables. Never commit keys. Restrict the Google Maps key to the site's domains and to the Maps JavaScript, Places and Geocoding APIs.
 
-### 3. Set up the database
+### 3. Database
 
-In your Supabase project, open the SQL Editor and run the files in `supabase/`. Each one is safe to run more than once.
+The `places` table was made in the Supabase dashboard. Then run these in the Supabase SQL Editor, in order. Each file is safe to run more than once.
 
-### 4. Run it
+1. `recipes.sql`
+2. `lookback.sql`
+3. `seed-recipes.sql` (optional sample recipes)
+4. `saved-items.sql`
+5. `place-likes.sql`
+6. `profiles-activity.sql`
+7. `recipe-activity.sql`
+8. `eboard-roles.sql`
+9. `open-places.sql`
+10. `display-names-roles.sql`
+11. `unique-names.sql`
+12. `signup-checks.sql`, then enable it under Authentication → Hooks → Before User Created
+13. `delete-account.sql`
+
+### 4. Email
+
+Set up custom SMTP (Resend) in Supabase → Authentication → SMTP Settings. The Resend API key goes only there. Paste the HTML from `supabase/email-templates/` into Authentication → Email Templates.
+
+### 5. Run
 
 ```bash
-npm run dev      # start the dev server
-npm run build    # build for production
-npm run lint     # check the code
+npm run dev      # dev server
+npm run build    # production build
+npm run lint     # lint
 ```
+
+Deploys go to Vercel. `vercel.json` sends every route to `index.html` so page links work on refresh.
 
 ## Contributors
 
