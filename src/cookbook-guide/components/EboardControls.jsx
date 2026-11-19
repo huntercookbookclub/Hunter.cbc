@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import { isEboardUser } from '../hooks/useAuth';
-import BookmarkIcon from './BookmarkIcon';
+import { useEffect, useRef, useState } from "react";
+import { isEboardUser } from "../hooks/useAuth";
+import BookmarkIcon from "./BookmarkIcon";
 
 export default function EboardControls({
   currentUser,
@@ -10,11 +10,11 @@ export default function EboardControls({
   onOpenSaved,
   onLogout,
   onOpenAddPlace,
-  addLabel = '+ Add Place',
+  addLabel = "+ Add Place",
   // true on pages any logged-in account can post to (recipes, Lookback);
   // false on the map, where only e-board can add places.
   openToAll = false,
-  myRecsLabel = '📍 Your Recommendations',
+  myRecsLabel = "📍 Your Recommendations",
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
@@ -26,12 +26,12 @@ export default function EboardControls({
   useEffect(() => {
     if (!menuOpen) return;
     const closeOnOutsideClick = () => setMenuOpen(false);
-    const closeOnEscape = (e) => e.key === 'Escape' && setMenuOpen(false);
-    document.addEventListener('click', closeOnOutsideClick);
-    document.addEventListener('keydown', closeOnEscape);
+    const closeOnEscape = (e) => e.key === "Escape" && setMenuOpen(false);
+    document.addEventListener("click", closeOnOutsideClick);
+    document.addEventListener("keydown", closeOnEscape);
     return () => {
-      document.removeEventListener('click', closeOnOutsideClick);
-      document.removeEventListener('keydown', closeOnEscape);
+      document.removeEventListener("click", closeOnOutsideClick);
+      document.removeEventListener("keydown", closeOnEscape);
     };
   }, [menuOpen]);
 
@@ -46,81 +46,86 @@ export default function EboardControls({
 
   return (
     <>
-      {/* Faint while logged out (e-board entry); fully visible once signed in so
-          members can find Saved and Sign Out. */}
-      <button
-        className={`eboard-trigger${currentUser ? ' signed-in' : ''}`}
-        title={currentUser ? 'Account' : 'Log in'}
-        aria-label={currentUser ? 'Account menu' : 'Log in'}
-        aria-haspopup={currentUser ? 'menu' : undefined}
-        aria-expanded={currentUser ? menuOpen : undefined}
-        onClick={handleTriggerClick}
-      >
-        ⚙️
-      </button>
-
-      <div
-        className={`gear-menu${menuOpen ? ' visible' : ''}`}
-        ref={menuRef}
-        role="menu"
-        aria-hidden={!menuOpen}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          role="menuitem"
-          className="gear-menu-item"
-          onClick={() => {
-            setMenuOpen(false);
-            onOpenAccountSettings();
-          }}
-        >
-          👤 Account Settings
-        </button>
-        {canPost && onOpenMyRecs && (
+      {/* Settings gear only for logged-in accounts; logged out sees "Log in / Sign up". */}
+      {currentUser && (
+        <>
           <button
-            role="menuitem"
-            className="gear-menu-item"
-            onClick={() => {
-              setMenuOpen(false);
-              onOpenMyRecs();
-            }}
+            className={`eboard-trigger${currentUser ? " signed-in" : ""}`}
+            title={currentUser ? "Account" : "Log in"}
+            aria-label={currentUser ? "Account menu" : "Log in"}
+            aria-haspopup={currentUser ? "menu" : undefined}
+            aria-expanded={currentUser ? menuOpen : undefined}
+            onClick={handleTriggerClick}
           >
-            {myRecsLabel}
+            ⚙️
           </button>
-        )}
-        {onOpenSaved && (
-          <button
-            role="menuitem"
-            className="gear-menu-item"
-            onClick={() => {
-              setMenuOpen(false);
-              onOpenSaved();
-            }}
-          >
-            <BookmarkIcon filled /> Saved
-          </button>
-        )}
-        <button
-          role="menuitem"
-          className="gear-menu-item danger"
-          onClick={() => {
-            setMenuOpen(false);
-            onLogout();
-          }}
-        >
-          ↩ Sign Out
-        </button>
-      </div>
 
-      {/* Pages with saving get a visible way in for the public. */}
-      {!currentUser && onOpenSaved && (
-        <button className="add-place-btn login-btn visible" onClick={onOpenLogin}>
+          <div
+            className={`gear-menu${menuOpen ? " visible" : ""}`}
+            ref={menuRef}
+            role="menu"
+            aria-hidden={!menuOpen}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              role="menuitem"
+              className="gear-menu-item"
+              onClick={() => {
+                setMenuOpen(false);
+                onOpenAccountSettings();
+              }}
+            >
+              👤 Account Settings
+            </button>
+            {canPost && onOpenMyRecs && (
+              <button
+                role="menuitem"
+                className="gear-menu-item"
+                onClick={() => {
+                  setMenuOpen(false);
+                  onOpenMyRecs();
+                }}
+              >
+                {myRecsLabel}
+              </button>
+            )}
+            {onOpenSaved && (
+              <button
+                role="menuitem"
+                className="gear-menu-item"
+                onClick={() => {
+                  setMenuOpen(false);
+                  onOpenSaved();
+                }}
+              >
+                <BookmarkIcon filled /> Saved
+              </button>
+            )}
+            <button
+              role="menuitem"
+              className="gear-menu-item danger"
+              onClick={() => {
+                setMenuOpen(false);
+                onLogout();
+              }}
+            >
+              ↩ Sign Out
+            </button>
+          </div>
+        </>
+      )}
+
+      {!currentUser && (
+        <button
+          className="add-place-btn login-btn visible"
+          onClick={onOpenLogin}
+        >
           Log in / Sign up
         </button>
       )}
 
       <button
-        className={`add-place-btn${canPost ? ' visible' : ''}`}
+        className={`add-place-btn${canPost ? " visible" : ""}`}
         onClick={onOpenAddPlace}
       >
         {addLabel}

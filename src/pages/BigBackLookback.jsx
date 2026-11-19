@@ -183,7 +183,7 @@ function BigBackLookback() {
       {!loading && photos.length === 0 ? (
         <p className="lookback-empty">
           The board is empty.{' '}
-          {currentUser ? 'Tap “+ Add photos” to hang the first ones.' : 'Log in with the ⚙️ button to add photos.'}
+          {currentUser ? 'Tap “+ Add photos” to hang the first ones.' : 'Log in to add photos.'}
         </p>
       ) : (
         <div className="lookback-grid">
