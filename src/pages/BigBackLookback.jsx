@@ -36,15 +36,18 @@ function PhotoCard({ photo, onSave, onDelete, canModerate }) {
 
   return (
     <article className="lookback-card">
-      <a href={photo.url} target="_blank" rel="noopener noreferrer" className="lookback-photo">
+      {/* No link to the full file, no right-click / long-press save, no dragging
+          the image out. (Screenshots can't be stopped; this blocks casual saving.) */}
+      <div className="lookback-photo" onContextMenu={(e) => e.preventDefault()}>
         <img
           src={photo.url}
           alt={photo.what || 'Photo'}
           loading="lazy"
+          draggable={false}
           // HEIC and other formats some browsers can't show: keep the card, hide the broken icon.
           onError={(e) => e.currentTarget.parentElement.classList.add('no-preview')}
         />
-      </a>
+      </div>
 
       {photo.owned ? (
         <>
@@ -85,9 +88,6 @@ function PhotoCard({ photo, onSave, onDelete, canModerate }) {
       <Uploader uploader={photo.uploader} />
 
       <div className="lookback-actions">
-        <a href={photo.downloadUrl} className="lookback-btn">
-          Download
-        </a>
         {/* Your own photo, or any photo for e-board (moderation). */}
         {(photo.owned || canModerate) && (
           <button type="button" className="lookback-btn lookback-btn-danger" onClick={() => onDelete(photo)}>

@@ -8,6 +8,10 @@
   --line: oklch(86.30% 0.0222 83.26);
   --peg: oklch(71.16% 0.1812 22.84);
   --danger: oklch(50.13% 0.1783 28.70);
+  /* Site red (the map/logo red) for the title; a darker shade for the small back
+     link so it stays readable (AA contrast) on the beige board. */
+  --red: oklch(55.65% 0.2178 26.46);
+  --red-text: oklch(47% 0.19 27);
 
   min-height: 100dvh;
   box-sizing: border-box;
@@ -34,9 +38,10 @@
 .lookback-back {
   display: inline-block;
   margin-bottom: 14px;
-  color: var(--ink-soft);
-  font-size: 13px;
-  letter-spacing: 0.04em;
+  color: var(--red-text);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   text-decoration: none;
 }
 @media (hover: hover) and (pointer: fine) {
@@ -51,6 +56,7 @@
   font-weight: 600;
   font-size: clamp(34px, 7vw, 56px);
   line-height: 1.05;
+  color: var(--red);
   text-wrap: balance;
 }
 
@@ -124,7 +130,7 @@
 }
 .lookback-photo.no-preview img { display: none; }
 .lookback-photo.no-preview::after {
-  content: 'No preview here. Download to view.';
+  content: 'This photo can’t be shown in this browser.';
   display: grid;
   place-items: center;
   height: 100%;
@@ -207,3 +213,11 @@
 }
 .lookback-btn-danger { color: var(--danger); }
 .lookback-page :focus-visible { outline: 3px solid var(--peg); outline-offset: 2px; }
+
+/* Photos: no long-press "Save image" callout, no selecting or dragging them out. */
+.lookback-photo,
+.lookback-photo img {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}

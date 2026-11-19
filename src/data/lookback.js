@@ -26,7 +26,6 @@ function mapRow(row, currentUserId) {
     uploader: { name: row.uploader_name, avatarUrl: row.uploader_avatar_url || null },
     // Full-size original; no ?width= transform so nothing is compressed.
     url: bucket.getPublicUrl(row.path).data.publicUrl,
-    downloadUrl: bucket.getPublicUrl(row.path, { download: row.file_name }).data.publicUrl,
     owned: !!currentUserId && row.owner === currentUserId,
   }
 }
