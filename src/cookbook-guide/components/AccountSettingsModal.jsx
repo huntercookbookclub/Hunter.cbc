@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Modal from './Modal';
 import { sbClient } from '../lib/supabaseClient';
-import { deleteMyAccount, isEboardUser } from '../hooks/useAuth';
+import { deleteMyAccount, isDisplayNameAvailable, isEboardUser, NAME_TAKEN_MESSAGE } from '../hooks/useAuth';
 import { useShowActivity } from '../hooks/useProfile';
 
 export default function AccountSettingsModal({ open, onClose, currentUser, onSaved }) {
@@ -89,6 +89,17 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
     let finalAvatarUrl = currentUser?.user_metadata?.avatar_url || null;
 
     setSaving(true);
+
+    // Public name, worked out the same way as sync_profile in profiles-activity.sql.
+    const meta = currentUser?.user_metadata || {};
+    const publicName = isEboard
+      ? meta.display_name?.trim() || `${firstName.trim()} ${lastInitial.trim()}`.trim()
+      : name;
+    if (publicName && !(await isDisplayNameAvailable(publicName))) {
+      setSaving(false);
+      setError(NAME_TAKEN_MESSAGE);
+      return;
+    }
 
     if (pendingFile) {
       const ext = pendingFile.name.split('.').pop();

@@ -35,6 +35,16 @@ export function isSignupBlocked() {
   }
 }
 
+// Display names are unique, ignoring case and spaces (supabase/unique-names.sql;
+// the database enforces it too). Your own current name counts as available.
+// Returns true/false, or true if the check itself fails (the server still enforces it).
+export async function isDisplayNameAvailable(name) {
+  const { data, error } = await sbClient.rpc('display_name_available', { name: name.trim() });
+  return error ? true : data !== false;
+}
+
+export const NAME_TAKEN_MESSAGE = 'That display name is taken. Please choose another.';
+
 export async function signUp(email, password, birthDate, agreedToTerms, displayName = '') {
   if (isSignupBlocked()) return UNDER_AGE_MESSAGE;
   const name = displayName.trim();
@@ -50,7 +60,8 @@ export async function signUp(email, password, birthDate, agreedToTerms, displayN
     }
     return UNDER_AGE_MESSAGE;
   }
-  const { error } = await sbClient.auth.signUp({
+  if (!(await isDisplayNameAvailable(name))) return NAME_TAKEN_MESSAGE;
+  const { data, error } = await sbClient.auth.signUp({
     email,
     password,
     options: {
@@ -62,7 +73,13 @@ export async function signUp(email, password, birthDate, agreedToTerms, displayN
       },
     },
   });
-  return error ? error.message : null;
+  if (error) return error.message;
+  // Emails are unique. For an email that already has an account, Supabase
+  // returns no error and sends nothing, so say so instead of waiting for a code.
+  if (data?.user && data.user.identities?.length === 0) {
+    return 'An account with this email already exists. Log in, or use “Forgot password?”.';
+  }
+  return null;
 }
 
 // Checks the emailed code; on success the user is signed in.
