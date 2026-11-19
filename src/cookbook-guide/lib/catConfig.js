@@ -6,21 +6,3 @@ export const catConfig = {
   takeout:    { emoji: '🥡', color: 'oklch(55.34% 0.1739 38.40)', bg: 'light-dark(oklch(95.42% 0.0372 75.16), oklch(30% 0.05 75.16))', label: 'Takeout' },
 };
 
-export const cuisineEmoji = {
-  Chinese: '🇨🇳', Japanese: '🇯🇵', Korean: '🇰🇷', Taiwanese: '🇹🇼', Mongolian: '🇲🇳',
-  Thai: '🇹🇭', Vietnamese: '🇻🇳', Malaysian: '🇲🇾', Indonesian: '🇮🇩', Filipino: '🇵🇭',
-  Singaporean: '🇸🇬', Cambodian: '🇰🇭', Burmese: '🇲🇲', Laotian: '🇱🇦',
-  Indian: '🇮🇳', Pakistani: '🇵🇰', Bangladeshi: '🇧🇩', 'Sri Lankan': '🇱🇰', Nepali: '🇳🇵',
-  Turkish: '🇹🇷', Lebanese: '🇱🇧', Persian: '🇮🇷', Israeli: '🇮🇱', Afghan: '🇦🇫', Uzbek: '🇺🇿',
-  Italian: '🇮🇹', French: '🇫🇷', Spanish: '🇪🇸', Greek: '🇬🇷', Portuguese: '🇵🇹', German: '🇩🇪',
-  British: '🇬🇧', Irish: '🇮🇪', Polish: '🇵🇱', Russian: '🇷🇺', Georgian: '🇬🇪', Scandinavian: '🇸🇪',
-  Ethiopian: '🇪🇹', Moroccan: '🇲🇦', Nigerian: '🇳🇬', Egyptian: '🇪🇬', 'South African': '🇿🇦',
-  American: '🇺🇸', Mexican: '🇲🇽', Peruvian: '🇵🇪', Brazilian: '🇧🇷', Caribbean: '🌴',
-  Cuban: '🇨🇺', Argentinian: '🇦🇷', Colombian: '🇨🇴', 'Puerto Rican': '🇵🇷',
-  Dominican: '🇩🇴', Venezuelan: '🇻🇪', Canadian: '🇨🇦',
-  Australian: '🇦🇺', Hawaiian: '🌺', 'Hong Kong': '🇭🇰',
-  Vegan: '🌱', Vegetarian: '🥦', Halal: '☪️', Kosher: '✡️', Seafood: '🦐', BBQ: '🍖',
-  Steakhouse: '🥩', Pizza: '🍕', Bakery: '🥐', Boba: '🧋',
-  'Asian Fusion': '✨', 'Latin Fusion': '✨', 'Mediterranean Fusion': '✨', Fusion: '✨',
-  Other: '🍴',
-};

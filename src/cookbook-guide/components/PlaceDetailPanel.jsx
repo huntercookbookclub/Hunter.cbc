@@ -1,4 +1,4 @@
-import { catConfig, cuisineEmoji } from '../lib/catConfig';
+import { catConfig } from '../lib/catConfig';
 import BookmarkIcon from './BookmarkIcon';
 import HeartIcon from './HeartIcon';
 import ExternalLinkIcon from './ExternalLinkIcon';
@@ -44,19 +44,13 @@ export default function PlaceDetailPanel({
         {place && (
           <div className="panel-body">
             <div className="panel-name-row">
-              <span className="badge-emoji">{cfg.emoji}</span>
               <span
                 className="cat-badge"
                 style={{ background: cfg.bg, color: cfg.color }}
               >
                 {cfg.label}
               </span>
-              {place.cuisine && (
-                <>
-                  <span className="badge-emoji">{cuisineEmoji[place.cuisine] || '🍴'}</span>
-                  <span className="cuisine-badge">{place.cuisine}</span>
-                </>
-              )}
+              {place.cuisine && <span className="cuisine-badge">{place.cuisine}</span>}
             </div>
 
             <div className="panel-name">

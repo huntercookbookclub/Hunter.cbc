@@ -3,11 +3,11 @@ import { logoDataUri } from '../lib/logo';
 import { FilterIcon } from './Icons';
 
 const typeConfig = [
-  { cat: 'restaurant', label: 'Restaurant', emoji: '🍽️' },
-  { cat: 'cafe', label: 'Café', emoji: '☕' },
-  { cat: 'dessert', label: 'Dessert', emoji: '🍰' },
-  { cat: 'bar', label: 'Bar', emoji: '🍸' },
-  { cat: 'takeout', label: 'Takeout', emoji: '🥡' },
+  { cat: 'restaurant', label: 'Restaurant' },
+  { cat: 'cafe', label: 'Café' },
+  { cat: 'dessert', label: 'Dessert' },
+  { cat: 'bar', label: 'Bar' },
+  { cat: 'takeout', label: 'Takeout' },
 ];
 
 export default function TopBar({ filters, filterPanelOpen, onToggleFilterPanel }) {
@@ -45,20 +45,20 @@ export default function TopBar({ filters, filterPanelOpen, onToggleFilterPanel }
                 data-cat="all"
                 onClick={() => toggleType('all')}
               >
-                🗺️ All
+                All
                 <span className="count-badge">{typeCounts.__total ?? ''}</span>
               </button>
               {typeConfig
                 .slice()
                 .sort((a, b) => (typeCounts[b.cat] || 0) - (typeCounts[a.cat] || 0))
-                .map(({ cat, label, emoji }) => (
+                .map(({ cat, label }) => (
                   <button
                     key={cat}
                     className={`chip${activeTypes.has(cat) ? ' active' : ''}`}
                     data-cat={cat}
                     onClick={() => toggleType(cat)}
                   >
-                    {emoji} {label}
+                    {label}
                     {typeCounts[cat] ? <span className="count-badge">{typeCounts[cat]}</span> : null}
                   </button>
                 ))}
