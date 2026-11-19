@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { isEboardUser } from '../hooks/useAuth';
 import Modal from './Modal';
 import PlaceSearch from './PlaceSearch';
 import SingleSelectDropdown from './SingleSelectDropdown';
@@ -145,8 +146,9 @@ export default function AddPlaceModal({ open, onClose, currentUser, editingPlace
 
     const meta = currentUser?.user_metadata || {};
     // Shown publicly on the map, so never the email.
-    const recName = (meta.display_name || '').trim() || 'Eboard Member';
-    const recRole = (meta.role || '').trim() || 'Eboard';
+    const recName = (meta.display_name || '').trim() || 'Member';
+    // Only e-board show a role under their name; members show just the date.
+    const recRole = isEboardUser(currentUser) ? (meta.role || '').trim() || 'Eboard' : null;
     const recAvatarUrl = meta.avatar_url || null;
 
     const payload = {

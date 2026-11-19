@@ -143,6 +143,7 @@ export default function CookbookGuidePage() {
 
       <EboardControls
         currentUser={currentUser}
+        openToAll
         onOpenLogin={() => setLoginOpen(true)}
         onOpenAccountSettings={() => setAccountSettingsOpen(true)}
         onOpenMyRecs={() => setMyRecsOpen(true)}

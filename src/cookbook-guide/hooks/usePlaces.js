@@ -24,6 +24,7 @@ function mapRow(row) {
     price: row.price,
     maps_url: row.maps_url || null,
     createdAt: row.created_at,
+    authorId: row.author_id || null, // null on places posted before accounts were tracked
   };
 }
 

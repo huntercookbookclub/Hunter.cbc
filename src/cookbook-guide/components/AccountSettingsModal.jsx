@@ -131,11 +131,15 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
         .from('recipes')
         .update({ author: name, author_role: isEboard ? roleLabel : null })
         .eq('author_id', currentUser.id);
+      const placeCopy = {
+        recommender_name: name,
+        recommender_role: isEboard ? roleLabel : null,
+        recommender_avatar_url: finalAvatarUrl,
+      };
+      await sbClient.from('places').update(placeCopy).eq('author_id', currentUser.id);
+      // E-board places from before author_id was recorded: matched by name.
       if (isEboard && oldName) {
-        await sbClient
-          .from('places')
-          .update({ recommender_name: name, recommender_role: roleLabel, recommender_avatar_url: finalAvatarUrl })
-          .eq('recommender_name', oldName);
+        await sbClient.from('places').update(placeCopy).is('author_id', null).eq('recommender_name', oldName);
       }
     }
 

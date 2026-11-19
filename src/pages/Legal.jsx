@@ -81,9 +81,9 @@ export function PrivacyPolicy() {
           us or stored. We only keep a yes/no record that you are 13 or older.
         </li>
         <li>
-          <strong>What you post:</strong> recipes and Big Back Lookback photos you add (and their
-          details) are public, shown with your display name. E-board members also post places
-          on the map with their name, role and profile picture.
+          <strong>What you post:</strong> places, recipes and Big Back Lookback photos you add (and their
+          details) are public, shown with your display name. Places also show your profile picture
+          (and role, for e-board members).
         </li>
       </ul>
 
@@ -110,8 +110,7 @@ export function PrivacyPolicy() {
           <strong>CARTO and OpenStreetMap:</strong> the map images on the CookBook Guide.
         </li>
         <li>
-          <strong>Google:</strong> place search, used only by e-board members when adding a
-          place.
+          <strong>Google:</strong> place search, used when someone adds a place to the map.
         </li>
         <li>
           <strong>Image hosts</strong> such as Unsplash, which serve some recipe photos.
@@ -176,8 +175,8 @@ export function Terms() {
 
       <h2>Content</h2>
       <p>
-        Places on the map are posted by CookBook Club e-board members. Any member with an account
-        can post recipes and Big Back Lookback photos, and add a display name and profile picture.
+        Any member with an account can post places on the map, recipes and Big Back Lookback
+        photos, and add a display name and profile picture.
         You keep ownership of what you post, and you let us show it on this site. Only post
         recipes, photos and pictures you have the right to share, and keep everything respectful.
         We may remove anything that breaks these rules. You may view and share links to content

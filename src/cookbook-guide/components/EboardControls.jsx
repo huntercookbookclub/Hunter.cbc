@@ -131,7 +131,7 @@ export default function EboardControls({
       )}
 
       <button
-        className={`add-place-btn${canPost ? " visible" : ""}`}
+        className={`add-place-btn${canPost && onOpenAddPlace ? " visible" : ""}`}
         onClick={onOpenAddPlace}
       >
         {addLabel}

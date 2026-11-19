@@ -1,5 +1,12 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import profilePic from '../assets/cbcpic.jpg'
+import { useAuth } from '../cookbook-guide/hooks/useAuth'
+import EboardControls from '../cookbook-guide/components/EboardControls'
+import LoginModal from '../cookbook-guide/components/LoginModal'
+import AccountSettingsModal from '../cookbook-guide/components/AccountSettingsModal'
+import '../cookbook-guide/fonts.css'
+import '../cookbook-guide/cookbook-guide.css'
 
 const links = [
   {
@@ -69,8 +76,29 @@ const links = [
 ]
 
 function Landing() {
+  const { currentUser, login, logout } = useAuth()
+  const [loginOpen, setLoginOpen] = useState(false)
+  const [accountSettingsOpen, setAccountSettingsOpen] = useState(false)
+
   return (
     <div className="page">
+      {/* Log in / Sign up, notification bell and settings gear, same as the other
+          pages. The wrapper only scopes cookbook-guide.css; it adds no box. */}
+      <div className="cookbook-guide-app" style={{ display: 'contents' }}>
+        <EboardControls
+          currentUser={currentUser}
+          onOpenLogin={() => setLoginOpen(true)}
+          onOpenAccountSettings={() => setAccountSettingsOpen(true)}
+          onLogout={logout}
+        />
+        <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} onLogin={login} />
+        <AccountSettingsModal
+          open={accountSettingsOpen}
+          onClose={() => setAccountSettingsOpen(false)}
+          currentUser={currentUser}
+        />
+      </div>
+
       <div className="card">
         <div className="plate">
           <img src={profilePic} alt="CookBook Club" className="avatar" />

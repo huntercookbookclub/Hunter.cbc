@@ -14,9 +14,10 @@ export default function MyRecommendationsModal({
   // Names this account may have posted under (older places could have the email).
   const matchNames = new Set([(meta.display_name || '').trim(), currentUser?.email].filter(Boolean));
 
-  // Matches the original's logic: places are tied to the user by the
-  // recommender_name string stored on each row, not a user_id foreign key.
-  const myPlaces = places.filter((p) => matchNames.has(p.recommender.name));
+  // Places record who posted them (author_id); older ones only have the name.
+  const myPlaces = places.filter((p) =>
+    p.authorId ? p.authorId === currentUser?.id : matchNames.has(p.recommender.name)
+  );
 
   const handleDelete = async (place) => {
     if (!confirm(`Delete "${place.name}"? This cannot be undone.`)) return;
