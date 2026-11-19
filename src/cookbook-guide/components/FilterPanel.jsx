@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { cuisineEmoji } from '../lib/catConfig';
 import { useSheetDrag } from '../hooks/useSheetDrag';
 import { predefinedTags } from '../lib/formOptions';
 
@@ -167,7 +168,7 @@ export default function FilterPanel({ open, onClose, filters, places }) {
                 className={`chip-cuisine${activeCuisines.has(cuisine) ? ' active' : ''}`}
                 onClick={() => toggleCuisine(cuisine)}
               >
-                {cuisine}
+                {cuisineEmoji[cuisine] || '🍴'} {cuisine}
               </button>
             ))}
           </div>
