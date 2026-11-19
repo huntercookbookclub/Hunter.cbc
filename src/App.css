@@ -6,7 +6,7 @@
   justify-content: center;
   padding: calc(64px + env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) calc(64px + env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px));
 
-  background: linear-gradient(160deg in oklch, oklch(100% 0.0000 0.00) 0%, oklch(90.93% 0.0337 24.59) 45%, oklch(79.04% 0.0766 24.97) 100%);
+  background: linear-gradient(160deg in oklch, light-dark(oklch(100% 0.0000 0.00), oklch(25.0% 0.0000 0.00)) 0%, light-dark(oklch(90.93% 0.0337 24.59), oklch(20.5% 0.0202 24.59)) 45%, light-dark(oklch(79.04% 0.0766 24.97), oklch(14.5% 0.0460 24.97)) 100%);
   background-attachment: fixed;
 }
 
@@ -17,21 +17,21 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background: oklch(100% 0.0000 0.00);
-  border: 3px solid oklch(67.21% 0.2344 1.48 / 0.29);
+  background: light-dark(oklch(100% 0.0000 0.00), oklch(25.0% 0.0000 0.00));
+  border: 3px solid light-dark(oklch(67.21% 0.2344 1.48 / 0.29), oklch(67.2% 0.2344 1.48 / 0.29));
   border-radius: 40px;
   padding: 36px 28px 32px;
-  box-shadow: 0 8px 32px oklch(33.82% 0.1582 271.28 / 0.12);
+  box-shadow: 0 8px 32px light-dark(oklch(33.82% 0.1582 271.28 / 0.12), oklch(0.0% 0.0000 0.00 / 0.216));
 }
 
 .plate {
   width: 168px;
   height: 168px;
   border-radius: 50%;
-  background: oklch(100% 0.0000 0.00);
+  background: light-dark(oklch(100% 0.0000 0.00), oklch(25.0% 0.0000 0.00));
   padding: 6px;
-  border: 4px solid oklch(67.21% 0.2344 1.48 / 0.29);
-  box-shadow: 0 10px 25px oklch(71.23% 0.1225 349.95 / 0.35);
+  border: 4px solid light-dark(oklch(67.21% 0.2344 1.48 / 0.29), oklch(67.2% 0.2344 1.48 / 0.29));
+  box-shadow: 0 10px 25px light-dark(oklch(71.23% 0.1225 349.95 / 0.35), oklch(0.0% 0.0000 0.00 / 0.6));
   margin-bottom: 22px;
 }
 
@@ -47,7 +47,7 @@
   font-family: 'Baloo 2', system-ui, sans-serif;
   font-weight: 800;
   font-size: clamp(26px, 7vw, 40px);
-  color: oklch(21.78% 0.0000 0.00);
+  color: light-dark(oklch(21.78% 0.0000 0.00), oklch(90.2% 0.0000 0.00));
   margin: 0 0 30px;
   line-height: 1.1;
   letter-spacing: -0.01em;
@@ -68,30 +68,30 @@
   gap: 10px;
   width: 100%;
   padding: 16px 20px;
-  background: oklch(97.93% 0.0125 345.47);
-  color: oklch(21.78% 0.0000 0.00);
+  background: light-dark(oklch(97.93% 0.0125 345.47), oklch(24.0% 0.0075 345.47));
+  color: light-dark(oklch(21.78% 0.0000 0.00), oklch(90.2% 0.0000 0.00));
   /* Nested radius: card's 40px corners minus its 28px side padding. */
   border-radius: 12px;
   text-decoration: none;
   font-family: 'Baloo 2', system-ui, sans-serif;
   font-weight: 700;
   font-size: 18px;
-  box-shadow: 0 6px 14px oklch(71.23% 0.1225 349.95 / 0.25);
-  border: 2px solid oklch(67.21% 0.2344 1.48 / 0.29);
+  box-shadow: 0 6px 14px light-dark(oklch(71.23% 0.1225 349.95 / 0.25), oklch(0.0% 0.0000 0.00 / 0.45));
+  border: 2px solid light-dark(oklch(67.21% 0.2344 1.48 / 0.29), oklch(67.2% 0.2344 1.48 / 0.29));
   transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .link-button:hover {
     transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 10px 20px oklch(71.23% 0.1225 349.95 / 0.35);
-    background: oklch(95.64% 0.0256 349.73);
+    box-shadow: 0 10px 20px light-dark(oklch(71.23% 0.1225 349.95 / 0.35), oklch(0.0% 0.0000 0.00 / 0.6));
+    background: light-dark(oklch(95.64% 0.0256 349.73), oklch(22.8% 0.0154 349.73));
   }
 }
 
 .link-button:active {
   transform: scale(0.97);
-  box-shadow: 0 4px 10px oklch(71.23% 0.1225 349.95 / 0.3);
+  box-shadow: 0 4px 10px light-dark(oklch(71.23% 0.1225 349.95 / 0.3), oklch(0.0% 0.0000 0.00 / 0.54));
   transition-duration: 0.08s;
 }
 
@@ -112,7 +112,7 @@
   margin: 22px 0 0;
   font-family: 'Baloo 2', system-ui, sans-serif;
   font-size: 14px;
-  color: oklch(44.89% 0.0475 357.49);
+  color: light-dark(oklch(44.89% 0.0475 357.49), oklch(67.1% 0.0475 357.49));
 }
 
 .legal-links a {

@@ -39,7 +39,7 @@ export default function MyRecommendationsModal({
       width="clamp(320px, 35vw, 520px)"
     >
       {myPlaces.length === 0 ? (
-        <div style={{ color: 'rgba(26,26,46,0.4)', fontSize: '0.85rem', textAlign: 'center', padding: '20px 0' }}>
+        <div style={{ color: 'light-dark(rgba(26,26,46,0.4), rgba(240,240,245,0.5))', fontSize: '0.85rem', textAlign: 'center', padding: '20px 0' }}>
           No recommendations yet.
         </div>
       ) : (

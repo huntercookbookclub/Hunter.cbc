@@ -25,6 +25,7 @@ import { cuisineOptions, recipeTags } from '../cookbook-guide/lib/formOptions'
 import '../cookbook-guide/fonts.css'
 import '../cookbook-guide/cookbook-guide.css'
 import './RecipeBook.css'
+import { syncThemeColor } from '../theme'
 
 const cuisineSelectOptions = cuisineOptions.map((c) => ({ value: c, label: c }))
 
@@ -71,7 +72,7 @@ function scrollToPage(el) {
 }
 
 // Status bar / browser chrome color while the recipe book is open: its dark
-// brown top instead of the site's white (index.html), restored on leave.
+// brown top in both themes, restored on leave.
 const RECIPE_THEME_COLOR = '#1a120c'
 
 function RecipeBook() {
@@ -80,10 +81,11 @@ function RecipeBook() {
   useEffect(() => {
     const meta = document.querySelector('meta[name="theme-color"]')
     if (!meta) return
-    const previous = meta.content
     meta.content = RECIPE_THEME_COLOR
+    meta.dataset.locked = '1' // theme.js leaves it alone while the book is open
     return () => {
-      meta.content = previous
+      delete meta.dataset.locked
+      syncThemeColor()
     }
   }, [])
   const filterRef = useRef(null)
@@ -658,7 +660,7 @@ function RecipeBook() {
           width="clamp(320px, 35vw, 520px)"
         >
           {recipes.filter((r) => r.owned).length === 0 ? (
-            <div style={{ color: 'rgba(26,26,46,0.4)', fontSize: '0.85rem', textAlign: 'center', padding: '20px 0' }}>
+            <div style={{ color: 'light-dark(rgba(26,26,46,0.4), rgba(240,240,245,0.5))', fontSize: '0.85rem', textAlign: 'center', padding: '20px 0' }}>
               No recipes yet.
             </div>
           ) : (

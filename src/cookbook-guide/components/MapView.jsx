@@ -2,14 +2,17 @@ import { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { catConfig } from '../lib/catConfig';
+import { isDark, useIsDark } from '../../theme';
 
 const CARTO_KEY = import.meta.env.VITE_CARTO_KEY;
 
 // CARTO "Voyager": blue water, green parks, colored roads — the closest free look to
 // Google Maps (Google's own tiles can't be used in Leaflet under their terms).
-const TILE_URL = CARTO_KEY
-  ? `https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=${CARTO_KEY}`
-  : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+// Dark theme uses CARTO "Dark Matter". Without a key, plain OSM (light only).
+const tileUrl = (dark) =>
+  CARTO_KEY
+    ? `https://{s}.basemaps.cartocdn.com/rastertiles/${dark ? 'dark_all' : 'voyager'}/{z}/{x}/{y}{r}.png?key=${CARTO_KEY}`
+    : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
 // Fixed landmark pin, not from Supabase, not filterable. Category: 'college'.
 const HUNTER_COLLEGE = { lat: 40.7685, lng: -73.9645, label: 'College' };
@@ -18,6 +21,12 @@ export default function MapView({ places, onSelectPlace, selectedId }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const markersRef = useRef([]);
+  const tilesRef = useRef(null);
+  const dark = useIsDark();
+
+  useEffect(() => {
+    tilesRef.current?.setUrl(tileUrl(dark));
+  }, [dark]);
 
   useEffect(() => {
     const map = L.map(containerRef.current, { zoomControl: false }).setView(
@@ -25,7 +34,7 @@ export default function MapView({ places, onSelectPlace, selectedId }) {
       13
     );
 
-    L.tileLayer(TILE_URL, {
+    tilesRef.current = L.tileLayer(tileUrl(isDark()), {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
       subdomains: 'abcd',

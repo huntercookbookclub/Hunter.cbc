@@ -5,7 +5,7 @@
   display: flex;
   justify-content: center;
   padding: calc(48px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(48px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
-  background: linear-gradient(160deg in oklch, oklch(100% 0.0000 0.00) 0%, oklch(90.93% 0.0337 24.59) 45%, oklch(79.04% 0.0766 24.97) 100%);
+  background: linear-gradient(160deg in oklch, light-dark(oklch(100% 0.0000 0.00), oklch(25.0% 0.0000 0.00)) 0%, light-dark(oklch(90.93% 0.0337 24.59), oklch(20.5% 0.0202 24.59)) 45%, light-dark(oklch(79.04% 0.0766 24.97), oklch(14.5% 0.0460 24.97)) 100%);
   background-attachment: fixed;
 }
 
@@ -14,11 +14,11 @@
   max-width: 720px;
   height: fit-content;
   padding: 32px 36px 36px;
-  background: oklch(100% 0.0000 0.00 / 0.9);
-  border: 3px solid oklch(88.39% 0.0714 351.57 / 0.8);
+  background: light-dark(oklch(100% 0.0000 0.00 / 0.9), oklch(26.0% 0.0000 0.00 / 0.9));
+  border: 3px solid light-dark(oklch(88.39% 0.0714 351.57 / 0.8), oklch(88.4% 0.0714 351.57 / 0.8));
   border-radius: 28px;
-  box-shadow: 0 8px 32px oklch(33.82% 0.1582 271.28 / 0.15);
-  color: oklch(21.78% 0.0000 0.00);
+  box-shadow: 0 8px 32px light-dark(oklch(33.82% 0.1582 271.28 / 0.15), oklch(0.0% 0.0000 0.00 / 0.27));
+  color: light-dark(oklch(21.78% 0.0000 0.00), oklch(90.2% 0.0000 0.00));
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 16px;
   line-height: 1.6;
@@ -27,7 +27,7 @@
 .legal-back {
   display: inline-block;
   margin-bottom: 16px;
-  color: oklch(53.13% 0.2015 5.62);
+  color: light-dark(oklch(53.13% 0.2015 5.62), oklch(70.0% 0.2015 5.62));
   font-size: 0.9rem;
   font-weight: 600;
   text-decoration: none;
@@ -49,7 +49,7 @@
 
 .legal-date {
   margin: 6px 0 20px;
-  color: oklch(52.78% 0.0000 0.00);
+  color: light-dark(oklch(52.78% 0.0000 0.00), oklch(52.8% 0.0000 0.00));
   font-size: 0.9rem;
 }
 
@@ -74,14 +74,14 @@
 }
 
 .legal-card a {
-  color: oklch(53.13% 0.2015 5.62);
+  color: light-dark(oklch(53.13% 0.2015 5.62), oklch(70.0% 0.2015 5.62));
 }
 
 .legal-footer {
   margin-top: 32px !important;
   padding-top: 16px;
-  border-top: 1px solid oklch(53.13% 0.2015 5.62 / 0.15);
-  color: oklch(44.95% 0.0000 0.00);
+  border-top: 1px solid light-dark(oklch(53.13% 0.2015 5.62 / 0.15), oklch(53.1% 0.2015 5.62 / 0.15));
+  color: light-dark(oklch(44.95% 0.0000 0.00), oklch(67.1% 0.0000 0.00));
   font-size: 0.95rem;
 }
 
@@ -95,9 +95,9 @@
 .legal-address {
   margin: 0 0 12px;
   padding: 12px 16px;
-  border: 1px solid rgb(0 0 0 / 0.1);
+  border: 1px solid light-dark(rgb(0 0 0 / 0.1), oklch(92.0% 0.0000 0.00 / 0.14));
   border-radius: 12px;
-  background: oklch(97.5% 0.012 350);
+  background: light-dark(oklch(97.5% 0.012 350), oklch(23.8% 0.0072 350.00));
   font-style: normal;
   line-height: 1.7;
 }

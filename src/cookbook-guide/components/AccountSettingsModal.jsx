@@ -3,8 +3,10 @@ import Modal from './Modal';
 import { sbClient } from '../lib/supabaseClient';
 import { deleteMyAccount, isDisplayNameAvailable, isEboardUser, NAME_TAKEN_MESSAGE } from '../hooks/useAuth';
 import { useShowActivity } from '../hooks/useProfile';
+import { setThemeChoice, useThemeChoice } from '../../theme';
 
 export default function AccountSettingsModal({ open, onClose, currentUser, onSaved }) {
+  const theme = useThemeChoice();
   const [firstName, setFirstName] = useState('');
   const [lastInitial, setLastInitial] = useState('');
   const [role, setRole] = useState('');
@@ -243,6 +245,28 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
           likes and saves private.
         </span>
       </label>
+
+      {/* Applies right away and is saved on this device, no Save needed. */}
+      <div className="e-section-label" id="appearance-label">Appearance</div>
+      <div className="e-segment" role="radiogroup" aria-labelledby="appearance-label">
+        {[
+          ['auto', 'Auto'],
+          ['light', 'Light'],
+          ['dark', 'Dark'],
+        ].map(([value, label]) => (
+          <label key={value}>
+            <input
+              type="radio"
+              name="theme"
+              value={value}
+              checked={theme === value}
+              onChange={() => setThemeChoice(value)}
+            />
+            {label}
+          </label>
+        ))}
+      </div>
+      {theme === 'auto' && <p className="e-hint">Follows your device’s light or dark setting.</p>}
 
       <div className="e-section-label">Delete account</div>
       {deleteOpen ? (

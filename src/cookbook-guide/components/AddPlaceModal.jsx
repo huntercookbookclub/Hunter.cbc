@@ -209,7 +209,7 @@ export default function AddPlaceModal({ open, onClose, currentUser, editingPlace
       <div className="add-form-grid">
         <div className="span2" style={{ position: 'relative' }}>
           <PlaceSearch onSelect={handlePlaceSelect} onUnavailable={handleSearchUnavailable} />
-          <div style={{ fontSize: '0.78rem', color: 'rgba(26,26,46,0.55)', marginTop: 4, minHeight: 16 }}>
+          <div style={{ fontSize: '0.78rem', color: 'light-dark(rgba(26,26,46,0.55), rgba(240,240,245,0.6))', marginTop: 4, minHeight: 16 }}>
             {searchStatus}
           </div>
         </div>

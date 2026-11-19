@@ -7,10 +7,16 @@
          env(safe-area-inset-*)). interactive-widget: the keyboard shrinks the layout
          on Android so bottom panels and inputs stay visible. Zoom stays enabled. -->
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
-    <!-- The site is light-only. Status bar matches the top of the page; the recipe
-         book switches it to its dark brown while open (RecipeBook.jsx). -->
-    <meta name="color-scheme" content="light" />
+    <!-- Light and dark (src/theme.js). The saved choice is applied before first
+         paint so the page never flashes the wrong theme. -->
+    <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#ffffff" />
+    <script>
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
     <title>CookBook Club</title>
   </head>
   <body>
