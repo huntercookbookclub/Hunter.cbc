@@ -458,7 +458,6 @@
 .cookbook-guide-app .chip[data-cat="restaurant"].active { background: light-dark(oklch(94.30% 0.0286 17.67), oklch(22.1% 0.0172 17.67)); border-color: var(--coral); color: var(--coral); }
 .cookbook-guide-app .chip[data-cat="cafe"].active { background: light-dark(oklch(96.58% 0.0531 94.43), oklch(23.3% 0.0319 94.43)); border-color: light-dark(oklch(80.08% 0.1637 90.52 / 0.85), oklch(80.1% 0.1637 90.52 / 0.85)); color: light-dark(oklch(55.09% 0.1164 74.75), oklch(70.0% 0.1164 74.75)); }
 .cookbook-guide-app .chip[data-cat="dessert"].active { background: light-dark(oklch(93.83% 0.0366 304.78), oklch(21.9% 0.0220 304.78)); border-color: var(--plum); color: var(--plum); }
-.cookbook-guide-app .chip[data-cat="boba"].active { background: light-dark(oklch(96.12% 0.0216 234.99), oklch(23.1% 0.0130 234.99)); border-color: var(--sky); color: light-dark(oklch(55.84% 0.1228 241.72), oklch(70.0% 0.1228 241.72)); }
 .cookbook-guide-app .chip[data-cat="bar"].active { background: light-dark(oklch(96.28% 0.0308 149.82), oklch(23.1% 0.0185 149.82)); border-color: var(--mint); color: light-dark(oklch(56.04% 0.1456 145.64), oklch(70.0% 0.1456 145.64)); }
 .cookbook-guide-app .chip[data-cat="takeout"].active { background: light-dark(oklch(95.42% 0.0372 75.16), oklch(22.7% 0.0223 75.16)); border-color: light-dark(oklch(70.49% 0.1867 47.60 / 0.85), oklch(70.5% 0.1867 47.60 / 0.85)); color: light-dark(oklch(55.34% 0.1739 38.40), oklch(70.0% 0.1739 38.40)); }
 

@@ -2,13 +2,12 @@ export const categoryOptions = [
   { value: 'restaurant', label: '🍽️ Restaurant' },
   { value: 'cafe',       label: '☕ Café' },
   { value: 'dessert',    label: '🍰 Dessert' },
-  { value: 'boba',       label: '🧋 Boba' },
   { value: 'bar',        label: '🍸 Bar' },
   { value: 'takeout',    label: '🥡 Takeout' },
 ];
 
 export const cuisineOptions = [
-  'Afghan','American','Asian Fusion','Australian','Bangladeshi','BBQ','Bakery',
+  'Afghan','American','Asian Fusion','Australian','Bangladeshi','BBQ','Bakery','Boba',
   'Brazilian','British','Burmese','Cambodian','Canadian',
   'Caribbean','Chinese','Colombian','Cuban','Dominican','Egyptian','Ethiopian',
   'Filipino','French','Fusion','Georgian','German','Greek','Hawaiian','Hong Kong',

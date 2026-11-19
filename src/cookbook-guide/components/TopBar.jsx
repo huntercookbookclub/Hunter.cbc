@@ -5,7 +5,6 @@ const typeConfig = [
   { cat: 'restaurant', label: 'Restaurant', emoji: '🍽️' },
   { cat: 'cafe', label: 'Café', emoji: '☕' },
   { cat: 'dessert', label: 'Dessert', emoji: '🍰' },
-  { cat: 'boba', label: 'Boba', emoji: '🧋' },
   { cat: 'bar', label: 'Bar', emoji: '🍸' },
   { cat: 'takeout', label: 'Takeout', emoji: '🥡' },
 ];

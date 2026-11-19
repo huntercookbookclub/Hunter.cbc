@@ -74,7 +74,7 @@ export default function MapView({ places, onSelectPlace, selectedId }) {
     markersRef.current = [];
 
     places.forEach((place) => {
-      const cfg = catConfig[place.category];
+      const cfg = catConfig[place.category] || catConfig.cafe;
       if (!cfg) return;
 
       const icon = L.divIcon({

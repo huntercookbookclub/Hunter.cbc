@@ -20,7 +20,7 @@ export default function PlaceDetailPanel({
   onSetShowActivity,
 }) {
   const isOpen = !!place;
-  const cfg = place ? catConfig[place.category] : null;
+  const cfg = place ? catConfig[place.category] || catConfig.cafe : null;
   const { sheetRef, handleProps } = useSheetDrag(onClose);
 
   return (
