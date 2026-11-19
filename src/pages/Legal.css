@@ -35,7 +35,7 @@
 
 .legal-date {
   margin: 6px 0 20px;
-  color: light-dark(oklch(52.78% 0.0000 0.00), oklch(52.8% 0.0000 0.00));
+  color: light-dark(oklch(52.78% 0.0000 0.00), oklch(70% 0.0000 0.00));
   font-size: 0.9rem;
 }
 

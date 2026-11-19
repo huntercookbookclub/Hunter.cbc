@@ -288,7 +288,7 @@
 .book-btn-primary {
   background: linear-gradient(180deg in oklch, light-dark(oklch(79.40% 0.1042 87.70), oklch(79.4% 0.1042 87.70)), light-dark(oklch(67.95% 0.1104 84.23), oklch(68.0% 0.1104 84.23)));
   border-color: light-dark(oklch(32% 0.0636 73.47 / 0.6), oklch(92.0% 0.0200 73.47 / 0.84));
-  color: light-dark(oklch(22.09% 0.0287 65.41), oklch(89.9% 0.0287 65.41));
+  color: oklch(22.09% 0.0287 65.41); /* gold button in both themes, so dark text in both */
 }
 
 .book-btn-danger {
@@ -354,7 +354,7 @@
   font-family: 'ClashDisplay', sans-serif;
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--leather);
+  color: var(--ink);
   border-bottom: 1px solid light-dark(oklch(64.89% 0.0688 74.53 / 0.45), oklch(64.9% 0.0688 74.53 / 0.45));
   padding-bottom: 4px;
 }
@@ -518,7 +518,7 @@
   padding: 0 0 4px;
   font-family: 'ClashDisplay', sans-serif;
   font-size: 0.875rem;
-  color: var(--leather);
+  color: var(--ink);
 }
 
 .recipe-tags {
@@ -563,7 +563,8 @@
   display: contents;
   /* Re-skin the map's components to the book: its CSS reads these variables. */
   --coral: light-dark(oklch(55.61% 0.0910 80.29), oklch(55.6% 0.0910 80.29));
-  --ink: var(--leather);
+  /* Leather brown on paper; light parchment ink on dark paper. */
+  --ink: light-dark(oklch(32.62% 0.0532 50.95), oklch(91% 0.02 80));
 }
 
 /* Book typeface + parchment surfaces for the shared modal, menu and dropdowns.
@@ -617,7 +618,7 @@ body .recipe-book-page .cookbook-guide-app :is(.e-close, .e-btn-secondary, .btn-
 
 body .recipe-book-page .cookbook-guide-app :is(.e-btn-primary, .add-place-btn) {
   background: linear-gradient(180deg in oklch, light-dark(oklch(79.40% 0.1042 87.70), oklch(79.4% 0.1042 87.70)), light-dark(oklch(67.95% 0.1104 84.23), oklch(68.0% 0.1104 84.23)));
-  color: light-dark(oklch(22.09% 0.0287 65.41), oklch(89.9% 0.0287 65.41));
+  color: oklch(22.09% 0.0287 65.41); /* gold button in both themes, so dark text in both */
   border: 1px solid light-dark(oklch(32% 0.0636 73.47 / 0.6), oklch(92.0% 0.0200 73.47 / 0.84));
   border-radius: 2px;
   box-shadow: 1px 2px 0 light-dark(oklch(25.54% 0.0212 66.64 / 0.25), oklch(0.0% 0.0000 0.00 / 0.45));
@@ -625,6 +626,11 @@ body .recipe-book-page .cookbook-guide-app :is(.e-btn-primary, .add-place-btn) {
 
 body .recipe-book-page .cookbook-guide-app :is(.tags-ms-option.selected, .btn-rec-delete) {
   background: light-dark(oklch(72.98% 0.1000 85.55 / 0.25), oklch(73.0% 0.1000 85.55 / 0.25));
+}
+
+/* --ink is near-black brown in dark mode; the bell's page/time line needs a light gold there. */
+body .recipe-book-page .cookbook-guide-app .notif-meta {
+  color: light-dark(oklch(45% 0.07 70), oklch(80% 0.08 82));
 }
 
 body .recipe-book-page .cookbook-guide-app .tags-ms-pill {

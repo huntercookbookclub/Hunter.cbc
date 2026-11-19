@@ -46,7 +46,7 @@ export default function PlaceDetailPanel({
             <div className="panel-name-row">
               <span
                 className="cat-badge"
-                style={{ background: cfg.bg, color: cfg.color }}
+                style={{ background: cfg.bg, '--cat': cfg.color }}
               >
                 {cfg.label}
               </span>
