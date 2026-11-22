@@ -161,6 +161,8 @@ export default function AddPlaceModal({ open, onClose, currentUser, editingPlace
       recommender_name: recName,
       recommender_role: recRole,
       recommender_avatar_url: recAvatarUrl,
+      recommender_banner: meta.banner || 'default',
+      recommender_hat: !!meta.hat,
       dishes: form.dishes,
       tags: form.tags,
       notes: form.notes.trim(),

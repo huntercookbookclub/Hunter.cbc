@@ -19,6 +19,9 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
   const [displayName, setDisplayName] = useState('');
   const { showActivity, setShowActivity } = useShowActivity(currentUser);
   const [share, setShare] = useState(false);
+  const [banner, setBanner] = useState('default');
+  const [hat, setHat] = useState(false);
+  const [tab, setTab] = useState('account');
   // Delete account: hidden until asked for, then needs the current password.
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deletePassword, setDeletePassword] = useState('');
@@ -31,6 +34,8 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
       setRole(meta.role || '');
       setDisplayName(meta.display_name || '');
       setAvatarUrl(meta.avatar_url || null);
+      setBanner(meta.banner || 'default');
+      setHat(!!meta.hat);
       setPendingFile(null);
       setRemoveFlag(false);
       setError('');
@@ -43,6 +48,7 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
 
   useEffect(() => {
     if (!open) {
+      setTab('account');
       setDeleteOpen(false);
       setDeletePassword('');
       setDeleteError('');
@@ -119,6 +125,8 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
       data: {
         display_name: name,
         avatar_url: finalAvatarUrl,
+        banner,
+        hat,
         ...(isEboard && { role: role.trim() }),
       },
     });
@@ -135,6 +143,8 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
         recommender_name: name,
         recommender_role: isEboard ? roleLabel : null,
         recommender_avatar_url: finalAvatarUrl,
+        recommender_banner: banner,
+        recommender_hat: hat,
       };
       await sbClient.from('places').update(placeCopy).eq('author_id', currentUser.id);
       // E-board places from before author_id was recorded: matched by name.
@@ -163,154 +173,232 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
     onClose();
   };
 
-  return (
-    <Modal open={open} onClose={onClose} title="Account Settings" width="clamp(260px, 22vw, 360px)">
-      <div className="e-section-label">Profile picture</div>
-      <div className="pfp-upload-wrap">
-        <div className="pfp-preview">
-          {avatarUrl ? (
-            <img
-              src={avatarUrl}
-              alt=""
-              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
-            />
-          ) : (
-            <span>{(displayName || '?')[0].toUpperCase()}</span>
-          )}
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
-            style={{ display: 'none' }}
-            id="pfpFileInput"
-            onChange={handleFileChange}
-          />
-          <button
-            type="button"
-            className="e-btn-secondary"
-            style={{ fontSize: '0.82rem', padding: '8px 16px' }}
-            onClick={() => document.getElementById('pfpFileInput').click()}
-          >
-            Upload photo
-          </button>
-          {avatarUrl && (
-            <button
-              type="button"
-              className="e-btn-secondary"
-              style={{ fontSize: '0.82rem', padding: '8px 16px', color: 'var(--coral)' }}
-              onClick={handleRemove}
-            >
-              Remove
-            </button>
-          )}
-        </div>
-      </div>
+  const tabs = [
+    ['account', 'Account'],
+    ['appearance', 'Appearance'],
+    ['privacy', 'Privacy'],
+  ];
 
-      <div className="e-section-label">Display name</div>
-      <input
-        type="text"
-        className="e-input"
-        placeholder="e.g. Maya C."
-        autoComplete="nickname"
-        maxLength={40}
-        value={displayName}
-        onChange={(e) => setDisplayName(e.target.value)}
-      />
+  // Two-option switch, same look as the theme one.
+  const segment = (name, value, onChange, options) => (
+    <div className="e-segment" role="radiogroup" aria-labelledby={`${name}-label`} style={{ gridTemplateColumns: `repeat(${options.length}, 1fr)` }}>
+      {options.map(([v, label]) => (
+        <label key={String(v)}>
+          <input type="radio" name={name} checked={value === v} onChange={() => onChange(v)} />
+          {label}
+        </label>
+      ))}
+    </div>
+  );
 
-      {isEboard && (
-        <>
-          <div className="e-section-label">Role</div>
-          <input
-            type="text"
-            className="e-input"
-            placeholder="e.g. President, Treasurer..."
-            maxLength={40}
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-          />
-          <p className="e-hint">Shown with your name on places and recipes you post.</p>
-        </>
-      )}
-
-      <div className="e-section-label">Privacy</div>
-      <label className="e-check">
-        <input type="checkbox" checked={share} onChange={(e) => setShare(e.target.checked)} />
-        <span>
-          <strong>Show my name and photo on places and recipes I like or save.</strong> Keep unticked to keep
-          likes and saves private.
-        </span>
-      </label>
-
-      {/* Applies right away and is saved on this device, no Save needed. */}
-      <div className="e-section-label" id="appearance-label">Appearance</div>
-      <div className="e-segment" role="radiogroup" aria-labelledby="appearance-label">
-        {[
-          ['auto', 'Auto'],
-          ['light', 'Light'],
-          ['dark', 'Dark'],
-        ].map(([value, label]) => (
-          <label key={value}>
-            <input
-              type="radio"
-              name="theme"
-              value={value}
-              checked={theme === value}
-              onChange={() => setThemeChoice(value)}
-            />
-            {label}
-          </label>
-        ))}
-      </div>
-      {theme === 'auto' && <p className="e-hint">Follows your device’s light or dark setting.</p>}
-
-      <div className="e-section-label">Delete account</div>
-      {deleteOpen ? (
-        <form className="e-form delete-account" onSubmit={handleDelete}>
-          <p className="e-hint">
-            This permanently deletes your account, saved places, saved recipes and likes. It can’t be
-            undone.
-            {isEboard &&
-              ' Your Big Back Lookback photos are removed too; places and recipes you posted stay on the site under your name.'}
-          </p>
-          <input
-            type="password"
-            className="e-input"
-            placeholder="Your password, to confirm"
-            autoComplete="current-password"
-            value={deletePassword}
-            onChange={(e) => setDeletePassword(e.target.value)}
-            aria-invalid={!!deleteError}
-          />
-          <button type="submit" className="e-btn-danger" disabled={deleting || !deletePassword}>
-            {deleting ? 'Deleting…' : 'Delete my account'}
-          </button>
-          <button
-            type="button"
-            className="e-link"
-            onClick={() => {
-              setDeleteOpen(false);
-              setDeletePassword('');
-              setDeleteError('');
-            }}
-            disabled={deleting}
-          >
-            Cancel
-          </button>
-          <div className="e-error" role="alert">
-            {deleteError}
-          </div>
-        </form>
-      ) : (
-        <button type="button" className="e-link danger-link" onClick={() => setDeleteOpen(true)}>
-          Delete my account…
-        </button>
-      )}
-
+  const saveButton = (
+    <>
       <div className="e-error">{error}</div>
       <button className="e-btn-primary" onClick={handleSave} disabled={saving}>
         {saving ? 'Saving...' : 'Save'}
       </button>
+    </>
+  );
+
+  return (
+    <Modal
+      open={open}
+      onClose={onClose}
+      title="Settings"
+      width="clamp(300px, 92vw, 580px)"
+      bodyClassName="settings-body"
+    >
+      <div className="settings-nav" role="tablist" aria-label="Settings">
+        {tabs.map(([id, label]) => (
+          <button
+            key={id}
+            type="button"
+            role="tab"
+            id={`settings-tab-${id}`}
+            aria-selected={tab === id}
+            aria-controls="settings-pane"
+            onClick={() => setTab(id)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      <div className="settings-pane" id="settings-pane" role="tabpanel" aria-labelledby={`settings-tab-${tab}`}>
+        {tab === 'account' && (
+          <>
+            {/* Live preview of how you show on places you recommend. */}
+            <div className={`panel-recommender banner-${banner}`} style={{ marginBottom: 4 }}>
+              <div className={`rec-avatar${hat ? ' has-hat' : ''}`} style={{ background: '#E8E4DC' }}>
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+                ) : (
+                  '👤'
+                )}
+              </div>
+              <div className="rec-info">
+                <div className="rec-name">{displayName.trim() || 'Your name'}</div>
+                <div className="rec-role">{[isEboard && (role.trim() || 'Eboard'), 'Preview'].filter(Boolean).join(' · ')}</div>
+              </div>
+            </div>
+
+            <div className="e-section-label">Profile picture</div>
+            <div className="pfp-upload-wrap">
+              <div className="pfp-preview">
+                {avatarUrl ? (
+                  <img
+                    src={avatarUrl}
+                    alt=""
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
+                  />
+                ) : (
+                  <span>{(displayName || '?')[0].toUpperCase()}</span>
+                )}
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+                  style={{ display: 'none' }}
+                  id="pfpFileInput"
+                  onChange={handleFileChange}
+                />
+                <button
+                  type="button"
+                  className="e-btn-secondary"
+                  style={{ fontSize: '0.82rem', padding: '8px 16px' }}
+                  onClick={() => document.getElementById('pfpFileInput').click()}
+                >
+                  Upload photo
+                </button>
+                {avatarUrl && (
+                  <button
+                    type="button"
+                    className="e-btn-secondary"
+                    style={{ fontSize: '0.82rem', padding: '8px 16px', color: 'var(--coral)' }}
+                    onClick={handleRemove}
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className="e-section-label">Display name</div>
+            <input
+              type="text"
+              className="e-input"
+              placeholder="e.g. Maya C."
+              autoComplete="nickname"
+              maxLength={40}
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+            />
+
+            {isEboard && (
+              <>
+                <div className="e-section-label">Role</div>
+                <input
+                  type="text"
+                  className="e-input"
+                  placeholder="e.g. President, Treasurer..."
+                  maxLength={40}
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                />
+                <p className="e-hint">Shown with your name on places and recipes you post.</p>
+              </>
+            )}
+
+            <div className="e-section-label" id="banner-label">Banner</div>
+            {segment('banner', banner, setBanner, [
+              ['default', 'Default'],
+              ['gingham', 'Plaid'],
+            ])}
+
+            <div className="e-section-label" id="hat-label">Hat</div>
+            {segment('hat', hat, setHat, [
+              [false, 'No hat'],
+              [true, 'Chef hat'],
+            ])}
+            <p className="e-hint">Shown on places you recommend.</p>
+
+            {saveButton}
+
+            <div className="e-section-label">Delete account</div>
+            {deleteOpen ? (
+              <form className="e-form delete-account" onSubmit={handleDelete}>
+                <p className="e-hint">
+                  This permanently deletes your account, saved places, saved recipes and likes. It can’t be
+                  undone.
+                  {isEboard &&
+                    ' Your Big Back Lookback photos are removed too; places and recipes you posted stay on the site under your name.'}
+                </p>
+                <input
+                  type="password"
+                  className="e-input"
+                  placeholder="Your password, to confirm"
+                  autoComplete="current-password"
+                  value={deletePassword}
+                  onChange={(e) => setDeletePassword(e.target.value)}
+                  aria-invalid={!!deleteError}
+                />
+                <button type="submit" className="e-btn-danger" disabled={deleting || !deletePassword}>
+                  {deleting ? 'Deleting…' : 'Delete my account'}
+                </button>
+                <button
+                  type="button"
+                  className="e-link"
+                  onClick={() => {
+                    setDeleteOpen(false);
+                    setDeletePassword('');
+                    setDeleteError('');
+                  }}
+                  disabled={deleting}
+                >
+                  Cancel
+                </button>
+                <div className="e-error" role="alert">
+                  {deleteError}
+                </div>
+              </form>
+            ) : (
+              <button type="button" className="e-link danger-link" onClick={() => setDeleteOpen(true)}>
+                Delete my account…
+              </button>
+            )}
+          </>
+        )}
+
+        {tab === 'appearance' && (
+          <>
+            {/* Applies right away and is saved on this device, no Save needed. */}
+            <div className="e-section-label" id="theme-label">Theme</div>
+            {segment('theme', theme, setThemeChoice, [
+              ['auto', 'Auto'],
+              ['light', 'Light'],
+              ['dark', 'Dark'],
+            ])}
+            <p className="e-hint">
+              {theme === 'auto' ? 'Follows your device’s light or dark setting. ' : ''}Applies right away on this device.
+            </p>
+          </>
+        )}
+
+        {tab === 'privacy' && (
+          <>
+            <div className="e-section-label">Likes and saves</div>
+            <label className="e-check">
+              <input type="checkbox" checked={share} onChange={(e) => setShare(e.target.checked)} />
+              <span>
+                <strong>Show my name and photo on places and recipes I like or save.</strong> Keep unticked to keep
+                likes and saves private.
+              </span>
+            </label>
+            {saveButton}
+          </>
+        )}
+      </div>
     </Modal>
   );
 }

@@ -11,7 +11,7 @@ const FOCUSABLE =
 // Shared pop-up box. Grows in on open and shrinks back out the same way on
 // close; Escape closes it; it's announced as a dialog, focus moves into it,
 // Tab stays inside it, and focus returns to where it was when it closes.
-export default function Modal({ open, onClose, title, width, children }) {
+export default function Modal({ open, onClose, title, width, bodyClassName = '', children }) {
   // Stay mounted for a moment after closing so the exit animation can play.
   const [mounted, setMounted] = useState(open);
   const [closing, setClosing] = useState(false);
@@ -108,7 +108,7 @@ export default function Modal({ open, onClose, title, width, children }) {
             ✕
           </button>
         </div>
-        <div className="e-body">{children}</div>
+        <div className={`e-body ${bodyClassName}`}>{children}</div>
       </div>
     </>
   );

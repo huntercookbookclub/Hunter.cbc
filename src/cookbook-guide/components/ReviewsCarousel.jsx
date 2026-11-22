@@ -9,8 +9,8 @@ function Review({ review }) {
   return (
     <>
       <div className="panel-section-label">Recommended by</div>
-      <div className="panel-recommender">
-        <div className="rec-avatar" style={{ background: recommender.color }}>
+      <div className={`panel-recommender banner-${recommender.banner}`}>
+        <div className={`rec-avatar${recommender.hat ? ' has-hat' : ''}`} style={{ background: recommender.color }}>
           {recommender.avatarUrl ? (
             <img
               src={recommender.avatarUrl}

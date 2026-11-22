@@ -135,7 +135,7 @@ export function PrivacyPolicy() {
       <p>
         You choose whether your name and photo show on places you like or save, and can change it
         any time in Account Settings. You can delete your account yourself at any time: log in, open{' '}
-        <strong>⚙️ → Account Settings → Delete account</strong>, and confirm with your password. This removes your account, saved places, saved
+        <strong>⚙️ → Account Settings → Account → Delete account</strong>, and confirm with your password. This removes your account, saved places, saved
         recipes and likes right away, and can’t be undone. You can also ask us to see, correct or
         delete your data by emailing <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> from
         your account’s email address. We keep account data until you delete your account or ask us

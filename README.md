@@ -167,6 +167,7 @@ The `places` table was made in the Supabase dashboard. Then run these in the Sup
 11. `unique-names.sql`
 12. `signup-checks.sql`, then enable it under Authentication → Hooks → Before User Created
 13. `delete-account.sql`
+14. `profile-decor.sql`
 
 ### 4. Email
 

@@ -16,6 +16,8 @@ function mapRow(row) {
       avatar: row.recommender_avatar || '👤',
       avatarUrl: row.recommender_avatar_url || null,
       color: row.recommender_color || '#E8E4DC',
+      banner: row.recommender_banner || 'default',
+      hat: !!row.recommender_hat,
     },
     dishes: row.dishes || [],
     notes: row.notes || '',
