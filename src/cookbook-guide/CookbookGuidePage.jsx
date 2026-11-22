@@ -169,6 +169,7 @@ export default function CookbookGuidePage() {
         open={accountSettingsOpen}
         onClose={() => setAccountSettingsOpen(false)}
         currentUser={currentUser}
+        onSaved={reload}
       />
 
       <SavedListModal

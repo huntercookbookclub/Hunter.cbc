@@ -134,9 +134,11 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
 
     // Places and recipes keep a copy of the poster's name, role and picture.
     // Bring this account's copies up to date.
+    let copyErr = null;
     if (!updateErr) {
       const roleLabel = role.trim() || 'Eboard';
-      await sbClient
+      const results = [];
+      results.push(await sbClient
         .from('recipes')
         .update({
           author: name,
@@ -145,7 +147,7 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
           author_banner: banner,
           author_hat: hat,
         })
-        .eq('author_id', currentUser.id);
+        .eq('author_id', currentUser.id));
       const placeCopy = {
         recommender_name: name,
         recommender_role: isEboard ? roleLabel : null,
@@ -153,11 +155,14 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
         recommender_banner: banner,
         recommender_hat: hat,
       };
-      await sbClient.from('places').update(placeCopy).eq('author_id', currentUser.id);
+      results.push(await sbClient.from('places').update(placeCopy).eq('author_id', currentUser.id));
       // E-board places from before author_id was recorded: matched by name.
       if (isEboard && oldName) {
-        await sbClient.from('places').update(placeCopy).is('author_id', null).eq('recommender_name', oldName);
+        results.push(
+          await sbClient.from('places').update(placeCopy).is('author_id', null).eq('recommender_name', oldName)
+        );
       }
+      copyErr = results.find((res) => res.error)?.error;
     }
 
     if (!updateErr && share !== showActivity) {
@@ -171,8 +176,9 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
 
     setSaving(false);
 
-    if (updateErr) {
-      setError(updateErr.message);
+    if (updateErr || copyErr) {
+      // copyErr: profile saved, but your places/recipes didn't update.
+      setError((updateErr || copyErr).message);
       return;
     }
 

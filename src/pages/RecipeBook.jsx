@@ -652,6 +652,7 @@ function RecipeBook() {
           open={accountSettingsOpen}
           onClose={() => setAccountSettingsOpen(false)}
           currentUser={currentUser}
+          onSaved={() => refresh()}
         />
 
         <SavedListModal
