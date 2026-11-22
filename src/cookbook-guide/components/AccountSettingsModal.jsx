@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Modal from './Modal';
+import ProfileChip from './ProfileChip';
 import { sbClient } from '../lib/supabaseClient';
 import { deleteMyAccount, isDisplayNameAvailable, isEboardUser, NAME_TAKEN_MESSAGE } from '../hooks/useAuth';
 import { useShowActivity } from '../hooks/useProfile';
@@ -137,7 +138,13 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
       const roleLabel = role.trim() || 'Eboard';
       await sbClient
         .from('recipes')
-        .update({ author: name, author_role: isEboard ? roleLabel : null })
+        .update({
+          author: name,
+          author_role: isEboard ? roleLabel : null,
+          author_avatar_url: finalAvatarUrl,
+          author_banner: banner,
+          author_hat: hat,
+        })
         .eq('author_id', currentUser.id);
       const placeCopy = {
         recommender_name: name,
@@ -228,19 +235,14 @@ export default function AccountSettingsModal({ open, onClose, currentUser, onSav
         {tab === 'account' && (
           <>
             {/* Live preview of how you show on places you recommend. */}
-            <div className={`panel-recommender banner-${banner}`} style={{ marginBottom: 4 }}>
-              <div className={`rec-avatar${hat ? ' has-hat' : ''}`} style={{ background: '#E8E4DC' }}>
-                {avatarUrl ? (
-                  <img src={avatarUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
-                ) : (
-                  '👤'
-                )}
-              </div>
-              <div className="rec-info">
-                <div className="rec-name">{displayName.trim() || 'Your name'}</div>
-                <div className="rec-role">{[isEboard && (role.trim() || 'Eboard'), 'Preview'].filter(Boolean).join(' · ')}</div>
-              </div>
-            </div>
+            <ProfileChip
+              name={displayName.trim() || 'Your name'}
+              sub={[isEboard && (role.trim() || 'Eboard'), 'Preview'].filter(Boolean).join(' · ')}
+              avatarUrl={avatarUrl}
+              banner={banner}
+              hat={hat}
+              style={{ marginBottom: 4 }}
+            />
 
             <div className="e-section-label">Profile picture</div>
             <div className="pfp-upload-wrap">

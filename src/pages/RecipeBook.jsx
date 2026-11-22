@@ -26,6 +26,7 @@ import '../cookbook-guide/fonts.css'
 import '../cookbook-guide/cookbook-guide.css'
 import './RecipeBook.css'
 import { syncThemeColor } from '../theme'
+import ProfileChip from '../cookbook-guide/components/ProfileChip'
 
 const cuisineSelectOptions = cuisineOptions.map((c) => ({ value: c, label: c }))
 
@@ -268,6 +269,11 @@ function RecipeBook() {
       // edits keep the original author.
       author: mode === 'edit' && selected ? selected.author : authorName(currentUser),
       authorRole: authorRole(currentUser), // used for new pages only
+      authorDecor: {
+        author_avatar_url: currentUser?.user_metadata?.avatar_url || null,
+        author_banner: currentUser?.user_metadata?.banner || 'default',
+        author_hat: !!currentUser?.user_metadata?.hat,
+      },
       cuisine: form.cuisine,
       tags: form.tags,
       ingredients: form.ingredients.split('\n'),
@@ -498,10 +504,6 @@ function RecipeBook() {
                 <div className="recipe-detail-top">
                   <div>
                     <h2>{selected.title}</h2>
-                    <p className="recipe-byline">
-                      Written by {selected.author}
-                      {selected.authorRole ? `, ${selected.authorRole}` : ''}
-                    </p>
                   </div>
                   <div className="recipe-actions">
                     <button
@@ -544,6 +546,23 @@ function RecipeBook() {
                       </>
                     )}
                   </div>
+                </div>
+                {/* Map's profile chip; the wrapper only scopes its styles (display: contents). */}
+                <div className="cookbook-guide-app">
+                  <ProfileChip
+                    name={selected.author}
+                    sub={[
+                      selected.authorRole,
+                      selected.createdAt &&
+                        new Date(selected.createdAt).toLocaleDateString(undefined, { month: 'short', year: 'numeric' }),
+                    ]
+                      .filter(Boolean)
+                      .join(' · ')}
+                    avatarUrl={selected.authorAvatarUrl}
+                    banner={selected.authorBanner}
+                    hat={selected.authorHat}
+                    style={{ marginTop: 4, marginBottom: 12, maxWidth: 320 }}
+                  />
                 </div>
 
                 {/* Who liked or saved this (opted-in only), and your own privacy note.

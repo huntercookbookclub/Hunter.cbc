@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import ProfileChip from './ProfileChip';
 
 const uploaded = (date) =>
   date ? new Date(date).toLocaleDateString(undefined, { month: 'short', year: 'numeric' }) : '';
@@ -9,25 +10,10 @@ function Review({ review }) {
   return (
     <>
       <div className="panel-section-label">Recommended by</div>
-      <div className={`panel-recommender banner-${recommender.banner}`}>
-        <div className={`rec-avatar${recommender.hat ? ' has-hat' : ''}`} style={{ background: recommender.color }}>
-          {recommender.avatarUrl ? (
-            <img
-              src={recommender.avatarUrl}
-              alt=""
-              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
-            />
-          ) : (
-            recommender.avatar
-          )}
-        </div>
-        <div className="rec-info">
-          <div className="rec-name">{recommender.name}</div>
-          <div className="rec-role">
-            {[recommender.role, uploaded(review.createdAt)].filter(Boolean).join(' · ')}
-          </div>
-        </div>
-      </div>
+      <ProfileChip
+        {...recommender}
+        sub={[recommender.role, uploaded(review.createdAt)].filter(Boolean).join(' · ')}
+      />
 
       {review.tags?.length > 0 && (
         <>
